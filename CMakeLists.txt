@@ -1,22 +1,27 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.9)
 project(bomberman)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/packages)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_CXX_STANDARD 11)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
-find_package(Irrlicht)
-include_directories(${IRRLICHT_INCLUDE_DIR})
-message(${IRRLICHT_INCLUDE_DIR})
-
-set(SOURCES
-        main.cpp)
+add_executable(bomberman
+        src/main.cpp)
 
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 
-add_executable(bomberman ${SOURCES})
-target_link_libraries(bomberman Irrlicht)
 
+set(IRRLICHT_SOURCE_DIR ./libs/irrlicht)
+find_package(Irrlicht REQUIRED)
+target_link_libraries(bomberman ${IRRLICHT_LIBRARY})
+target_include_directories(bomberman PRIVATE ${IRRLICHT_INCLUDE_DIR})
+
+if(WIN32)
+    add_custom_command(TARGET bomberman PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ../libs/irrlicht/bin/Win64-VisualStudio/Irrlicht.dll
+            ../bin/Irrlicht.dll)
+endif()
