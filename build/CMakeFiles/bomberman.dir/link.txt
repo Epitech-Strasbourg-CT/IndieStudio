@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/bomberman.dir/src/main.cpp.o  -o ../bin/bomberman /usr/lib/x86_64-linux-gnu/libIrrlicht.so 
