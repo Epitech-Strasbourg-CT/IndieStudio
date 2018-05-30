@@ -21,7 +21,7 @@ int StateMachine::pop()
 
 int StateMachine::start()
 {
-
+	return 0;
 }
 
 AState *StateMachine::top()
