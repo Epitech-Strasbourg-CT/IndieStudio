@@ -3,3 +3,4 @@ cmake-build-*
 bin/
 *.o
 bomberman
+build/

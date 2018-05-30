@@ -1,13 +1,17 @@
-cmake_minimum_required(VERSION 3.7.2)
+cmake_minimum_required(VERSION 3.5.1)
 project(bomberman)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 set(CMAKE_CXX_STANDARD 11)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
-add_executable(bomberman
-        src/main.cpp)
 
+add_executable(bomberman
+        src/main.cpp
+        src/StateMachine.cpp
+        include/StateMachine.hpp
+        src/AState.cpp
+        include/AState.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
