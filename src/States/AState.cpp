@@ -31,7 +31,6 @@ void AState::load()
 void AState::unload()
 {
 	_loaded = false;
-	std::cerr << "unload splash" << std::endl;
 }
 
 AState::~AState()

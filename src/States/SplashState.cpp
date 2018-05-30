@@ -8,17 +8,12 @@
 #include <string>
 #include "../../include/SplashState.hpp"
 #include "../../include/Singletons.hpp"
+#include "../../include/Time.hpp"
 
 void SplashState::update()
 {
-	if (_endTime < gameManager.getCycles()) {
-		//std::cerr << "POP!" << std::endl;
+	if (_endTime < Time::timestamp()) {
 		stateMachine.pop();
-	} else {
-//		std::cerr << "Cycles : " << std::to_string(gameManager
-//							 .getCycles())
-//			  << " / " <<
-//			  std::to_string(_endTime) << std::endl;
 	}
 }
 
@@ -31,9 +26,10 @@ SplashState::SplashState()
 
 void SplashState::load()
 {
-	_endTime = gameManager.getCycles() + 100;
+	_endTime = Time::timestamp() + 3000;
 	irr::scene::IAnimatedMeshSceneNode *node =
 	gameManager.getSmgr()->addAnimatedMeshSceneNode(_mesh);
+	_nodes.push_back(node);
 	if (node)
 	{
 		node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
@@ -46,6 +42,7 @@ void SplashState::load()
 void SplashState::unload()
 {
 	for (auto &n : _nodes)
-		n.remove();
+		n->remove();
+	_nodes.clear();
 	AState::unload();
 }

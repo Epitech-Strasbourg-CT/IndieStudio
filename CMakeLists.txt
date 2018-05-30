@@ -20,6 +20,9 @@ add_executable(bomberman
         src/GameManager.cpp
         include/GameManager.hpp
         src/States/SplashState.cpp
+        include/Time.hpp
+        src/Time.cpp
+        src/GameManager.cpp
         include/SplashState.hpp
         include/Singletons.hpp)
 

@@ -24,7 +24,7 @@ public:
 
 private:
 	irr::scene::IAnimatedMesh *_mesh;
-	std::vector<irr::scene::IAnimatedMeshSceneNode> _nodes;
+	std::vector<irr::scene::IAnimatedMeshSceneNode *> _nodes;
 	size_t _endTime;
 };
 

@@ -19,7 +19,7 @@ int StateMachine::push(AState *gameState, bool keepLoaded)
 
 void StateMachine::pop()
 {
-	if (_states.empty()) {
+	if (!_states.empty()) {
 		auto top = _states.top().get();
 		top->unload();
 		_states.pop();
