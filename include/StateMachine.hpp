@@ -11,29 +11,19 @@
 #include <stack>
 #include <memory>
 #include <iostream>
-
-class AState {
-public:
-	AState(AState *last);
-	virtual bool draw() = 0;
-	virtual bool setEnable(bool enable) = 0;
-protected:
-	AState *_lastState;
-private:
-	bool _enable;
-};
+#include "AState.hpp"
 
 class StateMachine
 {
 	public:
 		StateMachine() = default;
 		~StateMachine() = default;
-		int push(AState *);
-		int pop();
+		int push(AState *gameState, bool keepLoaded);
+		void pop();
 		AState *top();
 		int start();
 private:
-	std::stack<std::unique_ptr<AState>> _states;
+		std::stack<std::unique_ptr<AState>> _states;
 };
 
 #endif //BOMBERMAN_STATE_MACHINE_HPP
