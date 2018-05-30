@@ -5,7 +5,7 @@
 ** indie
 */
 
-#include "IEntity.hpp"
+#include "../include/IEntity.hpp"
 
 std::ostream &operator<<(std::ostream &s, const IEntity &e)
 {

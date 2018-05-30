@@ -5,10 +5,11 @@
 ** indie
 */
 
-#include "EntityFactory.hpp"
+#include "../include/EntityFactory.hpp"
 
 EntityFactory::EntityFactory()
 {
+
 }
 
 EntityFactory::~EntityFactory()
