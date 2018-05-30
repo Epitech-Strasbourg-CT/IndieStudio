@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <map>
 #include <memory>
-
 #include "IEntity.hpp"
 
 class EntityFactory {
