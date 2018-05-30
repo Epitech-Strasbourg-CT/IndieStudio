@@ -11,7 +11,7 @@
 #ifndef BOMBERMAN_SINGLETONS_HPP
 	#define BOMBERMAN_SINGLETONS_HPP
 
-	extern GameManager gameManager;
-	extern StateMachine stateMachine;
+extern GameManager gameManager;
+extern StateMachine stateMachine;
 
 #endif /* !BOMBERMAN_SINGLETONS_HPP */

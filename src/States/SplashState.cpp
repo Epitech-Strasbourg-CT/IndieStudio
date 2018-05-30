@@ -19,30 +19,42 @@ void SplashState::update()
 
 SplashState::SplashState()
 {
-	_mesh = gameManager.getSmgr()->getMesh("assets/sydney.md2");
-	if (!_mesh)
-		throw std::runtime_error("Mesh load error");
 }
 
 void SplashState::load()
 {
+	auto gui = gameManager.getGuienv();
+	auto manager = gameManager.getSmgr();
+	auto texture = gameManager.getDriver()->getTexture("assets/bomber.jpg");
+
 	_endTime = Time::timestamp() + 3000;
-	irr::scene::IAnimatedMeshSceneNode *node =
-	gameManager.getSmgr()->addAnimatedMeshSceneNode(_mesh);
-	_nodes.push_back(node);
-	if (node)
-	{
-		node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-		node->setMD2Animation(irr::scene::EMAT_STAND);
-		node->setMaterialTexture( 0, gameManager.getDriver()->getTexture("assets/sydney.bmp") );
-	}
+
+	auto bouton = gui->addButton(
+	irr::core::rect<irr::s32>(100,80,200,120),  // positoin du bouton
+	0, -1, L"tagada tsoin tsoin");              // texte
+	bouton->setImage(texture);
+//	auto ok = manager->getGeometryCreator()->createCubeMesh
+//	(irr::core::vector3df(10, 10, 10));
+//
+//	auto mdr = manager->addMeshSceneNode(ok);
+//	mdr->setPosition(irr::core::vector3df(10, 10, 0));
+//
+//	_mesh = manager->getGeometryCreator()->createPlaneMesh
+//	(irr::core::dimension2d<irr::f32>(200, 200));
+//
+//	_node = manager->addMeshSceneNode(_mesh);
+//
+//	_node->setMaterialFlag
+//	(irr::video::E_MATERIAL_FLAG::EMF_LIGHTING, false);
+//
+//	_node->setPosition(irr::core::vector3df(0, 0, 0));
+//
+//	_node->setMaterialTexture(0, texture);
+
 	AState::load();
 }
 
 void SplashState::unload()
 {
-	for (auto &n : _nodes)
-		n->remove();
-	_nodes.clear();
 	AState::unload();
 }

@@ -20,16 +20,12 @@ public:
 	irr::video::IVideoDriver *getDriver() const;
 	irr::scene::ISceneManager *getSmgr() const;
 	irr::gui::IGUIEnvironment *getGuienv() const;
-	void resetCycles();
-	void upCycles();
-	size_t getCycles() const;
 
 private:
 	irr::IrrlichtDevice *_device;
 	irr::video::IVideoDriver *_driver;
 	irr::scene::ISceneManager *_smgr;
 	irr::gui::IGUIEnvironment *_guienv;
-	size_t _cycles;
 };
 
 

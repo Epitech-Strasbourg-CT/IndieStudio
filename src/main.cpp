@@ -12,7 +12,7 @@ StateMachine stateMachine;
 
 int main()
 {
-    auto splash = new SplashState();
-    stateMachine.push(splash, false);
-    return stateMachine.start();
+	auto splash = new SplashState();
+	stateMachine.push(splash, false);
+	return stateMachine.start();
 }
