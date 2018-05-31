@@ -8,7 +8,7 @@
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/Singletons/GameManager.hpp"
 
-AssetsPool AssetsPool::_meshPool("assets/models/", "assets/");
+AssetsPool AssetsPool::_meshPool("assets/models/", "assets/textures/");
 
 AssetsPool &AssetsPool::getInstance()
 {
@@ -32,7 +32,7 @@ irr::video::ITexture *AssetsPool::loadTexture(const std::string &file)
 	irr::video::ITexture *texture =
 	GameManager::getInstance().getDriver()->getTexture(path);
 	if (!texture)
-		throw std::runtime_error("Can't load texture " + file);
+		throw std::runtime_error("Can't load textures " + file);
 	_textures[file] = texture;
 	return texture;
 }
