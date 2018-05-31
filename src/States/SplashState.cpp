@@ -40,7 +40,6 @@ void SplashState::load()
 		throw std::runtime_error("Can't create a new Camera.");
 	cam->setPosition(irr::core::vector3df(0, 0, -50));
 	_nodes.push_back(cam);
-
 	auto mesh = AssetsPool::getInstance().loadMesh("sydney.md2");
 	auto n = GameManager::getInstance().getSmgr()->addMeshSceneNode(mesh);
 	auto texture = AssetsPool::getInstance().loadTexture("sydney.bmp");

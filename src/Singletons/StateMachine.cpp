@@ -26,6 +26,7 @@ void StateMachine::pop()
 		auto top = _states.top().get();
 		top->unload();
 		_states.pop();
+		top = _states.top().get();
 		top->setEnable(true);
 		top->load();
 	}
