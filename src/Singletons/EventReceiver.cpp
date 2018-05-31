@@ -26,7 +26,13 @@ void EventReceiver::unregisterEvent(irr::gui::EGUI_EVENT_TYPE type)
 }
 
 void EventReceiver::registerEvent(irr::gui::EGUI_EVENT_TYPE type,
-const std::function<void(const irr::SEvent &event)> &fct)
+	std::function<void(const irr::SEvent &)> fct
+)
 {
 	_binds[type] = fct;
+}
+
+EventReceiver &EventReceiver::getInstance()
+{
+	return _events;
 }

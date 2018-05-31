@@ -21,7 +21,6 @@ public:
 
 	void update() override;
 
-private:
 	static const std::unordered_map<irr::s32, std::function<void(irr::s32, MenuState *)>> _assets;
 };
 
