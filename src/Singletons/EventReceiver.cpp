@@ -12,10 +12,13 @@ EventReceiver EventReceiver::_events;
 
 bool EventReceiver::OnEvent(const irr::SEvent &event)
 {
-	if (_binds.count(event.EventType) > 0) {
+	bool ret = true;
+
+	if (_binds.count(event.EventType) <= 0)
+		return false;
+	try {
 		switch (event.EventType) {
 			case irr::EET_GUI_EVENT :
-				std::cout << "GUI" << std::endl;
 				_binds.at(event.EventType).
 				at(event.GUIEvent.EventType)(event);
 				break;
@@ -26,11 +29,12 @@ bool EventReceiver::OnEvent(const irr::SEvent &event)
 			case irr::EET_USER_EVENT:break;
 			case irr::EGUIET_FORCE_32_BIT:break;
 			default:
+				ret = false;
 				break;
 		}
-		return true;
+	} catch (std::out_of_range &e) {
 	}
-	return false;
+	return ret;
 }
 
 EventReceiver::EventReceiver()

@@ -26,8 +26,7 @@ void MenuState::load()
 	auto &gm = GameManager::getInstance();
 	auto &er = EventReceiver::getInstance();
 	er.registerEvent(irr::EEVENT_TYPE::EET_GUI_EVENT,
-			 irr::gui::EGET_BUTTON_CLICKED, [this](const
-	irr::SEvent &ev) {
+	irr::gui::EGET_BUTTON_CLICKED, [this](const irr::SEvent &ev) {
 		auto id = ev.GUIEvent.Caller->getID();
 		if (MenuState::_assets.count(id) > 0)
 			MenuState::_assets.at(id)(ev.EventType, this);
