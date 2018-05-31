@@ -11,11 +11,12 @@
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/GameManager.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
+#include "../../include/States/MenuState.hpp"
 
 void SplashState::update()
 {
 	if (_start + _duration < Time::timestamp()) {
-		StateMachine::getInstance().pop();//TODO change by replace (menu_scene);
+		StateMachine::getInstance().replaceTop(new MenuState, true);
 		return;
 	}
 	GameManager::getInstance().getDriver()->draw2DImage(
@@ -27,7 +28,7 @@ void SplashState::update()
 	false);
 }
 
-SplashState::SplashState() : _nodes(), _start(), _duration(3000)
+SplashState::SplashState() : _nodes(), _start(), _duration(1000)
 {
 }
 

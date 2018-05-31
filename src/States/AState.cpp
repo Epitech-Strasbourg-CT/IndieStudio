@@ -6,7 +6,7 @@
 */
 
 #include <iostream>
-#include "../../include/AState.hpp"
+#include "../../include/States/AState.hpp"
 
 bool AState::isEnable() const
 {

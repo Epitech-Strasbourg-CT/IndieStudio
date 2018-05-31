@@ -11,7 +11,7 @@
 #include <stack>
 #include <memory>
 #include <iostream>
-#include "../AState.hpp"
+#include "../States/AState.hpp"
 
 class StateMachine {
 public:

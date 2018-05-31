@@ -7,7 +7,7 @@
 #include <irrlicht.h>
 #include <vector>
 #include <chrono>
-#include "../AState.hpp"
+#include "AState.hpp"
 
 #ifndef BOMBERMAN_SPLASHSTATE_HPP
 #define BOMBERMAN_SPLASHSTATE_HPP
