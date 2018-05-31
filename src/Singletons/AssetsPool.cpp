@@ -8,7 +8,7 @@
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/Singletons/GameManager.hpp"
 
-AssetsPool AssetsPool::_meshPool("assets/models/", "assets/models/");
+AssetsPool AssetsPool::_meshPool("assets/models/", "assets/");
 
 AssetsPool &AssetsPool::getInstance()
 {

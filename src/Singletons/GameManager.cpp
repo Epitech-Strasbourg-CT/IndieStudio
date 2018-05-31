@@ -15,10 +15,12 @@ GameManager::~GameManager()
 }
 
 GameManager::GameManager()
+: _width(800),
+_height(600)
 {
 	_device = irr::createDevice(
 	irr::video::EDT_SOFTWARE,
-	irr::core::dimension2d<irr::u32>(800, 600),
+	irr::core::dimension2d<irr::u32>(_width, _height),
 	16, false, false, false, 0);
 	_driver = _device->getVideoDriver();
 	_smgr = _device->getSceneManager();

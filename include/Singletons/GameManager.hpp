@@ -27,6 +27,8 @@ private:
 	irr::scene::ISceneManager *_smgr;
 	irr::gui::IGUIEnvironment *_guienv;
 	static GameManager _instance;
+	irr::u32 _width;
+	irr::u32 _height;
 };
 
 

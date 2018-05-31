@@ -16,7 +16,7 @@ class AssetsPool {
 public:
 	static AssetsPool &getInstance();
 	irr::scene::IMesh *loadMesh(const std::string &file);
-	irr::video::ITexture *AssetsPool::loadTexture(const std::string &file);
+	irr::video::ITexture *loadTexture(const std::string &file);
 private:
 	AssetsPool(const std::string &rootModelPath,
 	const std::string &rootTextures);

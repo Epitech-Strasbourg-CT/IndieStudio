@@ -12,12 +12,14 @@
 #include "../../include/Singletons/GameManager.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
 
-irr::video::ITexture *texture;
-
 void SplashState::update()
 {
+	if (_start + _duration < Time::timestamp()) {
+		StateMachine::getInstance().pop();//TODO change by replace (menu_scene);
+		return;
+	}
 	GameManager::getInstance().getDriver()->draw2DImage(
-	texture,
+	AssetsPool::getInstance().loadTexture("bomber.jpg"),
 	irr::core::position2d<irr::s32>(0,0),
 	irr::core::rect<irr::s32>(0,0,800,600),
 	0,
@@ -25,28 +27,36 @@ void SplashState::update()
 	false);
 }
 
-SplashState::SplashState() : _mesh(nullptr), _node(nullptr)
+SplashState::SplashState() : _nodes(), _start(), _duration(3000)
 {
 }
 
 void SplashState::load()
 {
-	GameManager::getInstance().getSmgr()->addCameraSceneNode();
-	texture = GameManager::getInstance().getDriver()
-	->getTexture("assets/bomber.jpg");
-	GameManager::getInstance().getDriver()->makeColorKeyTexture(
-	texture, irr::core::position2d<irr::s32>(0, 0));
+	auto cam = GameManager::getInstance().getSmgr()
+	->addCameraSceneNode();
+	if (!cam)
+		throw std::runtime_error("Can't create a new Camera.");
+	cam->setPosition(irr::core::vector3df(0, 0, -50));
+	_nodes.push_back(cam);
 
-	auto mdr = GameManager::getInstance().getDriver()
-	->getTexture("assets/models/sydney.bmp");
-	_mesh = AssetsPool::getInstance().loadMesh("sydney.md2");
-	_node = GameManager::getInstance().getSmgr()->addMeshSceneNode(_mesh);
-	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	_node->setMaterialTexture(0, mdr);
+	auto mesh = AssetsPool::getInstance().loadMesh("sydney.md2");
+	auto n = GameManager::getInstance().getSmgr()->addMeshSceneNode(mesh);
+	auto texture = AssetsPool::getInstance().loadTexture("sydney.bmp");
+
+
+	_nodes.push_back(n);
+	n->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	n->setMaterialTexture(0, texture);
+
+	_start = Time::timestamp();
 	AState::load();
 }
 
 void SplashState::unload()
 {
+	for (auto &n : _nodes)
+		n->remove();
+	_nodes.clear();
 	AState::unload();
 }
