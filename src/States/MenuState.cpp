@@ -11,41 +11,45 @@
 #include "../../include/Singletons/EventReceiver.hpp"
 
 const std::unordered_map<irr::s32, std::function<void(irr::s32, MenuState *)>>
-MenuState::_assets {
-	{100, [](irr::s32 type, MenuState *me) {
-		if (type == irr::gui::EGET_BUTTON_CLICKED) {
-			std::cout << "OK" << std::endl;
-			StateMachine::getInstance().pop();
-		}
-	}}
-};
+	MenuState::_assets{{100, [](irr::s32 type, MenuState *self) {
+	if (type == irr::gui::EGET_BUTTON_CLICKED) {
+		StateMachine::getInstance().pop();
+	}
+}}, {101, [](irr::s32 type, MenuState *self) {
+	if (type == irr::gui::EGET_BUTTON_CLICKED) {
+		StateMachine::getInstance().pop();
+	}
+}}, {102, [](irr::s32 type, MenuState *self) {
+	if (type == irr::gui::EGET_BUTTON_CLICKED) {
+		StateMachine::getInstance().pop();
+	}
+}}};
 
 void MenuState::update()
 {
-
 }
 
 void MenuState::load()
 {
 	auto &gm = GameManager::getInstance();
 	auto &er = EventReceiver::getInstance();
-	er.registerEvent(
-	irr::EEVENT_TYPE::EET_GUI_EVENT,
-	irr::gui::EGET_BUTTON_CLICKED,
-		[this](const irr::SEvent &ev) {
+	er.registerEvent(irr::EEVENT_TYPE::EET_GUI_EVENT,
+		irr::gui::EGET_BUTTON_CLICKED, [this](const irr::SEvent &ev) {
 			auto id = ev.GUIEvent.Caller->getID();
 			if (MenuState::_assets.count(id) > 0)
-				MenuState::_assets.at(id)(ev.GUIEvent.EventType, this);
-		}
-	);
-	irr::core::rect<irr::s32> rect = {0, 0, 100, 100};
-	_boutton =  gm.getGuienv()->addButton(
-	rect, 0, 100, L"Salut Thibaut", L"wesh");
+				MenuState::_assets.at(id)(ev.GUIEvent.EventType,
+					this);
+		});
+	_launch = gm.getGuienv()->addButton({50, 50, 750, 100}, nullptr, 100, L"Launch game", L"Starts the game");
+	_settings = gm.getGuienv()->addButton({50, 150, 750, 100}, nullptr, 101, L"Settings", L"Settings menu");
+	_exit = gm.getGuienv()->addButton({50, 250, 750, 100}, nullptr, 102, L"Exit", L"Leaves the game");
 	AState::load();
 }
 
 void MenuState::unload()
 {
-	_boutton->remove();
+	_launch->remove();
+	_settings->remove();
+	_exit->remove();
 	AState::unload();
 }
