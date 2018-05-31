@@ -17,13 +17,15 @@ public:
 	static EventReceiver &getInstance();
 
 	bool OnEvent(const irr::SEvent &event) override;
-	void registerEvent(irr::gui::EGUI_EVENT_TYPE,
+	void registerEvent(irr::EEVENT_TYPE, size_t,
 		std::function<void(const irr::SEvent &)> fct
 	);
-	void unregisterEvent(irr::gui::EGUI_EVENT_TYPE);
+	void unregisterEvent(irr::EEVENT_TYPE, size_t);
 private:
+	using bindings_map_t =
+	std::map<size_t, std::function<void(const irr::SEvent &event)>>;
 	EventReceiver();
-	std::map<irr::gui::EGUI_EVENT_TYPE, std::function<void(const irr::SEvent &event)>> _binds;
+	std::map<irr::EEVENT_TYPE, bindings_map_t> _binds;
 	static EventReceiver _events;
 
 };
