@@ -29,7 +29,9 @@ add_executable(bomberman
         src/Singletons/EventReceiver.cpp
         include/Singletons/EventReceiver.hpp
         src/States/MenuState.cpp
-        include/States/MenuState.hpp)
+        include/States/MenuState.hpp
+        src/States/BackgroundState.cpp
+        include/States/BackgroundState.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
