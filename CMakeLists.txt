@@ -25,7 +25,9 @@ add_executable(bomberman
         src/Singletons/GameManager.cpp
         include/States/SplashState.hpp
         src/Singletons/AssetsPool.cpp
-        include/Singletons/AssetsPool.hpp)
+        include/Singletons/AssetsPool.hpp
+        src/Singletons/EventReceiver.cpp
+        include/Singletons/EventReceiver.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
