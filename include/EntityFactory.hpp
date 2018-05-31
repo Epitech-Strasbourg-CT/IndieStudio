@@ -20,6 +20,5 @@ public:
 
 protected:
 private:
-	std::map<std::string, std::function<std::unique_ptr<IEntity>()>> _fac =
-	{};
+	std::map<std::string, std::function<std::unique_ptr<IEntity>()>> _fac;
 };
