@@ -10,6 +10,35 @@
 
 EventReceiver EventReceiver::_events;
 
+const std::map<irr::EEVENT_TYPE, EventReceiver::abstract_event_fct_t>
+EventReceiver::_spec_calls = {
+	{irr::EET_GUI_EVENT, [](
+	EventReceiver *me,
+	const irr::SEvent &event){
+		me->_binds.at(event.EventType)
+		.at(event.GUIEvent.EventType)(event);
+	}
+	}//,
+//	{irr::EET_MOUSE_INPUT_EVENT, [](const irr::SEvent &event){
+//
+//	}},
+//	{irr::EET_KEY_INPUT_EVENT, [](const irr::SEvent &event){
+//
+//	}},
+//	{irr::EET_JOYSTICK_INPUT_EVENT, [](const irr::SEvent &event){
+//
+//	}},
+//	{irr::EET_LOG_TEXT_EVENT, [](const irr::SEvent &event){
+//
+//	}},
+//	{irr::EET_USER_EVENT, [](const irr::SEvent &event){
+//
+//	}},
+//	{irr::EGUIET_FORCE_32_BIT, [](){
+//
+//	}}
+};
+
 bool EventReceiver::OnEvent(const irr::SEvent &event)
 {
 	bool ret = true;
@@ -17,22 +46,9 @@ bool EventReceiver::OnEvent(const irr::SEvent &event)
 	if (_binds.count(event.EventType) <= 0)
 		return false;
 	try {
-		switch (event.EventType) {
-			case irr::EET_GUI_EVENT :
-				_binds.at(event.EventType).
-				at(event.GUIEvent.EventType)(event);
-				break;
-			case irr::EET_MOUSE_INPUT_EVENT:break;
-			case irr::EET_KEY_INPUT_EVENT:break;
-			case irr::EET_JOYSTICK_INPUT_EVENT:break;
-			case irr::EET_LOG_TEXT_EVENT:break;
-			case irr::EET_USER_EVENT:break;
-			case irr::EGUIET_FORCE_32_BIT:break;
-			default:
-				ret = false;
-				break;
-		}
+		EventReceiver::_spec_calls.at(event.EventType)(this, event);
 	} catch (std::out_of_range &e) {
+		static_cast<void>(e);
 	}
 	return ret;
 }

@@ -14,6 +14,11 @@
 
 class EventReceiver : public irr::IEventReceiver {
 public:
+	using binds_map_t =
+	std::map<size_t, std::function<void(const irr::SEvent &event)>>;
+	using abstract_event_fct_t =
+	std::function<void(EventReceiver *me, const irr::SEvent &)>;
+
 	static EventReceiver &getInstance();
 
 	bool OnEvent(const irr::SEvent &event) override;
@@ -22,13 +27,13 @@ public:
 	);
 	void unregisterEvent(irr::EEVENT_TYPE, size_t);
 private:
-	using bindings_map_t =
-	std::map<size_t, std::function<void(const irr::SEvent &event)>>;
+
 	EventReceiver();
-	std::map<irr::EEVENT_TYPE, bindings_map_t> _binds;
+	std::map<irr::EEVENT_TYPE, binds_map_t> _binds;
 	static EventReceiver _events;
+	static const std::map<irr::EEVENT_TYPE, abstract_event_fct_t>
+	_spec_calls;
 
 };
-
 
 #endif /* !BOMBERMAN_EVENTRECEIVER_HPP */
