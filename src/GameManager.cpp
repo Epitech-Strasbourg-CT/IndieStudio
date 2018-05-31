@@ -7,6 +7,8 @@
 
 #include "../include/GameManager.hpp"
 
+GameManager GameManager::_instance;
+
 GameManager::~GameManager()
 {
 	_device->drop();
@@ -41,4 +43,9 @@ irr::scene::ISceneManager *GameManager::getSmgr() const
 irr::gui::IGUIEnvironment *GameManager::getGuienv() const
 {
 	return _guienv;
+}
+
+GameManager &GameManager::getInstance()
+{
+	return _instance;
 }

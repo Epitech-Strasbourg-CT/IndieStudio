@@ -4,8 +4,10 @@
 ** File description:
 **
 */
-#include "../include/Singletons.hpp"
 #include "../include/StateMachine.hpp"
+#include "../include/GameManager.hpp"
+
+StateMachine StateMachine::_instance;
 
 void StateMachine::push(AState *gameState, bool keepLoaded)
 {
@@ -27,10 +29,10 @@ void StateMachine::pop()
 
 int StateMachine::start()
 {
-	auto device = gameManager.getDevice();
-	auto driver = gameManager.getDriver();
-	auto smgr = gameManager.getSmgr();
-	auto guienv = gameManager.getGuienv();
+	auto device = GameManager::getInstance().getDevice();
+	auto driver = GameManager::getInstance().getDriver();
+	auto smgr = GameManager::getInstance().getSmgr();
+	auto guienv = GameManager::getInstance().getGuienv();
 
 	while (device->run()) {
 		driver->beginScene(true, true,
@@ -55,4 +57,9 @@ void StateMachine::replaceTop(AState *gameState, bool keepLoaded)
 {
 	this->pop();
 	this->push(gameState, keepLoaded);
+}
+
+StateMachine &StateMachine::getInstance()
+{
+	return _instance;
 }
