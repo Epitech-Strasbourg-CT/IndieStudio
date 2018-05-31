@@ -13,6 +13,8 @@ void StateMachine::push(AState *gameState, bool keepLoaded)
 {
 	if (!keepLoaded && !_states.empty())
 		_states.top()->unload();
+	if (!_states.empty())
+		_states.top()->setEnable(false);
 	gameState->load();
 	gameState->setEnable(true);
 	_states.push(std::unique_ptr<AState>(gameState));
@@ -24,6 +26,8 @@ void StateMachine::pop()
 		auto top = _states.top().get();
 		top->unload();
 		_states.pop();
+		top->setEnable(true);
+		top->load();
 	}
 }
 

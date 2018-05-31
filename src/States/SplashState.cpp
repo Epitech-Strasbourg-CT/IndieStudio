@@ -16,7 +16,7 @@
 void SplashState::update()
 {
 	if (_start + _duration < Time::timestamp()) {
-		StateMachine::getInstance().replaceTop(new MenuState, true);
+		StateMachine::getInstance().push(new MenuState, false);
 		return;
 	}
 	GameManager::getInstance().getDriver()->draw2DImage(

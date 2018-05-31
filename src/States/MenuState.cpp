@@ -13,8 +13,10 @@
 const std::unordered_map<irr::s32, std::function<void(irr::s32, MenuState *)>>
 MenuState::_assets {
 	{100, [](irr::s32 type, MenuState *me) {
-		if (type == irr::gui::EGET_BUTTON_CLICKED)
+		if (type == irr::gui::EGET_BUTTON_CLICKED) {
+			std::cout << "OK" << std::endl;
 			StateMachine::getInstance().pop();
+		}
 	}}
 };
 
