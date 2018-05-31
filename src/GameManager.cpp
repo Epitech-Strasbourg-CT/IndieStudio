@@ -15,7 +15,7 @@ GameManager::~GameManager()
 GameManager::GameManager()
 {
 	_device = irr::createDevice(
-	irr::video::EDT_SOFTWARE,
+	irr::video::EDT_OPENGL,
 	irr::core::dimension2d<irr::u32>(640, 480),
 	16, false, false, false, 0);
 	_driver = _device->getVideoDriver();
@@ -41,19 +41,4 @@ irr::scene::ISceneManager *GameManager::getSmgr() const
 irr::gui::IGUIEnvironment *GameManager::getGuienv() const
 {
 	return _guienv;
-}
-
-size_t GameManager::getCycles() const
-{
-	return _cycles;
-}
-
-void GameManager::resetCycles()
-{
-	_cycles = 0;
-}
-
-void GameManager::upCycles()
-{
-	_cycles += 1;
 }

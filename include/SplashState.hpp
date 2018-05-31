@@ -17,14 +17,12 @@ public:
 	SplashState();
 	virtual ~SplashState() = default;
 	void update() override;
-
 	void load() override;
-
 	void unload() override;
 
 private:
-	irr::scene::IAnimatedMesh *_mesh;
-	std::vector<irr::scene::IAnimatedMeshSceneNode *> _nodes;
+	irr::scene::IMesh *_mesh;
+	irr::scene::ISceneNode *_node;
 	size_t _endTime;
 };
 

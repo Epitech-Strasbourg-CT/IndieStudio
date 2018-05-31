@@ -19,6 +19,7 @@ public:
 	virtual void load();
 	virtual void unload();
 	virtual bool isLoaded() const;
+
 protected:
 	bool _enable;
 	bool _loaded;

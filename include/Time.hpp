@@ -6,9 +6,9 @@
 */
 
 #ifndef PROJECT_TIME_HPP
-	#define PROJECT_TIME_HPP
+#define PROJECT_TIME_HPP
 
-	#include <ctime>
+#include <ctime>
 
 class Time {
 public:
