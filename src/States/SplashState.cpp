@@ -18,6 +18,7 @@ void SplashState::update()
 {
 	if (_start + _duration < Time::timestamp()) {
 		StateMachine::getInstance().push(new BackgroundState, false);
+		//StateMachine::getInstance().replaceTop(new BackgroundState,false);
 		return;
 	}
 	GameManager::getInstance().getDriver()->draw2DImage(
@@ -56,6 +57,7 @@ void SplashState::load()
 
 void SplashState::unload()
 {
+	std::cout << "Unload Splash" << std::endl;
 	for (auto &n : _nodes)
 		n->remove();
 	_nodes.clear();

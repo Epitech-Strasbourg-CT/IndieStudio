@@ -14,10 +14,12 @@
 #define BOMBERMAN_BACKGROUNDSTATE_HPP
 
 class BackgroundState : public AState {
-	public:
+public:
 	void load() override;
 	void unload() override;
 	void update() override;
+private:
+	irr::scene::ISceneNode *_node;
 };
 
 #endif /* !BOMBERMAN_BACKGROUNDSTATE_HPP */

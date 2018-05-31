@@ -21,15 +21,17 @@ void BackgroundState::load()
 	auto smgr = GameManager::getInstance().getSmgr();
 	auto &assetsPool = AssetsPool::getInstance();
 	irr::scene::IMesh *mesh = assetsPool.loadMesh("tree.obj");
-	irr::scene::ISceneNode *node = smgr->addMeshSceneNode(mesh);
+	_node = smgr->addMeshSceneNode(mesh);
 	auto texture = AssetsPool::getInstance().loadTexture("tree.png");
-	node->setMaterialTexture(0, texture);
-	node->setPosition(irr::core::vector3df(0,0, -47));
+	_node->setMaterialTexture(0, texture);
+	_node->setPosition(irr::core::vector3df(0,0, -47));
 	AState::load();
 	StateMachine::getInstance().push(new MenuState, true);
 }
 
 void BackgroundState::unload()
 {
+	std::cout << "Unload back" << std::endl;
+	_node->remove();
 	AState::unload();
 }
