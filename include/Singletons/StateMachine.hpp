@@ -16,8 +16,9 @@
 class StateMachine {
 public:
 	void push(AState *gameState, bool keepLoaded);
-	void replaceTop(AState *gameState, bool keepLoaded);
-	void pop();
+	void replaceTop(
+	AState *gameState, bool keepLoaded, bool chainedPop = false);
+	void pop(bool chainedPop = false);
 	AState *top();
 	int start();
 	static StateMachine &getInstance();

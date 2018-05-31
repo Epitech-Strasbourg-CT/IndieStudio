@@ -16,9 +16,7 @@
 class BackgroundState : public AState {
 	public:
 	void load() override;
-
 	void unload() override;
-
 	void update() override;
 };
 

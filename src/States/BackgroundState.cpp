@@ -10,6 +10,7 @@
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
+#include "../../include/States/MenuState.hpp"
 
 void BackgroundState::update()
 {
@@ -25,6 +26,7 @@ void BackgroundState::load()
 	node->setMaterialTexture(0, texture);
 	node->setPosition(irr::core::vector3df(0,0, -47));
 	AState::load();
+	StateMachine::getInstance().push(new MenuState, true);
 }
 
 void BackgroundState::unload()

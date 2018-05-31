@@ -14,8 +14,7 @@ const std::unordered_map<irr::s32, std::function<void(irr::s32, MenuState *)>>
 MenuState::_assets {
 	{100, [](irr::s32 type, MenuState *me) {
 		if (type == irr::gui::EGET_BUTTON_CLICKED) {
-			std::cout << "OK" << std::endl;
-			StateMachine::getInstance().pop();
+			StateMachine::getInstance().pop(true);
 		}
 	}}
 };
@@ -38,7 +37,7 @@ void MenuState::load()
 				MenuState::_assets.at(id)(ev.GUIEvent.EventType, this);
 		}
 	);
-	irr::core::rect<irr::s32> rect = {0, 0, 100, 100};
+	irr::core::rect<irr::s32> rect = {50, 50, 750, 100};
 	_boutton =  gm.getGuienv()->addButton(
 	rect, 0, 100, L"Salut Thibaut", L"wesh");
 	AState::load();
@@ -46,6 +45,9 @@ void MenuState::load()
 
 void MenuState::unload()
 {
+	auto &er = EventReceiver::getInstance();
+	er.unregisterEvent(irr::EEVENT_TYPE::EET_GUI_EVENT,
+			   irr::gui::EGET_BUTTON_CLICKED);
 	_boutton->remove();
 	AState::unload();
 }

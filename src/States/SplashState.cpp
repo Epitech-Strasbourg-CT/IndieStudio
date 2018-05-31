@@ -12,11 +12,12 @@
 #include "../../include/Singletons/GameManager.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/MenuState.hpp"
+#include "../../include/States/BackgroundState.hpp"
 
 void SplashState::update()
 {
 	if (_start + _duration < Time::timestamp()) {
-		StateMachine::getInstance().push(new MenuState, false);
+		StateMachine::getInstance().push(new BackgroundState, false);
 		return;
 	}
 	GameManager::getInstance().getDriver()->draw2DImage(

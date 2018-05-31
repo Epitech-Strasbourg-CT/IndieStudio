@@ -19,7 +19,8 @@ public:
 	void load() override;
 	void unload() override;
 	void update() override;
-	static const std::unordered_map<irr::s32, std::function<void(irr::s32, MenuState *)>> _assets;
+	static const
+	std::unordered_map<irr::s32, std::function<void(irr::s32, MenuState *)>> _assets;
 	irr::gui::IGUIButton *_boutton;
 };
 
