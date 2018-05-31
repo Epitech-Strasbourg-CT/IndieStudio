@@ -13,7 +13,7 @@ add_executable(bomberman
         include/Singletons/StateMachine.hpp
         src/EntityOperator.cpp
         src/States/AState.cpp
-        include/AState.hpp
+        include/States/AState.hpp
         include/IEntity.hpp
         src/Singletons/GameManager.cpp
         include/Singletons/GameManager.hpp
@@ -25,7 +25,7 @@ add_executable(bomberman
         src/Singletons/GameManager.cpp
         include/States/SplashState.hpp
         src/Singletons/AssetsPool.cpp
-        include/Singletons/AssetsPool.hpp)
+        include/Singletons/AssetsPool.hpp src/States/MenuState.cpp include/States/MenuState.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
