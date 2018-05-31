@@ -4,8 +4,8 @@
 ** File description:
 **
 */
-#include "../include/StateMachine.hpp"
-#include "../include/SplashState.hpp"
+#include "../include/Singletons/StateMachine.hpp"
+#include "../include/States/SplashState.hpp"
 
 int main()
 {

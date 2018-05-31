@@ -6,48 +6,43 @@
 */
 #include <stdexcept>
 #include <string>
-#include "../../include/SplashState.hpp"
+#include "../../include/States/SplashState.hpp"
 #include "../../include/Time.hpp"
-#include "../../include/StateMachine.hpp"
-#include "../../include/GameManager.hpp"
+#include "../../include/Singletons/StateMachine.hpp"
+#include "../../include/Singletons/GameManager.hpp"
+#include "../../include/Singletons/AssetsPool.hpp"
+
+irr::video::ITexture *texture;
 
 void SplashState::update()
 {
-	if (_endTime < Time::timestamp()) {
-		StateMachine::getInstance().pop();
-	}
+	GameManager::getInstance().getDriver()->draw2DImage(
+	texture,
+	irr::core::position2d<irr::s32>(0,0),
+	irr::core::rect<irr::s32>(0,0,800,600),
+	0,
+	irr::video::SColor(255, 255, 255, 255),
+	false);
 }
 
-SplashState::SplashState()
+SplashState::SplashState() : _mesh(nullptr), _node(nullptr)
 {
 }
 
 void SplashState::load()
 {
-	auto manager = GameManager::getInstance().getSmgr();
-	auto texture = GameManager::getInstance().getDriver()->getTexture("assets/bomber.jpg");
+	GameManager::getInstance().getSmgr()->addCameraSceneNode();
+	texture = GameManager::getInstance().getDriver()
+	->getTexture("assets/bomber.jpg");
+	GameManager::getInstance().getDriver()->makeColorKeyTexture(
+	texture, irr::core::position2d<irr::s32>(0, 0));
 
-	_endTime = Time::timestamp() + 3000;
-
-	manager->addCameraSceneNodeFPS();
-	auto ok = manager->getGeometryCreator()->createCubeMesh
-	(irr::core::vector3df(10, 10, 10));
-
-	auto mdr = manager->addMeshSceneNode(ok);
-	mdr->setPosition(irr::core::vector3df(10, 10, 0));
-
-	_mesh = manager->getGeometryCreator()->createPlaneMesh
-	(irr::core::dimension2d<irr::f32>(200, 200));
-
-	_node = manager->addMeshSceneNode(_mesh);
-
-	_node->setMaterialFlag
-	(irr::video::E_MATERIAL_FLAG::EMF_LIGHTING, false);
-
-	_node->setPosition(irr::core::vector3df(0, 0, 0));
-
-	_node->setMaterialTexture(0, texture);
-
+	auto mdr = GameManager::getInstance().getDriver()
+	->getTexture("assets/models/sydney.bmp");
+	_mesh = AssetsPool::getInstance().loadMesh("sydney.md2");
+	_node = GameManager::getInstance().getSmgr()->addMeshSceneNode(_mesh);
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	_node->setMaterialTexture(0, mdr);
 	AState::load();
 }
 

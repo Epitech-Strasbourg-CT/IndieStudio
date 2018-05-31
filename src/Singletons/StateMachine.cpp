@@ -4,8 +4,8 @@
 ** File description:
 **
 */
-#include "../include/StateMachine.hpp"
-#include "../include/GameManager.hpp"
+#include "../../include/Singletons/StateMachine.hpp"
+#include "../../include/Singletons/GameManager.hpp"
 
 StateMachine StateMachine::_instance;
 
