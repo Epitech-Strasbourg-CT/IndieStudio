@@ -17,17 +17,18 @@ EventReceiver::_spec_calls = {
 	const irr::SEvent &event){
 		me->_binds.at(event.EventType)
 		.at(event.GUIEvent.EventType)(event);
-	}
-	}//,
+	}},
 //	{irr::EET_MOUSE_INPUT_EVENT, [](const irr::SEvent &event){
 //
 //	}},
-//	{irr::EET_KEY_INPUT_EVENT, [](const irr::SEvent &event){
-//
-//	}},
+	{irr::EET_KEY_INPUT_EVENT, [](EventReceiver *me, const irr::SEvent
+	&event){
+		me->_binds.at(event.EventType)
+		.at(event.KeyInput.Key)(event);
+	}}//,
 //	{irr::EET_JOYSTICK_INPUT_EVENT, [](const irr::SEvent &event){
 //
-//	}},
+//	}}//,
 //	{irr::EET_LOG_TEXT_EVENT, [](const irr::SEvent &event){
 //
 //	}},

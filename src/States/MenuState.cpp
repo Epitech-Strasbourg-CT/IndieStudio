@@ -51,11 +51,18 @@ void MenuState::load()
 	_launch = gm.getGuienv()->addButton({50, 50, 750, 100}, nullptr, 100,
 					    L"Launch game", L"Starts the game");
 	_settings = gm.getGuienv()->addButton({50, 150, 750, 200}, nullptr,
-	101,
+					      101,
 					      L"Settings", L"Settings menu");
 	_exit = gm.getGuienv()->addButton({50, 250, 750, 300}, nullptr, 102,
 					  L"Exit",
 					  L"Leaves the game");
+	er.registerEvent(irr::EEVENT_TYPE::EET_KEY_INPUT_EVENT,
+			 irr::KEY_KEY_A,
+			 [this](const irr::SEvent &ev) {
+				if (ev.KeyInput.PressedDown)
+					std::cout << "OK2" << std::endl;
+			 }
+	);
 	AState::load();
 
 }

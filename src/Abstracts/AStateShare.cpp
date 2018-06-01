@@ -5,9 +5,40 @@
 ** AStateShare.cpp
 */
 
+#include <iostream>
 #include "../../include/Abstracts/AStateShare.hpp"
 
-AStateShare::AStateShare()
+AStateShare::AStateShare(): _sharedNodes()
 {
-	
 }
+
+bool AStateShare::addSharedNode
+(const std::string &key, irr::scene::ISceneNode &node)
+{
+	bool ret = true;
+
+	std::cout << "OK" << std::endl;
+	if (_sharedNodes.count(key) != 0)
+		ret = false;
+	else
+		_sharedNodes[key] = &node;
+	std::cout << "OK1" << std::endl;
+	return ret;
+}
+
+bool AStateShare::delSharedNode(const std::string &key)
+{
+	bool ret = true;
+
+	if (_sharedNodes.count(key) != 0)
+		ret = false;
+	else
+		_sharedNodes.erase(key);
+	return ret;
+}
+
+irr::scene::ISceneNode & AStateShare::getSharedNode(const std::string &key)
+{
+	return *_sharedNodes[key];
+}
+

@@ -47,12 +47,14 @@ void SplashState::load()
 	n->setMaterialTexture(0, texture);
 
 	_start = Time::timestamp();
+	_share.addSharedNode("sydney", *n);
 	AState::load();
 }
 
 void SplashState::unload()
 {
 	std::cout << "Unload Splash" << std::endl;
+	_share.delSharedNode("sydney");
 	for (auto &n : _nodes)
 		n->remove();
 	_nodes.clear();
