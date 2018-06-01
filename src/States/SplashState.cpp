@@ -6,55 +6,63 @@
 */
 #include <stdexcept>
 #include <string>
-#include "../../include/SplashState.hpp"
-#include "../../include/Singletons.hpp"
+#include "../../include/States/SplashState.hpp"
 #include "../../include/Time.hpp"
+#include "../../include/Singletons/StateMachine.hpp"
+#include "../../include/Singletons/GameManager.hpp"
+#include "../../include/Singletons/AssetsPool.hpp"
+#include "../../include/States/MenuState.hpp"
+#include "../../include/States/BackgroundState.hpp"
 
 void SplashState::update()
 {
-	if (_endTime < Time::timestamp()) {
-		stateMachine.pop();
+	if (_start + _duration < Time::timestamp()) {
+		StateMachine::getInstance().push(new BackgroundState(_share), false);
+		return;
 	}
-}
-
-SplashState::SplashState()
-{
+	GameManager::getInstance().getDriver()->draw2DImage(
+	AssetsPool::getInstance().loadTexture("bomber.jpg"),
+	irr::core::position2d<irr::s32>(0,0),
+	irr::core::rect<irr::s32>(0,0,800,600),
+	0,
+	irr::video::SColor(255, 255, 255, 255),
+	false);
 }
 
 void SplashState::load()
 {
-	auto gui = gameManager.getGuienv();
-	auto manager = gameManager.getSmgr();
-	auto texture = gameManager.getDriver()->getTexture("assets/bomber.jpg");
+	auto cam = GameManager::getInstance().getSmgr()
+	->addCameraSceneNode();
+	if (!cam)
+		throw std::runtime_error("Can't create a new Camera.");
+	cam->setPosition(irr::core::vector3df(0, 0, -50));
+	_nodes.push_back(cam);
+	auto mesh = AssetsPool::getInstance().loadMesh("sydney.md2");
+	auto n = GameManager::getInstance().getSmgr()->addMeshSceneNode(mesh);
+	auto texture = AssetsPool::getInstance().loadTexture("sydney.bmp");
 
-	_endTime = Time::timestamp() + 3000;
 
-	auto bouton = gui->addButton(
-	irr::core::rect<irr::s32>(100,80,200,120),  // positoin du bouton
-	0, -1, L"tagada tsoin tsoin");              // texte
-	bouton->setImage(texture);
-//	auto ok = manager->getGeometryCreator()->createCubeMesh
-//	(irr::core::vector3df(10, 10, 10));
-//
-//	auto mdr = manager->addMeshSceneNode(ok);
-//	mdr->setPosition(irr::core::vector3df(10, 10, 0));
-//
-//	_mesh = manager->getGeometryCreator()->createPlaneMesh
-//	(irr::core::dimension2d<irr::f32>(200, 200));
-//
-//	_node = manager->addMeshSceneNode(_mesh);
-//
-//	_node->setMaterialFlag
-//	(irr::video::E_MATERIAL_FLAG::EMF_LIGHTING, false);
-//
-//	_node->setPosition(irr::core::vector3df(0, 0, 0));
-//
-//	_node->setMaterialTexture(0, texture);
+	_nodes.push_back(n);
+	n->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	n->setMaterialTexture(0, texture);
 
+	_start = Time::timestamp();
 	AState::load();
 }
 
 void SplashState::unload()
 {
+	std::cout << "Unload Splash" << std::endl;
+	for (auto &n : _nodes)
+		n->remove();
+	_nodes.clear();
 	AState::unload();
+}
+
+SplashState::SplashState(AStateShare &_share)
+: AState(_share),
+_nodes(),
+_start(),
+_duration(1000)
+{
 }

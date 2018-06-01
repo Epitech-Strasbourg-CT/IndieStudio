@@ -5,7 +5,9 @@
 **
 */
 
-#include "../include/GameManager.hpp"
+#include "../../include/Singletons/GameManager.hpp"
+
+GameManager GameManager::_instance;
 
 GameManager::~GameManager()
 {
@@ -13,10 +15,12 @@ GameManager::~GameManager()
 }
 
 GameManager::GameManager()
+: _width(800),
+_height(600)
 {
 	_device = irr::createDevice(
-	irr::video::EDT_OPENGL,
-	irr::core::dimension2d<irr::u32>(640, 480),
+	irr::video::EDT_SOFTWARE,
+	irr::core::dimension2d<irr::u32>(_width, _height),
 	16, false, false, false, 0);
 	_driver = _device->getVideoDriver();
 	_smgr = _device->getSceneManager();
@@ -41,4 +45,9 @@ irr::scene::ISceneManager *GameManager::getSmgr() const
 irr::gui::IGUIEnvironment *GameManager::getGuienv() const
 {
 	return _guienv;
+}
+
+GameManager &GameManager::getInstance()
+{
+	return _instance;
 }

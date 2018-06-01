@@ -9,22 +9,29 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 add_executable(bomberman
         #src/prout.cpp)
         src/main.cpp
-        src/StateMachine.cpp
-        include/StateMachine.hpp
+        src/Singletons/StateMachine.cpp
+        include/Singletons/StateMachine.hpp
         src/EntityOperator.cpp
-        src/States/AState.cpp
-        include/AState.hpp
+        src/Abstracts/AState.cpp
+        include/Abstracts/AState.hpp
         include/IEntity.hpp
-        src/GameManager.cpp
-        include/GameManager.hpp
-        src/GameManager.cpp
-        include/GameManager.hpp
+        src/Singletons/GameManager.cpp
+        include/Singletons/GameManager.hpp
+        src/Singletons/GameManager.cpp
+        include/Singletons/GameManager.hpp
         src/States/SplashState.cpp
         include/Time.hpp
         src/Time.cpp
-        src/GameManager.cpp
-        include/SplashState.hpp
-        include/Singletons.hpp)
+        src/Singletons/GameManager.cpp
+        include/States/SplashState.hpp
+        src/Singletons/AssetsPool.cpp
+        include/Singletons/AssetsPool.hpp
+        src/Singletons/EventReceiver.cpp
+        include/Singletons/EventReceiver.hpp
+        src/States/MenuState.cpp
+        include/States/MenuState.hpp
+        src/States/BackgroundState.cpp
+        include/States/BackgroundState.hpp src/Abstracts/AStateShare.cpp include/Abstracts/AStateShare.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"

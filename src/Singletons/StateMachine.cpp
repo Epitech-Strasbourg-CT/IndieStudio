@@ -4,16 +4,21 @@
 ** File description:
 **
 */
-#include "../include/Singletons.hpp"
-#include "../include/StateMachine.hpp"
+#include "../../include/Singletons/StateMachine.hpp"
+#include "../../include/Singletons/GameManager.hpp"
+
+StateMachine StateMachine::_instance;
 
 void StateMachine::push(AState *gameState, bool keepLoaded)
 {
 	if (!keepLoaded && !_states.empty())
 		_states.top()->unload();
-	gameState->load();
-	gameState->setEnable(true);
+	if (!_states.empty())
+		_states.top()->setEnable(false);
 	_states.push(std::unique_ptr<AState>(gameState));
+	gameState->setEnable(true);
+	gameState->load();
+	gameState->transitionPush();
 }
 
 void StateMachine::pop()
@@ -23,14 +28,22 @@ void StateMachine::pop()
 		top->unload();
 		_states.pop();
 	}
+	if (!_states.empty()) {
+		auto top = _states.top().get();
+		top->setEnable(true);
+		if (!top->isLoaded()) {
+			top->load();
+		}
+		top->transitionPop();
+	}
 }
 
 int StateMachine::start()
 {
-	auto device = gameManager.getDevice();
-	auto driver = gameManager.getDriver();
-	auto smgr = gameManager.getSmgr();
-	auto guienv = gameManager.getGuienv();
+	auto device = GameManager::getInstance().getDevice();
+	auto driver = GameManager::getInstance().getDriver();
+	auto smgr = GameManager::getInstance().getSmgr();
+	auto guienv = GameManager::getInstance().getGuienv();
 
 	while (device->run()) {
 		driver->beginScene(true, true,
@@ -55,4 +68,9 @@ void StateMachine::replaceTop(AState *gameState, bool keepLoaded)
 {
 	this->pop();
 	this->push(gameState, keepLoaded);
+}
+
+StateMachine &StateMachine::getInstance()
+{
+	return _instance;
 }
