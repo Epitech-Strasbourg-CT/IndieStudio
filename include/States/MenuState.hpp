@@ -9,13 +9,15 @@
 #include <functional>
 #include <irrTypes.h>
 #include <IGUIButton.h>
-#include "AState.hpp"
+#include "../Abstracts/AState.hpp"
 
 #ifndef BOMBERMAN_MENUSTATE_HPP
 #define BOMBERMAN_MENUSTATE_HPP
 
 class MenuState : public AState {
 public:
+	MenuState(AStateShare &_share);
+
 	void load() override;
 	void unload() override;
 	void update() override;

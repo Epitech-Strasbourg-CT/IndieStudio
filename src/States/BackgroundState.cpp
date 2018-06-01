@@ -26,12 +26,26 @@ void BackgroundState::load()
 	_node->setMaterialTexture(0, texture);
 	_node->setPosition(irr::core::vector3df(0,0, -47));
 	AState::load();
-	StateMachine::getInstance().push(new MenuState, true);
 }
 
 void BackgroundState::unload()
 {
-	std::cout << "Unload back" << std::endl;
 	_node->remove();
 	AState::unload();
+}
+
+void BackgroundState::transitionPop()
+{
+	AState::transitionPop();
+	StateMachine::getInstance().pop();
+}
+
+void BackgroundState::transitionPush()
+{
+	AState::transitionPush();
+	StateMachine::getInstance().push(new MenuState(_share), true);
+}
+
+BackgroundState::BackgroundState(AStateShare &_share) : AState(_share)
+{
 }

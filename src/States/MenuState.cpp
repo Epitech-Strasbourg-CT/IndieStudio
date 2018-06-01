@@ -15,17 +15,17 @@ MenuState::_assets
 {
 {100, [](irr::s32 type, MenuState *self) {
 	if (type == irr::gui::EGET_BUTTON_CLICKED) {
-		StateMachine::getInstance().pop(true);
+		StateMachine::getInstance().pop();
 	}
 }},
 {101, [](irr::s32 type, MenuState *self) {
 	if (type == irr::gui::EGET_BUTTON_CLICKED) {
-		StateMachine::getInstance().pop(false);
+		StateMachine::getInstance().pop();
 	}
 }},
 {102, [](irr::s32 type, MenuState *self) {
 	if (type == irr::gui::EGET_BUTTON_CLICKED) {
-		StateMachine::getInstance().pop(false);
+		StateMachine::getInstance().pop();
 	}
 }}};
 
@@ -70,4 +70,8 @@ void MenuState::unload()
 	_exit->remove();
 	std::cout << "Unload menu" << std::endl;
 	AState::unload();
+}
+
+MenuState::MenuState(AStateShare &_share) : AState(_share)
+{
 }

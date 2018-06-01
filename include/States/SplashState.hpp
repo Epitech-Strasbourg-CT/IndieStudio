@@ -7,7 +7,7 @@
 #include <irrlicht.h>
 #include <vector>
 #include <chrono>
-#include "AState.hpp"
+#include "../Abstracts/AState.hpp"
 
 #ifndef BOMBERMAN_SPLASHSTATE_HPP
 #define BOMBERMAN_SPLASHSTATE_HPP
@@ -15,7 +15,7 @@
 
 class SplashState : public AState {
 public:
-	SplashState();
+	SplashState(AStateShare &_share);
 	virtual ~SplashState() = default;
 	void update() override;
 	void load() override;

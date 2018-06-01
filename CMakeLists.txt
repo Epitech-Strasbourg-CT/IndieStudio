@@ -12,8 +12,8 @@ add_executable(bomberman
         src/Singletons/StateMachine.cpp
         include/Singletons/StateMachine.hpp
         src/EntityOperator.cpp
-        src/States/AState.cpp
-        include/States/AState.hpp
+        src/Abstracts/AState.cpp
+        include/Abstracts/AState.hpp
         include/IEntity.hpp
         src/Singletons/GameManager.cpp
         include/Singletons/GameManager.hpp
@@ -31,7 +31,7 @@ add_executable(bomberman
         src/States/MenuState.cpp
         include/States/MenuState.hpp
         src/States/BackgroundState.cpp
-        include/States/BackgroundState.hpp)
+        include/States/BackgroundState.hpp src/Abstracts/AStateShare.cpp include/Abstracts/AStateShare.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"

@@ -11,14 +11,14 @@
 #include <stack>
 #include <memory>
 #include <iostream>
-#include "../States/AState.hpp"
+#include "../Abstracts/AState.hpp"
 
 class StateMachine {
 public:
 	void push(AState *gameState, bool keepLoaded);
 	void replaceTop(
-	AState *gameState, bool keepLoaded, bool chainedPop = false);
-	void pop(bool chainedPop = false);
+	AState *gameState, bool keepLoaded);
+	void pop();
 	AState *top();
 	int start();
 	static StateMachine &getInstance();

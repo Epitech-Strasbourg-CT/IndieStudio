@@ -17,8 +17,7 @@
 void SplashState::update()
 {
 	if (_start + _duration < Time::timestamp()) {
-		StateMachine::getInstance().push(new BackgroundState, false);
-		//StateMachine::getInstance().replaceTop(new BackgroundState,false);
+		StateMachine::getInstance().push(new BackgroundState(_share), false);
 		return;
 	}
 	GameManager::getInstance().getDriver()->draw2DImage(
@@ -28,10 +27,6 @@ void SplashState::update()
 	0,
 	irr::video::SColor(255, 255, 255, 255),
 	false);
-}
-
-SplashState::SplashState() : _nodes(), _start(), _duration(1000)
-{
 }
 
 void SplashState::load()
@@ -62,4 +57,12 @@ void SplashState::unload()
 		n->remove();
 	_nodes.clear();
 	AState::unload();
+}
+
+SplashState::SplashState(AStateShare &_share)
+: AState(_share),
+_nodes(),
+_start(),
+_duration(1000)
+{
 }

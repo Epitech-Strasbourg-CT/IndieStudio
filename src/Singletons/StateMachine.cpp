@@ -18,26 +18,23 @@ void StateMachine::push(AState *gameState, bool keepLoaded)
 	_states.push(std::unique_ptr<AState>(gameState));
 	gameState->setEnable(true);
 	gameState->load();
+	gameState->transitionPush();
 }
 
-void StateMachine::pop(bool chainedPop)
+void StateMachine::pop()
 {
 	if (!_states.empty()) {
 		auto top = _states.top().get();
 		top->unload();
 		_states.pop();
-		std::cout << "pop 1" << std::endl;
 	}
 	if (!_states.empty()) {
 		auto top = _states.top().get();
 		top->setEnable(true);
-		if (top->isLoaded() && chainedPop) {
-			pop(chainedPop);
-			std::cout << "pop 2" << std::endl;
-		} else if (!top->isLoaded()) {
-			std::cout << "load 1" << std::endl;
+		if (!top->isLoaded()) {
 			top->load();
 		}
+		top->transitionPop();
 	}
 }
 
@@ -67,9 +64,9 @@ AState *StateMachine::top()
 	return _states.top().get();
 }
 
-void StateMachine::replaceTop(AState *gameState, bool keepLoaded, bool chainedPop)
+void StateMachine::replaceTop(AState *gameState, bool keepLoaded)
 {
-	this->pop(chainedPop);
+	this->pop();
 	this->push(gameState, keepLoaded);
 }
 
