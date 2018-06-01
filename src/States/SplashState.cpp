@@ -38,16 +38,15 @@ void SplashState::load()
 	cam->setPosition(irr::core::vector3df(0, 0, -50));
 	_nodes.push_back(cam);
 	auto mesh = AssetsPool::getInstance().loadMesh("sydney.md2");
-	auto n = GameManager::getInstance().getSmgr()->addMeshSceneNode(mesh);
+	irr::scene::IMeshSceneNode *n = GameManager::getInstance().getSmgr()
+	->addMeshSceneNode(mesh);
 	auto texture = AssetsPool::getInstance().loadTexture("sydney.bmp");
-
 
 	_nodes.push_back(n);
 	n->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	n->setMaterialTexture(0, texture);
 
 	_start = Time::timestamp();
-	_share.addSharedNode("sydney", *n);
 	AState::load();
 }
 

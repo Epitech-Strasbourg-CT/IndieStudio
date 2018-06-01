@@ -25,6 +25,7 @@ void BackgroundState::load()
 	auto texture = AssetsPool::getInstance().loadTexture("tree.png");
 	_node->setMaterialTexture(0, texture);
 	_node->setPosition(irr::core::vector3df(0,0, -47));
+	_share.addSharedNode("tree", _node);
 	AState::load();
 }
 

@@ -8,6 +8,10 @@
 #include <iostream>
 #include "../../include/Abstracts/AState.hpp"
 
+AState::AState(AStateShare &_share) : _share(_share)
+{
+}
+
 bool AState::isEnable() const
 {
 	return _enable;
@@ -41,9 +45,6 @@ AState::~AState()
 
 void AState::transitionPop()
 {
-	for (auto &n : _alteredNodes) {
-		n.second(n.first);
-	}
 }
 
 void AState::transitionPush()
@@ -51,15 +52,11 @@ void AState::transitionPush()
 }
 
 void AState::addAlteredNode
-(irr::scene::ISceneNode &n, std::function<void(irr::scene::ISceneNode *)> fct)
+(irr::scene::ISceneNode *n, std::function<void(irr::scene::ISceneNode *)> fct)
 {
-	if (_alteredNodes.count(&n) > 0)
+	if (_alteredNodes.count(n) > 0)
 		throw std::runtime_error("Node is already Altered");
-	_alteredNodes[&n] = fct;
-}
-
-AState::AState(AStateShare &_share) : _share(_share)
-{
+	_alteredNodes[n] = fct;
 }
 
 AStateShare &AState::getSharedRes() const
@@ -67,9 +64,15 @@ AStateShare &AState::getSharedRes() const
 	return _share;
 }
 
-irr::scene::ISceneNode &AState::getCommonNode(const std::string &name)
+void AState::pushing()
 {
-	irr::scene::ISceneNode *a = nullptr;
-	return *(a);
+
+}
+
+void AState::popping()
+{
+	for (auto &n : _alteredNodes) {
+		n.second(n.first);
+	}
 }
 

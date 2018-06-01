@@ -23,6 +23,7 @@ EventReceiver::_spec_calls = {
 //	}},
 	{irr::EET_KEY_INPUT_EVENT, [](EventReceiver *me, const irr::SEvent
 	&event){
+		std::cout << "TAMERENSHORT" << std::endl;
 		me->_binds.at(event.EventType)
 		.at(event.KeyInput.Key)(event);
 	}}//,
@@ -50,6 +51,7 @@ bool EventReceiver::OnEvent(const irr::SEvent &event)
 		EventReceiver::_spec_calls.at(event.EventType)(this, event);
 	} catch (std::out_of_range &e) {
 		static_cast<void>(e);
+		ret = false;
 	}
 	return ret;
 }

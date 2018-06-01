@@ -15,9 +15,9 @@
 class AStateShare {
 public:
 	AStateShare();
-	bool addSharedNode(const std::string &, irr::scene::ISceneNode &);
+	bool addSharedNode(const std::string &, irr::scene::ISceneNode *);
 	bool delSharedNode(const std::string &);
-	irr::scene::ISceneNode & getSharedNode(const std::string &);
+	irr::scene::ISceneNode &getSharedNode(const std::string &);
 private:
 	std::map<std::string, irr::scene::ISceneNode *> _sharedNodes;
 };

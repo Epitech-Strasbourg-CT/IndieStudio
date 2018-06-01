@@ -25,12 +25,13 @@ public:
 	virtual bool isLoaded() const;
 	virtual void transitionPop();
 	virtual void transitionPush();
+	virtual void popping();
+	virtual void pushing();
+	AStateShare &getSharedRes() const;
 	void addAlteredNode(
-	irr::scene::ISceneNode &n,
+	irr::scene::ISceneNode *n,
 	std::function<void(irr::scene::ISceneNode *)>
 	fct);
-	irr::scene::ISceneNode &getCommonNode(const std::string &name);
-	AStateShare &getSharedRes() const;
 private:
 	bool _enable;
 	bool _loaded;

@@ -11,7 +11,8 @@
 
 int main()
 {
-	auto splash = new SplashState(AStateShare());
+	auto shared = AStateShare();
+	auto splash = new SplashState(shared);
 	StateMachine::getInstance().push(splash, false);
 
 	auto device = GameManager::getInstance().getDevice();

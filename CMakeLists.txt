@@ -31,7 +31,7 @@ add_executable(bomberman
         src/States/MenuState.cpp
         include/States/MenuState.hpp
         src/States/BackgroundState.cpp
-        include/States/BackgroundState.hpp src/Abstracts/AStateShare.cpp include/Abstracts/AStateShare.hpp)
+        include/States/BackgroundState.hpp src/Abstracts/AStateShare.cpp include/Abstracts/AStateShare.hpp src/States/GameState.cpp include/States/GameState.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"

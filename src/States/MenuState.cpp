@@ -9,13 +9,15 @@
 #include "../../include/Singletons/GameManager.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
+#include "../../include/States/GameState.hpp"
 
 const std::unordered_map<irr::s32, std::function<void(irr::s32, MenuState *)>>
 MenuState::_assets
 {
 {100, [](irr::s32 type, MenuState *self) {
 	if (type == irr::gui::EGET_BUTTON_CLICKED) {
-		StateMachine::getInstance().pop();
+		StateMachine::getInstance()
+		.push(new GameState(self->getSharedRes()), false);
 	}
 }},
 {101, [](irr::s32 type, MenuState *self) {
@@ -60,7 +62,16 @@ void MenuState::load()
 			 irr::KEY_KEY_A,
 			 [this](const irr::SEvent &ev) {
 				if (ev.KeyInput.PressedDown)
-					std::cout << "OK2" << std::endl;
+					StateMachine::getInstance().pop();
+			 }
+	);
+	er.registerEvent(irr::EEVENT_TYPE::EET_KEY_INPUT_EVENT,
+			 irr::KEY_KEY_P,
+			 [this](const irr::SEvent &ev) {
+				 if (ev.KeyInput.PressedDown)
+					 StateMachine::getInstance()
+					 .push(new GameState(this->getSharedRes
+					 ()), false);
 			 }
 	);
 	AState::load();
