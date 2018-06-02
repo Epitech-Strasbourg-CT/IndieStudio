@@ -6,7 +6,7 @@
 */
 
 #include "../../include/Singletons/AssetsPool.hpp"
-#include "../../include/Singletons/GameManager.hpp"
+#include "../../include/Singletons/IrrManager.hpp"
 
 AssetsPool AssetsPool::_meshPool("assets/models/", "assets/textures/");
 
@@ -30,7 +30,7 @@ irr::video::ITexture *AssetsPool::loadTexture(const std::string &file)
 	if (_meshs.count(file) > 0)
 		return _textures.at(file);
 	irr::video::ITexture *texture =
-	GameManager::getInstance().getDriver()->getTexture(path);
+	IrrManager::getInstance().getDriver()->getTexture(path);
 	if (!texture)
 		throw std::runtime_error("Can't load textures " + file);
 	_textures[file] = texture;
@@ -42,7 +42,7 @@ irr::scene::IMesh *AssetsPool::loadMesh(const std::string &file)
 	irr::io::path path = std::string(_rootModelPath + file).c_str();
 	if (_meshs.count(file) > 0)
 		return _meshs.at(file);
-	irr::scene::IMesh *mesh = GameManager::getInstance().getSmgr
+	irr::scene::IMesh *mesh = IrrManager::getInstance().getSmgr
 	()->getMesh(path);
 	if (!mesh)
 		throw std::runtime_error("Can't load mesh " +

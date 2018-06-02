@@ -5,16 +5,16 @@
 **
 */
 
-#include "../../include/Singletons/GameManager.hpp"
+#include "../../include/Singletons/IrrManager.hpp"
 
-GameManager GameManager::_instance;
+IrrManager IrrManager::_instance;
 
-GameManager::~GameManager()
+IrrManager::~IrrManager()
 {
 	_device->drop();
 }
 
-GameManager::GameManager()
+IrrManager::IrrManager()
 : _width(800),
 _height(600)
 {
@@ -27,27 +27,27 @@ _height(600)
 	_guienv = _device->getGUIEnvironment();
 }
 
-irr::IrrlichtDevice *GameManager::getDevice() const
+irr::IrrlichtDevice *IrrManager::getDevice() const
 {
 	return _device;
 }
 
-irr::video::IVideoDriver *GameManager::getDriver() const
+irr::video::IVideoDriver *IrrManager::getDriver() const
 {
 	return _driver;
 }
 
-irr::scene::ISceneManager *GameManager::getSmgr() const
+irr::scene::ISceneManager *IrrManager::getSmgr() const
 {
 	return _smgr;
 }
 
-irr::gui::IGUIEnvironment *GameManager::getGuienv() const
+irr::gui::IGUIEnvironment *IrrManager::getGuienv() const
 {
 	return _guienv;
 }
 
-GameManager &GameManager::getInstance()
+IrrManager &IrrManager::getInstance()
 {
 	return _instance;
 }

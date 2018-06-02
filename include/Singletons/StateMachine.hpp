@@ -15,17 +15,20 @@
 
 class StateMachine {
 public:
+	static StateMachine &getInstance();
+
 	void push(AState *gameState, bool keepLoaded);
 	void replaceTop(
 	AState *gameState, bool keepLoaded);
 	void pop();
 	AState *top();
 	int start();
-	static StateMachine &getInstance();
 private:
 	StateMachine() = default;
 	~StateMachine() = default;
+
 	std::stack<std::unique_ptr<AState>> _states;
+
 	static StateMachine _instance;
 };
 

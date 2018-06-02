@@ -11,18 +11,18 @@ add_executable(bomberman
         src/main.cpp
         src/Singletons/StateMachine.cpp
         include/Singletons/StateMachine.hpp
-        src/EntityOperator.cpp
+        src/Game/EntityOperator.cpp
         src/Abstracts/AState.cpp
         include/Abstracts/AState.hpp
-        include/IEntity.hpp
-        src/Singletons/GameManager.cpp
-        include/Singletons/GameManager.hpp
-        src/Singletons/GameManager.cpp
-        include/Singletons/GameManager.hpp
+        include/Game/IEntity.hpp
+        src/Singletons/IrrManager.cpp
+        include/Singletons/IrrManager.hpp
+        src/Singletons/IrrManager.cpp
+        include/Singletons/IrrManager.hpp
         src/States/SplashState.cpp
         include/Time.hpp
         src/Time.cpp
-        src/Singletons/GameManager.cpp
+        src/Singletons/IrrManager.cpp
         include/States/SplashState.hpp
         src/Singletons/AssetsPool.cpp
         include/Singletons/AssetsPool.hpp

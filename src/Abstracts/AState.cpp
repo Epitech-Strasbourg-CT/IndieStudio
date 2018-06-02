@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "../../include/Abstracts/AState.hpp"
+#include "../../include/Singletons/IrrManager.hpp"
 
 AState::AState(AStateShare &_share) : _share(_share)
 {
@@ -59,7 +60,7 @@ void AState::addAlteredNode
 	_alteredNodes[n] = fct;
 }
 
-AStateShare &AState::getSharedRes() const
+AStateShare &AState::getSharedResources() const
 {
 	return _share;
 }
@@ -74,5 +75,20 @@ void AState::popping()
 	for (auto &n : _alteredNodes) {
 		n.second(n.first);
 	}
+}
+
+void AState::draw()
+{
+	IrrManager::getInstance().getSmgr()->drawAll();
+}
+
+void AState::updateRender()
+{
+
+}
+
+void AState::update()
+{
+
 }
 

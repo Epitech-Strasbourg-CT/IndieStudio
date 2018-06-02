@@ -6,7 +6,7 @@
 */
 
 #include "../../include/States/MenuState.hpp"
-#include "../../include/Singletons/GameManager.hpp"
+#include "../../include/Singletons/IrrManager.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/States/GameState.hpp"
@@ -17,7 +17,7 @@ MenuState::_assets
 {100, [](irr::s32 type, MenuState *self) {
 	if (type == irr::gui::EGET_BUTTON_CLICKED) {
 		StateMachine::getInstance()
-		.push(new GameState(self->getSharedRes()), false);
+		.push(new GameState(self->getSharedResources()), false);
 	}
 }},
 {101, [](irr::s32 type, MenuState *self) {
@@ -31,22 +31,22 @@ MenuState::_assets
 	}
 }}};
 
-void MenuState::update()
+MenuState::MenuState(AStateShare &_share) : AState(_share)
 {
 }
 
 void MenuState::load()
 {
-	auto &gm = GameManager::getInstance();
+	std::cout << "OK" << std::endl;
+	auto &gm = IrrManager::getInstance();
 	auto &er = EventReceiver::getInstance();
 	er.registerEvent(irr::EEVENT_TYPE::EET_GUI_EVENT,
-	                 [this](const irr::SEvent &ev) {
-		                 auto id = ev.GUIEvent.Caller->getID();
-		                 if (ev.GUIEvent.EventType == irr::gui::EGET_BUTTON_CLICKED && MenuState::_assets.count(id) > 0)
-			                 MenuState::_assets.at(id)(
-				                 ev.GUIEvent.EventType,
-				                 this);
-	                 });
+	[this](const irr::SEvent &ev) {
+		auto id = ev.GUIEvent.Caller->getID();
+		if (ev.GUIEvent.EventType == irr::gui::EGET_BUTTON_CLICKED &&
+		MenuState::_assets.count(id) > 0)
+			MenuState::_assets.at(id)(ev.GUIEvent.EventType, this);
+	});
 	_launch = gm.getGuienv()->addButton({50, 50, 750, 100}, nullptr, 100,
 					    L"Launch game", L"Starts the game");
 	_settings = gm.getGuienv()->addButton({50, 150, 750, 200}, nullptr,
@@ -56,7 +56,7 @@ void MenuState::load()
 					  L"Exit",
 					  L"Leaves the game");
 	AState::load();
-
+	std::cout << "OK END" << std::endl;
 }
 
 void MenuState::unload()
@@ -71,6 +71,11 @@ void MenuState::unload()
 	AState::unload();
 }
 
-MenuState::MenuState(AStateShare &_share) : AState(_share)
+void MenuState::draw()
 {
+	std::cout << "DRAW" << std::endl;
+	auto im = IrrManager::getInstance();
+	im.getSmgr()->drawAll();
+	im.getGuienv()->drawAll();
+	std::cout << "DRAW END" << std::endl;
 }

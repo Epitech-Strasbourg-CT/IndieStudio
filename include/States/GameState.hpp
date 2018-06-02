@@ -14,11 +14,11 @@
 class GameState : public AState {
 public:
 	GameState(AStateShare &_share);
+
 	void load() override;
-	void unload() override;
-	void transitionPop() override;
-	void transitionPush() override;
+
 	void update() override;
+
 private:
 	irr::scene::ISceneNode *_node;
 };

@@ -9,7 +9,7 @@
 #include "../../include/States/SplashState.hpp"
 #include "../../include/Time.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
-#include "../../include/Singletons/GameManager.hpp"
+#include "../../include/Singletons/IrrManager.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/MenuState.hpp"
 #include "../../include/States/BackgroundState.hpp"
@@ -20,25 +20,18 @@ void SplashState::update()
 		StateMachine::getInstance().push(new BackgroundState(_share), false);
 		return;
 	}
-	GameManager::getInstance().getDriver()->draw2DImage(
-	AssetsPool::getInstance().loadTexture("bomber.jpg"),
-	irr::core::position2d<irr::s32>(0,0),
-	irr::core::rect<irr::s32>(0,0,800,600),
-	0,
-	irr::video::SColor(255, 255, 255, 255),
-	false);
 }
 
 void SplashState::load()
 {
-	auto cam = GameManager::getInstance().getSmgr()
+	auto cam = IrrManager::getInstance().getSmgr()
 	->addCameraSceneNode();
 	if (!cam)
 		throw std::runtime_error("Can't create a new Camera.");
 	cam->setPosition(irr::core::vector3df(0, 0, -50));
 	_nodes.push_back(cam);
 	auto mesh = AssetsPool::getInstance().loadMesh("sydney.md2");
-	irr::scene::IMeshSceneNode *n = GameManager::getInstance().getSmgr()
+	irr::scene::IMeshSceneNode *n = IrrManager::getInstance().getSmgr()
 	->addMeshSceneNode(mesh);
 	auto texture = AssetsPool::getInstance().loadTexture("sydney.bmp");
 
@@ -66,4 +59,16 @@ _nodes(),
 _start(),
 _duration(1000)
 {
+}
+
+void SplashState::draw()
+{
+	IrrManager::getInstance().getDriver()->draw2DImage(
+	AssetsPool::getInstance().loadTexture("bomber.jpg"),
+	irr::core::position2d<irr::s32>(0,0),
+	irr::core::rect<irr::s32>(0,0,800,600),
+	0,
+	irr::video::SColor(255, 255, 255, 255),
+	false);
+	AState::draw();
 }

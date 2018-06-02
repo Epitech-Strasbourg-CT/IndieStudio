@@ -16,22 +16,30 @@
 class AState {
 public:
 	AState(AStateShare &_share);
-	virtual void update() = 0;
 	virtual ~AState();
+
+	virtual void update();
+	virtual void updateRender();
+	virtual void draw();
+
 	bool isEnable() const;
 	void setEnable(bool _enable);
+
 	virtual void load();
 	virtual void unload();
+
 	virtual bool isLoaded() const;
 	virtual void transitionPop();
 	virtual void transitionPush();
 	virtual void popping();
 	virtual void pushing();
-	AStateShare &getSharedRes() const;
+
+	AStateShare &getSharedResources() const;
 	void addAlteredNode(
 	irr::scene::ISceneNode *n,
 	std::function<void(irr::scene::ISceneNode *)>
 	fct);
+
 private:
 	bool _enable;
 	bool _loaded;

@@ -5,7 +5,7 @@
 ** indie
 */
 
-#include "../include/EntityFactory.hpp"
+#include "../../include/Game/EntityFactory.hpp"
 
 EntityFactory::EntityFactory()
 {
