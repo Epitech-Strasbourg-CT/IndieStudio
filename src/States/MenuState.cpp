@@ -40,16 +40,13 @@ void MenuState::load()
 	auto &gm = GameManager::getInstance();
 	auto &er = EventReceiver::getInstance();
 	er.registerEvent(irr::EEVENT_TYPE::EET_GUI_EVENT,
-			 irr::gui::EGET_BUTTON_CLICKED,
-			 [this](const irr::SEvent &ev) {
-				 auto id = ev.GUIEvent.Caller->getID();
-				 if (MenuState::_assets.count(id) > 0)
-					 MenuState::_assets.at(id)(
-					 ev.GUIEvent.EventType,
-					 this);
-			 }
-
-	);
+	                 [this](const irr::SEvent &ev) {
+		                 auto id = ev.GUIEvent.Caller->getID();
+		                 if (ev.GUIEvent.EventType == irr::gui::EGET_BUTTON_CLICKED && MenuState::_assets.count(id) > 0)
+			                 MenuState::_assets.at(id)(
+				                 ev.GUIEvent.EventType,
+				                 this);
+	                 });
 	_launch = gm.getGuienv()->addButton({50, 50, 750, 100}, nullptr, 100,
 					    L"Launch game", L"Starts the game");
 	_settings = gm.getGuienv()->addButton({50, 150, 750, 200}, nullptr,
@@ -58,22 +55,6 @@ void MenuState::load()
 	_exit = gm.getGuienv()->addButton({50, 250, 750, 300}, nullptr, 102,
 					  L"Exit",
 					  L"Leaves the game");
-	er.registerEvent(irr::EEVENT_TYPE::EET_KEY_INPUT_EVENT,
-			 irr::KEY_KEY_A,
-			 [this](const irr::SEvent &ev) {
-				if (ev.KeyInput.PressedDown)
-					StateMachine::getInstance().pop();
-			 }
-	);
-	er.registerEvent(irr::EEVENT_TYPE::EET_KEY_INPUT_EVENT,
-			 irr::KEY_KEY_P,
-			 [this](const irr::SEvent &ev) {
-				 if (ev.KeyInput.PressedDown)
-					 StateMachine::getInstance()
-					 .push(new GameState(this->getSharedRes
-					 ()), false);
-			 }
-	);
 	AState::load();
 
 }

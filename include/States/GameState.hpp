@@ -19,6 +19,8 @@ public:
 	void transitionPop() override;
 	void transitionPush() override;
 	void update() override;
+private:
+	irr::scene::ISceneNode *_node;
 };
 
 

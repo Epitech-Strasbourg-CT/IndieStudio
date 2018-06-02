@@ -7,9 +7,14 @@
 
 #include <iostream>
 #include "../../include/Abstracts/AStateShare.hpp"
+#include "../../include/Singletons/EventReceiver.hpp"
 
-AStateShare::AStateShare(): _sharedNodes()
+AStateShare::AStateShare(): _sharedNodes(), _isKeyDown()
 {
+	EventReceiver::getInstance().registerEvent(irr::EET_KEY_INPUT_EVENT,
+        [this](const irr::SEvent &ev) {
+	        this->_isKeyDown[ev.KeyInput.Key] = ev.KeyInput.PressedDown;
+	});
 }
 
 bool AStateShare::addSharedNode
@@ -28,7 +33,7 @@ bool AStateShare::delSharedNode(const std::string &key)
 {
 	bool ret = true;
 
-	if (_sharedNodes.count(key) != 0)
+	if (_sharedNodes.count(key) <= 0)
 		ret = false;
 	else
 		_sharedNodes.erase(key);
@@ -37,6 +42,15 @@ bool AStateShare::delSharedNode(const std::string &key)
 
 irr::scene::ISceneNode &AStateShare::getSharedNode(const std::string &key)
 {
+	if (_sharedNodes.count(key) <= 0 || _sharedNodes[key] == nullptr)
+		throw std::runtime_error("Invalid shared node request");
 	return *_sharedNodes[key];
+}
+
+bool AStateShare::isKeyDown(irr::EKEY_CODE keyCode) const
+{
+	if (_isKeyDown.count(keyCode) > 0)
+		return _isKeyDown.at(keyCode);
+	return false;
 }
 

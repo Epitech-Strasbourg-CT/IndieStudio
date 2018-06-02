@@ -24,13 +24,17 @@ void BackgroundState::load()
 	_node = smgr->addMeshSceneNode(mesh);
 	auto texture = AssetsPool::getInstance().loadTexture("tree.png");
 	_node->setMaterialTexture(0, texture);
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setPosition(irr::core::vector3df(0,0, -47));
 	_share.addSharedNode("tree", _node);
+
+	auto er = EventReceiver::getInstance();
 	AState::load();
 }
 
 void BackgroundState::unload()
 {
+	_share.delSharedNode("tree");
 	_node->remove();
 	AState::unload();
 }

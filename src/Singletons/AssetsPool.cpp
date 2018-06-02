@@ -45,7 +45,8 @@ irr::scene::IMesh *AssetsPool::loadMesh(const std::string &file)
 	irr::scene::IMesh *mesh = GameManager::getInstance().getSmgr
 	()->getMesh(path);
 	if (!mesh)
-		throw std::runtime_error("Can't load mesh " + file);
+		throw std::runtime_error("Can't load mesh " +
+		std::string(_rootModelPath + file));
 	_meshs[file] = mesh;
 	return mesh;
 }

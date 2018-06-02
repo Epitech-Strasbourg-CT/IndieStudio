@@ -9,9 +9,15 @@
 #include "../../include/Singletons/GameManager.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
+#include "../../include/Singletons/AssetsPool.hpp"
 
 void GameState::update()
 {
+	if (_share.isKeyDown(irr::KEY_RIGHT)) {
+		auto pos = _node->getPosition();
+		pos.X += 0.1;
+		_node->setPosition(pos);
+	}
 
 }
 
@@ -21,20 +27,19 @@ GameState::GameState(AStateShare &_share) : AState(_share)
 
 void GameState::load()
 {
-	auto er = EventReceiver::getInstance();
+	auto &er = EventReceiver::getInstance();
+	auto &gm = GameManager::getInstance();
+	auto &ap = AssetsPool::getInstance();
 
-	er.registerEvent(irr::EEVENT_TYPE::EET_KEY_INPUT_EVENT,
-			 irr::KEY_KEY_A,
-			 [this](const irr::SEvent &ev) {
-				 std::cout << "POP" << std::endl;
-			 }
-	);
 	auto &n = _share.getSharedNode("tree");
-	n.remove();
+	n.setVisible(false);
 	addAlteredNode(&n, [](irr::scene::ISceneNode *n) {
-		std::cout << "restore" << std::endl;
-	//	n->render();
+		n->setVisible(true);
 	});
+	auto mesh = ap.loadMesh("sydney.md2");
+	_node = gm.getSmgr()->addMeshSceneNode(mesh);
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	_node->setMaterialTexture(0, ap.loadTexture("sydney.bmp"));
 	AState::load();
 }
 
@@ -50,6 +55,5 @@ void GameState::transitionPop()
 
 void GameState::transitionPush()
 {
-	std::cout << "PUSHING GAMESTATE" << std::endl;
 	AState::transitionPush();
 }

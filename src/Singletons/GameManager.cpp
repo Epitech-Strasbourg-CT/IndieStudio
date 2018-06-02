@@ -19,9 +19,9 @@ GameManager::GameManager()
 _height(600)
 {
 	_device = irr::createDevice(
-	irr::video::EDT_SOFTWARE,
+	irr::video::EDT_OPENGL,
 	irr::core::dimension2d<irr::u32>(_width, _height),
-	16, false, false, false, 0);
+	32, false, false, false, nullptr);
 	_driver = _device->getVideoDriver();
 	_smgr = _device->getSceneManager();
 	_guienv = _device->getGUIEnvironment();
