@@ -7,22 +7,71 @@
 
 #include "../../include/Game/EntitiesMap.hpp"
 
-bool EntitiesPool::addEntity(AEntity &entity)
+bool EntitiesMap::insert(AEntity &entity)
 {
-	return false;
+	bool res = false;
+	if (entity.getPos().X < WIDTH && entity.getPos().Y < HEIGHT) {
+		_map[entity.getPos()].push_back(&entity);
+		res = true;
+	}
+	return res;
 }
 
-bool EntitiesPool::delEntity(AEntity &entity)
+bool EntitiesMap::erase(AEntity &entity)
 {
-	return false;
+	bool res = false;
+	if (entity.getPos().X < WIDTH && entity.getPos().Y < HEIGHT) {
+		for (auto &i : _map[entity.getPos()])
+			if (&entity == i) {
+				_pending.push_back(&entity);
+				res = true;
+			}
+	}
+	return res;
 }
 
-void EntitiesPool::update()
+void EntitiesMap::update()
 {
-
+	for (auto &i : _map)
+		for (auto &k : i.second);
+			//k->update();
 }
 
-void EntitiesPool::updateRender()
+void EntitiesMap::updateRender()
 {
+	for (auto &i : _map)
+		for (auto &k : i.second);
+			//k->updateRender();
+}
 
+bool EntitiesMap::generate()
+{
+	return true;
+}
+
+void EntitiesMap::clean()
+{
+	for (auto i : _pending)
+		remove(*i);
+	_pending.clear();
+	//std::queue<AEntity &>().swap(_queue);
+};
+
+std::list<AEntity *> const &EntitiesMap::getList()
+{
+	return _pending;
+}
+
+std::map<irr::core::vector2di, std::vector<AEntity *>> const &EntitiesMap::getMap()
+{
+	return _map;
+}
+
+void EntitiesMap::remove(AEntity &entity)
+{
+	auto tmp = _map[entity.getPos()];
+
+	for (int i = 0; i < tmp.size(); ++i)
+		if (&entity == tmp[i])
+			tmp.erase(tmp.begin() + i);
 }
