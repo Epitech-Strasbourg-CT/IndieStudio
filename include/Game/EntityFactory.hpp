@@ -10,15 +10,15 @@
 #include <algorithm>
 #include <map>
 #include <memory>
-#include "IEntity.hpp"
+#include "AEntity.hpp"
 
 class EntityFactory {
 public:
 	EntityFactory();
 	~EntityFactory();
 
-	std::unique_ptr<IEntity> createEntity(const std::string &);
+	std::unique_ptr<AEntity> createEntity(const std::string &);
 protected:
 private:
-	std::map<std::string, std::function<std::unique_ptr<IEntity>()>> _fac;
+	std::map<std::string, std::function<std::unique_ptr<AEntity>()>> _fac;
 };

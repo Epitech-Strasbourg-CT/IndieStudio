@@ -16,7 +16,7 @@ EntityFactory::~EntityFactory()
 {
 }
 
-std::unique_ptr<IEntity> EntityFactory::createEntity(const std::string &name)
+std::unique_ptr<AEntity> EntityFactory::createEntity(const std::string &name)
 {
 	if (_fac.find(name) != _fac.end()) {
 		return _fac.at(name)();

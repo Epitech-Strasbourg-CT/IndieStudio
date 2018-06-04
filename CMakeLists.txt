@@ -11,10 +11,10 @@ add_executable(bomberman
         src/main.cpp
         src/Singletons/StateMachine.cpp
         include/Singletons/StateMachine.hpp
-        src/Game/EntityOperator.cpp
+        src/Game/AEntity.cpp
         src/Abstracts/AState.cpp
         include/Abstracts/AState.hpp
-        include/Game/IEntity.hpp
+        include/Game/AEntity.hpp
         src/Singletons/IrrManager.cpp
         include/Singletons/IrrManager.hpp
         src/Singletons/IrrManager.cpp
@@ -35,7 +35,13 @@ add_executable(bomberman
         src/Abstracts/AStateShare.cpp
         include/Abstracts/AStateShare.hpp
         src/States/GameState.cpp
-        include/States/GameState.hpp)
+        include/States/GameState.hpp
+        src/Game/EntitiesMap.cpp
+        include/Game/EntitiesMap.hpp
+        src/Game/EntityFactory.cpp
+        include/Game/EntityFactory.hpp
+        src/Game/SaveManager.cpp
+        include/Game/SaveManager.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"

@@ -37,7 +37,6 @@ MenuState::MenuState(AStateShare &_share) : AState(_share)
 
 void MenuState::load()
 {
-	std::cout << "OK" << std::endl;
 	auto &gm = IrrManager::getInstance();
 	auto &er = EventReceiver::getInstance();
 	er.registerEvent(irr::EEVENT_TYPE::EET_GUI_EVENT,
@@ -56,7 +55,6 @@ void MenuState::load()
 					  L"Exit",
 					  L"Leaves the game");
 	AState::load();
-	std::cout << "OK END" << std::endl;
 }
 
 void MenuState::unload()
@@ -73,9 +71,7 @@ void MenuState::unload()
 
 void MenuState::draw()
 {
-	std::cout << "DRAW" << std::endl;
-	auto im = IrrManager::getInstance();
+	auto &im = IrrManager::getInstance();
 	im.getSmgr()->drawAll();
 	im.getGuienv()->drawAll();
-	std::cout << "DRAW END" << std::endl;
 }
