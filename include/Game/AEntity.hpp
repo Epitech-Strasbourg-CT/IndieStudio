@@ -30,11 +30,12 @@ public:
 	void extractAttrs(const std::vector<std::string> &);
 	const Vector2DI &getMapPos() const;
 	const Vector3DF &getNodePos() const;
-	const Vector3DF &getCurrentPos() const;
 	void dump(std::ostream &s) const;
 	void load(std::istream &s);
 
 protected:
+	irr::scene::ISceneNode *_node;
+	Vector2DI _pos;
 private:
 	struct serialize {
 		irr::s32 x;
@@ -42,9 +43,6 @@ private:
 	};
 
 	std::string _type;
-	irr::scene::ISceneNode *_node;
-	Vector2DI _pos;
-	Vector3DF _realPos;
 };
 
 std::ostream &operator<<(std::ostream &, const AEntity &);

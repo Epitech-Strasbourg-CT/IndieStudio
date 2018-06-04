@@ -11,19 +11,18 @@
 
 #include "../Abstracts/AState.hpp"
 #include "../Game/EntitiesMap.hpp"
+#include "../../src/Game/Entities/PlayerEntity.hpp"
 
 class GameState : public AState {
 public:
 	GameState(AStateShare &_share);
 	GameState(AStateShare &_share, std::string &);
-
 	void load() override;
-
 	void update() override;
 
 private:
-	irr::scene::ISceneNode *_node;
 	EntitiesMap _emap;
+	PlayerEntity *_entity;
 };
 
 

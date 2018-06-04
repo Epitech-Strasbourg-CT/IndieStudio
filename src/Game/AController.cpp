@@ -1,0 +1,17 @@
+/*
+** EPITECH PROJECT, 2018
+** bomberman
+** File description:
+** AController.cpp
+*/
+
+#include "../../include/Game/Controllable.hpp"
+
+AController::~AController()
+{
+}
+
+void AController::registerControllable(Controllable *controllable)
+{
+	_controllable = controllable;
+}

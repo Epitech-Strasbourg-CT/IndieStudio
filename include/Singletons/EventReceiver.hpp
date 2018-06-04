@@ -6,7 +6,7 @@
 */
 #include <functional>
 #include <irrlicht.h>
-#include <map>
+#include <unordered_map>
 #include "IrrManager.hpp"
 
 #ifndef BOMBERMAN_EVENTRECEIVER_HPP
@@ -17,12 +17,13 @@ public:
 	static EventReceiver &getInstance();
 
 	bool OnEvent(const irr::SEvent &event) override;
-	void registerEvent(irr::EEVENT_TYPE,
-	std::function<void(const irr::SEvent &)> fct);
-	void unregisterEvent(irr::EEVENT_TYPE, size_t);
+	void registerEvent(size_t id, irr::EEVENT_TYPE,
+	std::function<bool(const irr::SEvent &)> fct);
+	void unregisterEvent(size_t id, irr::EEVENT_TYPE);
 private:
 	EventReceiver();
-	std::map<irr::EEVENT_TYPE, std::function<void(const irr::SEvent &)>>
+	std::unordered_map<irr::EEVENT_TYPE,
+	std::unordered_map<size_t, std::function<bool(const irr::SEvent &)>>>
 	_binds;
 
 	static EventReceiver _events;

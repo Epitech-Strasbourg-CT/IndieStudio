@@ -11,9 +11,10 @@
 
 AStateShare::AStateShare(): _sharedNodes(), _isKeyDown()
 {
-	EventReceiver::getInstance().registerEvent(irr::EET_KEY_INPUT_EVENT,
+	EventReceiver::getInstance().registerEvent(0, irr::EET_KEY_INPUT_EVENT,
         [this](const irr::SEvent &ev) {
 	        this->_isKeyDown[ev.KeyInput.Key] = ev.KeyInput.PressedDown;
+		return true;
 	});
 }
 

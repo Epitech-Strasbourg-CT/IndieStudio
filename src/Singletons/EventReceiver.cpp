@@ -13,17 +13,16 @@ EventReceiver EventReceiver::_events;
 
 bool EventReceiver::OnEvent(const irr::SEvent &event)
 {
-	bool ret = true;
-
+	auto type = event.EventType;
 	if (_binds.count(event.EventType) <= 0)
 		return false;
-	try {
-		_binds.at(event.EventType)(event);
-	} catch (std::out_of_range &e) {
-		static_cast<void>(e);
-		ret = false;
+	for (auto it = _binds[type].begin(); it != _binds[type].end(); it++) {
+		if (it->second (event) == false)
+			it = _binds[type].erase(it);
 	}
-	return ret;
+	if (_binds[type].empty())
+		_binds.erase(type);
+	return true;
 }
 
 EventReceiver::EventReceiver()
@@ -31,17 +30,24 @@ EventReceiver::EventReceiver()
 
 }
 
-void EventReceiver::unregisterEvent(irr::EEVENT_TYPE type, size_t idx)
+void EventReceiver::unregisterEvent(size_t id, irr::EEVENT_TYPE type)
 {
-	if (_binds.count(type) > 0) {
+	if (_binds.count(type) <= 0 || _binds[type].count(id))
+		return;
+	_binds[type].erase(id);
+	if (_binds[type].empty())
 		_binds.erase(type);
-	}
 }
 
-void EventReceiver::registerEvent(irr::EEVENT_TYPE type,
-std::function<void(const irr::SEvent &)> fct)
+void EventReceiver::registerEvent(size_t id, irr::EEVENT_TYPE type,
+std::function<bool(const irr::SEvent &)> fct)
 {
-	_binds[type] = fct;
+	if (_binds.count(type) == 0) {
+		std::unordered_map
+		<size_t, std::function<bool(const irr::SEvent &)>> map;
+		_binds.insert(std::make_pair(type, map));
+	}
+	_binds[type][id] = fct;
 }
 
 EventReceiver &EventReceiver::getInstance()
