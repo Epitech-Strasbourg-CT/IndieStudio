@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <irrlicht.h>
+#include <regex>
 
 using Vector3DF = irr::core::vector3df;
 using Vector2DF = irr::core::vector2df;
@@ -16,19 +17,35 @@ using Vector2DF = irr::core::vector2df;
 using Vector3DI = irr::core::vector3di;
 using Vector2DI = irr::core::vector2di;
 
+class EntitiesMap;
+
 class AEntity {
 public:
-	AEntity();
+	AEntity(const std::string &);
 	virtual ~AEntity() = default;
-	void operator<<(const std::string &str);
-	void operator>>(const std::string &str) const;
 	void collide(AEntity &);
-	void update();
+	void update(EntitiesMap *);
 	void updateRender();
-	const Vector2DI &getPos() const;
+	std::vector<std::string> getAttrs(const std::vector<std::string> &);
+	void extractAttrs(const std::vector<std::string> &);
+	const Vector2DI &getMapPos() const;
+	const Vector3DF &getNodePos() const;
+	const Vector3DF &getCurrentPos() const;
+	void dump(std::ostream &s) const;
+	void load(std::istream &s);
+
 protected:
 private:
+	struct serialize {
+		irr::s32 x;
+		irr::s32 y;
+	};
+
 	std::string _type;
 	irr::scene::ISceneNode *_node;
 	Vector2DI _pos;
+	Vector3DF _realPos;
 };
+
+std::ostream &operator<<(std::ostream &, const AEntity &);
+AEntity &operator>>(std::istream &, AEntity &);

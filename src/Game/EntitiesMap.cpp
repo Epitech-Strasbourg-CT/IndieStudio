@@ -10,8 +10,8 @@
 bool EntitiesMap::insert(AEntity &entity)
 {
 	bool res = false;
-	if (entity.getPos().X < WIDTH && entity.getPos().Y < HEIGHT) {
-		_map[entity.getPos()].push_back(&entity);
+	if (entity.getMapPos().X < WIDTH && entity.getMapPos().Y < HEIGHT) {
+		_map[entity.getMapPos()].push_back(&entity);
 		res = true;
 	}
 	return res;
@@ -20,8 +20,8 @@ bool EntitiesMap::insert(AEntity &entity)
 bool EntitiesMap::erase(AEntity &entity)
 {
 	bool res = false;
-	if (entity.getPos().X < WIDTH && entity.getPos().Y < HEIGHT) {
-		for (auto &i : _map[entity.getPos()])
+	if (entity.getMapPos().X < WIDTH && entity.getMapPos().Y < HEIGHT) {
+		for (auto &i : _map[entity.getMapPos()])
 			if (&entity == i) {
 				_pending.push_back(&entity);
 				res = true;
@@ -69,7 +69,7 @@ std::map<irr::core::vector2di, std::vector<AEntity *>> const &EntitiesMap::getMa
 
 void EntitiesMap::remove(AEntity &entity)
 {
-	auto tmp = _map[entity.getPos()];
+	auto tmp = _map[entity.getMapPos()];
 
 	for (int i = 0; i < tmp.size(); ++i)
 		if (&entity == tmp[i])
