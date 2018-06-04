@@ -10,10 +10,12 @@
 
 
 #include "../Abstracts/AState.hpp"
+#include "../Game/EntitiesMap.hpp"
 
 class GameState : public AState {
 public:
 	GameState(AStateShare &_share);
+	GameState(AStateShare &_share, std::string &);
 
 	void load() override;
 
@@ -21,6 +23,7 @@ public:
 
 private:
 	irr::scene::ISceneNode *_node;
+	EntitiesMap _emap;
 };
 
 

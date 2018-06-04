@@ -10,9 +10,15 @@
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
+#include "../../include/Game/SaveManager.hpp"
 
 GameState::GameState(AStateShare &_share) : AState(_share)
 {
+}
+
+GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_share)
+{
+	SaveManager::save(_emap, filename);
 }
 
 void GameState::update()
