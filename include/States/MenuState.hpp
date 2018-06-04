@@ -20,11 +20,16 @@ public:
 
 	void load() override;
 	void unload() override;
-	void update() override;
-	static const std::unordered_map<irr::s32, std::function<void(irr::s32, MenuState *)>> _assets;
+
+	void draw() override;
+
+private:
 	irr::gui::IGUIButton *_launch;
 	irr::gui::IGUIButton *_settings;
 	irr::gui::IGUIButton *_exit;
+
+	static const std::unordered_map<irr::s32,
+	std::function<void(irr::s32, MenuState *)>> _assets;
 };
 
 #endif //BOMBERMAN_MENUSTATE_HPP

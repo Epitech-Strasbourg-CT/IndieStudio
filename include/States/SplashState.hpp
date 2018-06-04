@@ -17,7 +17,10 @@ class SplashState : public AState {
 public:
 	SplashState(AStateShare &_share);
 	virtual ~SplashState() = default;
+
 	void update() override;
+	void draw() override;
+
 	void load() override;
 	void unload() override;
 

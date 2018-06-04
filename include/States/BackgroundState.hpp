@@ -19,10 +19,7 @@ public:
 
 	void load() override;
 	void unload() override;
-	void update() override;
-
 	void transitionPop() override;
-
 	void transitionPush() override;
 
 private:

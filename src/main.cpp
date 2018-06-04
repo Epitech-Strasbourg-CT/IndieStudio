@@ -6,15 +6,16 @@
 */
 #include "../include/Singletons/StateMachine.hpp"
 #include "../include/States/SplashState.hpp"
-#include "../include/Singletons/GameManager.hpp"
+#include "../include/Singletons/IrrManager.hpp"
 #include "../include/Singletons/EventReceiver.hpp"
 
 int main()
 {
-	auto splash = new SplashState(AStateShare());
+	auto shared = AStateShare();
+	auto splash = new SplashState(shared);
 	StateMachine::getInstance().push(splash, false);
 
-	auto device = GameManager::getInstance().getDevice();
+	auto device = IrrManager::getInstance().getDevice();
 	device->setEventReceiver(&EventReceiver::getInstance());
 	return StateMachine::getInstance().start();
 }

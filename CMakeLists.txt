@@ -11,18 +11,18 @@ add_executable(bomberman
         src/main.cpp
         src/Singletons/StateMachine.cpp
         include/Singletons/StateMachine.hpp
-        src/EntityOperator.cpp
+        src/Game/AEntity.cpp
         src/Abstracts/AState.cpp
         include/Abstracts/AState.hpp
-        include/IEntity.hpp
-        src/Singletons/GameManager.cpp
-        include/Singletons/GameManager.hpp
-        src/Singletons/GameManager.cpp
-        include/Singletons/GameManager.hpp
+        include/Game/AEntity.hpp
+        src/Singletons/IrrManager.cpp
+        include/Singletons/IrrManager.hpp
+        src/Singletons/IrrManager.cpp
+        include/Singletons/IrrManager.hpp
         src/States/SplashState.cpp
         include/Time.hpp
         src/Time.cpp
-        src/Singletons/GameManager.cpp
+        src/Singletons/IrrManager.cpp
         include/States/SplashState.hpp
         src/Singletons/AssetsPool.cpp
         include/Singletons/AssetsPool.hpp
@@ -31,7 +31,17 @@ add_executable(bomberman
         src/States/MenuState.cpp
         include/States/MenuState.hpp
         src/States/BackgroundState.cpp
-        include/States/BackgroundState.hpp src/Abstracts/AStateShare.cpp include/Abstracts/AStateShare.hpp)
+        include/States/BackgroundState.hpp
+        src/Abstracts/AStateShare.cpp
+        include/Abstracts/AStateShare.hpp
+        src/States/GameState.cpp
+        include/States/GameState.hpp
+        src/Game/EntitiesMap.cpp
+        include/Game/EntitiesMap.hpp
+        src/Game/EntityFactory.cpp
+        include/Game/EntityFactory.hpp
+        src/Game/SaveManager.cpp
+        include/Game/SaveManager.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"

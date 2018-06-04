@@ -5,16 +5,18 @@
 **
 */
 #include "../../include/Singletons/StateMachine.hpp"
-#include "../../include/Singletons/GameManager.hpp"
+#include "../../include/Singletons/IrrManager.hpp"
 
 StateMachine StateMachine::_instance;
 
 void StateMachine::push(AState *gameState, bool keepLoaded)
 {
+	if (!_states.empty()) {
+		_states.top()->pushing();
+		_states.top()->setEnable(false);
+	}
 	if (!keepLoaded && !_states.empty())
 		_states.top()->unload();
-	if (!_states.empty())
-		_states.top()->setEnable(false);
 	_states.push(std::unique_ptr<AState>(gameState));
 	gameState->setEnable(true);
 	gameState->load();
@@ -25,6 +27,7 @@ void StateMachine::pop()
 {
 	if (!_states.empty()) {
 		auto top = _states.top().get();
+		top->popping();
 		top->unload();
 		_states.pop();
 	}
@@ -40,18 +43,18 @@ void StateMachine::pop()
 
 int StateMachine::start()
 {
-	auto device = GameManager::getInstance().getDevice();
-	auto driver = GameManager::getInstance().getDriver();
-	auto smgr = GameManager::getInstance().getSmgr();
-	auto guienv = GameManager::getInstance().getGuienv();
+	auto device = IrrManager::getInstance().getDevice();
+	auto driver = IrrManager::getInstance().getDriver();
 
 	while (device->run()) {
 		driver->beginScene(true, true,
 		irr::video::SColor(255, 100, 101, 140));
 		if (!_states.empty())
 			_states.top()->update();
-		smgr->drawAll();
-		guienv->drawAll();
+		if (!_states.empty())
+			_states.top()->updateRender();
+		if (!_states.empty())
+			_states.top()->draw();
 		driver->endScene();
 	}
 	return 0;

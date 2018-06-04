@@ -11,24 +11,26 @@
 #include <irrlicht.h>
 #include <memory>
 
-class GameManager {
+class IrrManager {
 public:
-	virtual ~GameManager();
+	static IrrManager &getInstance();
+	virtual ~IrrManager();
 
 	irr::IrrlichtDevice *getDevice() const;
 	irr::video::IVideoDriver *getDriver() const;
 	irr::scene::ISceneManager *getSmgr() const;
 	irr::gui::IGUIEnvironment *getGuienv() const;
-	static GameManager &getInstance();
 private:
-	GameManager();
+	IrrManager();
+
 	irr::IrrlichtDevice *_device;
 	irr::video::IVideoDriver *_driver;
 	irr::scene::ISceneManager *_smgr;
 	irr::gui::IGUIEnvironment *_guienv;
-	static GameManager _instance;
 	irr::u32 _width;
 	irr::u32 _height;
+
+	static IrrManager _instance;
 };
 
 
