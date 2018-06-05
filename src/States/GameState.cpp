@@ -22,7 +22,8 @@ GameState::GameState(AStateShare &_share) : AState(_share)
 	controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
 	controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
 	PlayerEntity *player = new PlayerEntity();
-	controller->registerControllable(player);
+
+	AController::bindEntityToController(*controller, *player);
 	_entity = player;
 }
 
@@ -35,7 +36,8 @@ GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_sh
 	controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
 	controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
 	PlayerEntity *player = new PlayerEntity();
-	controller->registerControllable(player);
+	AController::bindEntityToController(*controller, *player);
+
 	_entity = player;
 	SaveManager::save(_emap, filename);
 }
@@ -61,4 +63,10 @@ void GameState::load()
 //	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 //	_node->setMaterialTexture(0, ap.loadTexture("sydney.bmp"));
 	AState::load();
+}
+
+void GameState::updateRender()
+{
+	_entity->updateRender();
+	AState::updateRender();
 }
