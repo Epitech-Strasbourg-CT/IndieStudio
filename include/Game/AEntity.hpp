@@ -27,14 +27,11 @@ public:
 	void update(EntitiesMap *);
 	virtual void updateRender();
 	const Vector2DI &getMapPos() const;
-	const Vector3DF &getNodePos() const;
 	void dump(std::ostream &s) const;
 	void load(std::istream &s);
 
 protected:
 	irr::scene::ISceneNode *_node;
-	Vector2DI _mapPos;
-	//Vector2DI _mapPos;
 private:
 	struct serialize {
 //		irr::s32 x;

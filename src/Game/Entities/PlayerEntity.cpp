@@ -43,12 +43,11 @@ void PlayerEntity::update()
 
 void PlayerEntity::updateRender()
 {
-	if (getPos() != _oldPos) {
-		auto pos = _node->getPosition();
-		pos.X += getPos().X;
-		pos.Y += getPos().Y;
-		_node->setPosition(pos);
-		_oldPos = getg Pos();
-	}
+//	if (getPos() != _oldPos) {
+//		auto pos = _node->getPosition();
+//		pos.X += getPos().X;
+//		pos.Y += getPos().Y;
+//		_node->setPosition(pos);
+//	}
 	AEntity::updateRender();
 }

@@ -19,15 +19,7 @@ void AEntity::updateRender()
 {
 }
 
-const Vector2DI &AEntity::getMapPos() const
-{
-	return (_mapPos);
-}
-
-const Vector3DF &AEntity::getNodePos() const
-{
-	return (_node->getPosition());
-}
+//region Save & load
 
 void AEntity::dump(std::ostream &s) const
 {
@@ -53,11 +45,6 @@ void AEntity::load(std::istream &s)
 //	_mapPos.Y = ser.y;
 }
 
-void AEntity::collide(AEntity &)
-{
-
-}
-
 std::ostream &operator<<(std::ostream &s, const AEntity &e)
 {
 	e.dump(s);
@@ -68,4 +55,16 @@ AEntity &operator>>(std::istream &s, AEntity &e)
 {
 	e.load(s);
 	return e;
+}
+
+//endregion
+
+void AEntity::collide(AEntity &)
+{
+
+}
+
+const Vector2DI &AEntity::getMapPos() const
+{
+	return irr::core::vector2di(0, 0);
 }
