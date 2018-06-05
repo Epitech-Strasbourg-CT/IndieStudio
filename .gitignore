@@ -1,8 +1,5 @@
 cmake-build-*
 .idea
-bin/
-!./libs/irrklang/bin
-!./libs/irrlicht/bin
 *.o
 bomberman
 build/
