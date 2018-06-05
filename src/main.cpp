@@ -14,7 +14,6 @@
 // 	auto shared = AStateShare();
 // 	auto splash = new SplashState(shared);
 // 	StateMachine::getInstance().push(splash, false);
-
 // 	auto device = IrrManager::getInstance().getDevice();
 // 	device->setEventReceiver(&EventReceiver::getInstance());
 // 	return StateMachine::getInstance().start();

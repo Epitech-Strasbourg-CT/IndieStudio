@@ -45,11 +45,11 @@ add_executable(bomberman
         include/Game/SaveManager.hpp
         include/Game/Movable.hpp
         src/Game/Controllable.cpp
-        include/Game/Controllable.hpp 
-        src/Game/AController.cpp 
-        include/Game/AController.hpp 
-        src/Game/BKeyboardController.cpp 
-        include/Game/BKeyboardController.hpp 
+        include/Game/Controllable.hpp
+        src/Game/AController.cpp
+        include/Game/AController.hpp
+        src/Game/BKeyboardController.cpp
+        include/Game/BKeyboardController.hpp
         src/Game/Entities/PlayerEntity.cpp
         include/Game/Entities/PlayerEntity.hpp)
 
@@ -71,7 +71,6 @@ if(WIN32)
 endif(WIN32)
 
 set(IRRKLANG_DIR ./libs/irrklang)
-
 if(UNIX)
         add_custom_command(TARGET bomberman PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
