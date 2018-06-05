@@ -22,6 +22,7 @@ public:
 
 	bool insert(AEntity &entity);
 	bool erase(AEntity &entity);
+	std::vector<AEntity *> const &getEntities(irr::core::vector2di &);
 	bool generate();
 	void clean();
 	void update();

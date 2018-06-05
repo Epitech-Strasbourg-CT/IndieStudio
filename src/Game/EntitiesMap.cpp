@@ -33,15 +33,15 @@ bool EntitiesMap::erase(AEntity &entity)
 void EntitiesMap::update()
 {
 	for (auto &i : _map)
-		for (auto &k : i.second);
-			//k->update();
+		for (auto &k : i.second)
+			k->update(this);
 }
 
 void EntitiesMap::updateRender()
 {
 	for (auto &i : _map)
-		for (auto &k : i.second);
-			//k->updateRender();
+		for (auto &k : i.second)
+			k->updateRender();
 }
 
 bool EntitiesMap::generate()
@@ -54,8 +54,14 @@ void EntitiesMap::clean()
 	for (auto i : _pending)
 		remove(*i);
 	_pending.clear();
-	//std::queue<AEntity &>().swap(_queue);
 };
+
+std::vector<AEntity *> const &EntitiesMap::getEntities(irr::core::vector2di &pos) {
+	if (pos.X < WIDTH && pos.Y < HEIGHT)
+		return _map[pos];
+	throw 
+		std::runtime_error("Out of map position.");
+}
 
 std::list<AEntity *> const &EntitiesMap::getList()
 {
