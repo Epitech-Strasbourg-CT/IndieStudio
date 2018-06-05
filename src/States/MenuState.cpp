@@ -20,9 +20,9 @@ MenuState::_assets
 			StateMachine::getInstance()
 			.push(new GameState(self->getSharedResources()), false);
 		}}, {irr::gui::EGET_ELEMENT_HOVERED, [](MenuState *self) {
-			self->setButtonTexture(self->_launch, "launche2.png");
+			self->setButtonTexture(self->_launch, "launch2.png");
 		}}, {irr::gui::EGET_ELEMENT_LEFT, [](MenuState *self) {
-			self->setButtonTexture(self->_launch, "launche1.png");
+			self->setButtonTexture(self->_launch, "launch1.png");
 	}}};
 	if (events.find(type) != events.end())
 			events[type](self);
@@ -91,6 +91,7 @@ void MenuState::load()
 	
 	_launch = gm.getGuienv()->addButton({50, 50, 750, 100}, nullptr, 100, L"", L"Starts the game");
 	_launch->setImage(AssetsPool::getInstance().loadTexture("launche1.png"));
+	_launch->setPressedImage(AssetsPool::getInstance().loadTexture("launch2.png"));
 
 	_load = gm.getGuienv()->addButton({50, 150, 750, 200}, nullptr, 101, L"", L"Load game");
 	_load->setImage(AssetsPool::getInstance().loadTexture("load1.png"));
