@@ -31,7 +31,7 @@ private:
 	irr::gui::IGUIButton *_exit;
 	irrklang::ISoundEngine *_engine;
 
-	static const std::unordered_map<irr::s32,
+	static const std::unordered_map<int,//irr::s32,
 	std::function<void(irr::s32, MenuState *)>> _assets;
 };
 
