@@ -21,5 +21,8 @@ public:
 	std::unique_ptr<AEntity> createEntity(const std::string &);
 protected:
 private:
-	std::map<std::string, std::function<std::unique_ptr<AEntity>()>> _fac;
+	std::map<std::string, std::function<std::unique_ptr<AEntity>()>> _fac =
+	{
+		{"entity", [](){return std::unique_ptr<AEntity>(new AEntity);}},
+	};
 };

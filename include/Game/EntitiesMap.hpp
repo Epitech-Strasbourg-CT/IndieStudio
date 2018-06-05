@@ -11,6 +11,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <set>
 #include "AEntity.hpp"
 
 #define HEIGHT 15
@@ -27,7 +28,7 @@ public:
 	void clean();
 	void update();
 	void updateRender();
-	std::list<AEntity *> const &getList();
+	std::set<AEntity *> getList() const;
 	std::map<irr::core::vector2di, std::vector<AEntity *>> const &getMap();
 private:
 	void remove(AEntity &);

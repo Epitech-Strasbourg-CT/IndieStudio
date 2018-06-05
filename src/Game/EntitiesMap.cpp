@@ -63,9 +63,14 @@ std::vector<AEntity *> const &EntitiesMap::getEntities(irr::core::vector2di &pos
 		std::runtime_error("Out of map position.");
 }
 
-std::list<AEntity *> const &EntitiesMap::getList()
+std::list<AEntity *> EntitiesMap::getList() const
 {
-	return _pending;
+	std::set<AEntity *> res;
+
+	for (auto &i : _map)
+		for (auto &k : i.second)
+			res.insert(k);
+	return res;
 }
 
 std::map<irr::core::vector2di, std::vector<AEntity *>> const &EntitiesMap::getMap()
