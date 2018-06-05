@@ -21,7 +21,7 @@ class EntitiesMap;
 
 class AEntity {
 public:
-	explicit AEntity(const std::string &);
+	explicit AEntity(const std::string & = "entity");
 	virtual ~AEntity() = default;
 	void collide(AEntity &);
 	void update(EntitiesMap *);
@@ -29,7 +29,7 @@ public:
 	void dump(std::ostream &s) const;
 	void load(std::istream &s);
 
-	const Vector2DI &getMapPos() const;
+	Vector2DI getMapPos() const;
 	void setMapPos(const Vector2DI &position);
 
 	const Vector2DF &getStaticPos() const;

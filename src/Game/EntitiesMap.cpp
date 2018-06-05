@@ -57,9 +57,14 @@ void EntitiesMap::clean()
 	//std::queue<AEntity &>().swap(_queue);
 };
 
-std::list<AEntity *> const &EntitiesMap::getList()
+std::set<AEntity *> EntitiesMap::getList() const
 {
-	return _pending;
+	std::set<AEntity *> res;
+
+	for (auto &i : _map)
+		for (auto &k : i.second)
+			res.insert(k);
+	return res;
 }
 
 std::map<irr::core::vector2di, std::vector<AEntity *>> const &EntitiesMap::getMap()
