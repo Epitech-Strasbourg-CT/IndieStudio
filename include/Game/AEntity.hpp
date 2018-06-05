@@ -21,7 +21,7 @@ class EntitiesMap;
 
 class AEntity {
 public:
-	explicit AEntity(const std::string &);
+	explicit AEntity(const std::string & = "entity");
 	virtual ~AEntity() = default;
 	void collide(AEntity &);
 	void update(EntitiesMap *);

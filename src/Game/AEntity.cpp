@@ -31,36 +31,28 @@ const Vector3DF &AEntity::getNodePos() const
 
 void AEntity::dump(std::ostream &s) const
 {
-	struct AEntity::serialize ser = {
-//		x: _pos.X,
-//		y: _pos.Y,
-	};
-	char *se = new char[sizeof(ser)];
-	memcpy(se, &ser, sizeof(ser));
+	struct AEntity::serialize ser = {};
+	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	memcpy(se.get(), &ser, sizeof(ser));
 	s << _type;
 	s.write("\0", 1);
-	s.write(se, sizeof(ser));
+	s.write(se.get(), sizeof(ser));
 }
 
 void AEntity::load(std::istream &s)
 {
-	struct AEntity::serialize ser{};
-	auto *se = new char[sizeof(ser)];
-
-	s.read(se, sizeof(ser));
-	memcpy(&ser, se, sizeof(ser));
-//	_pos.X = ser.x;
-//	_pos.Y = ser.y;
+	struct AEntity::serialize ser {};
+	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	s.read(se.get(), sizeof(ser));
+	memcpy(&ser, se.get(), sizeof(ser));
 }
 
 void AEntity::collide(AEntity &)
 {
-
 }
 
 void AEntity::extractAttrs(const std::vector<std::string> &)
 {
-
 }
 
 std::vector<std::string> AEntity::getAttrs(const std::vector<std::string> &)
