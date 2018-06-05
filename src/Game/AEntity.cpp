@@ -8,7 +8,7 @@
 #include "../../include/Game/AEntity.hpp"
 
 AEntity::AEntity(const std::string &type)
-	: _type(type), _origin(), _staticPosition(), _node()
+	: ATrackable(), _type(type), _origin(), _staticPosition(), _node()
 {
 }
 

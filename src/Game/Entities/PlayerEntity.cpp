@@ -9,7 +9,7 @@
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 
-PlayerEntity::PlayerEntity() : AEntity("player"), Controllable()
+PlayerEntity::PlayerEntity() : AEntity("player"), ATrackable(), Controllable()
 {
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
@@ -30,6 +30,15 @@ void PlayerEntity::update()
 
 void PlayerEntity::updateRender()
 {
+	auto nodePos = _node->getPosition();
+	auto pos = getPos();
+	auto origin = getOrigin();
+
+	if (origin.X + pos.X != nodePos.X || origin.Y + pos.Y != nodePos.Y) {
+		nodePos.X = origin.X + pos.X;
+		nodePos.Y = origin.Y + pos.Y;
+		_node->setPosition(nodePos);
+	}
 	AEntity::updateRender();
 }
 

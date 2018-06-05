@@ -11,7 +11,7 @@
 #include "ATrackable.hpp"
 #include <irrlicht.h>
 
-template <typename T> class AMovable : public ATrackable<T> {
+template <typename T> class AMovable : public virtual ATrackable<T> {
 public:
 	AMovable()
 	{

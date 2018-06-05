@@ -20,7 +20,7 @@ using Vector2DI = irr::core::vector2di;
 
 class EntitiesMap;
 
-class AEntity : public ATrackable<float> {
+class AEntity : public virtual ATrackable<float> {
 public:
 	explicit AEntity(const std::string & = "entity");
 	virtual ~AEntity() = default;
