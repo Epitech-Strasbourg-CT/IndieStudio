@@ -18,8 +18,6 @@ public:
 	PlayerEntity();
 	void update();
 	void updateRender() override;
-private:
-	Vector2DF _oldPos;
 };
 
 

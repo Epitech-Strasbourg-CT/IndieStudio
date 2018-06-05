@@ -7,7 +7,11 @@
 
 #include "../../include/Game/AEntity.hpp"
 
-AEntity::AEntity(const std::string &type) : _type(type)
+AEntity::AEntity(const std::string &type)
+: _type(type),
+_origin(),
+_staticPosition(),
+_node()
 {
 }
 
@@ -27,7 +31,7 @@ void AEntity::dump(std::ostream &s) const
 //		x: _mapPos.X,
 //		y: _mapPos.Y,
 	};
-	char *se = new char[sizeof(ser)];
+	auto *se = new char[sizeof(ser)];
 	memcpy(se, &ser, sizeof(ser));
 	s << _type;
 	s.write("\0", 1);
@@ -64,7 +68,31 @@ void AEntity::collide(AEntity &)
 
 }
 
+const Vector3DF &AEntity::getOrigin() const
+{
+	return _origin;
+}
+
 const Vector2DI &AEntity::getMapPos() const
 {
-	return irr::core::vector2di(0, 0);
+	auto x = static_cast<int>(_staticPosition.X);
+	auto y = static_cast<int>(_staticPosition.Y);
+
+	return irr::core::vector2di(x, y);
+}
+
+void AEntity::setMapPos(const Vector2DI &position)
+{
+	_staticPosition =  irr::core::vector2df(position.X, position.Y);
+}
+
+
+const Vector2DF &AEntity::getStaticPos() const
+{
+	return _staticPosition;
+}
+
+void AEntity::setStaticPos(const Vector2DF &position)
+{
+	_staticPosition = position;
 }

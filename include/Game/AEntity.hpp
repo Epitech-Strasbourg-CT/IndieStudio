@@ -26,19 +26,29 @@ public:
 	void collide(AEntity &);
 	void update(EntitiesMap *);
 	virtual void updateRender();
-	const Vector2DI &getMapPos() const;
 	void dump(std::ostream &s) const;
 	void load(std::istream &s);
 
-protected:
-	irr::scene::ISceneNode *_node;
+	const Vector2DI &getMapPos() const;
+	void setMapPos(const Vector2DI &position);
+
+	const Vector2DF &getStaticPos() const;
+	void setStaticPos(const Vector2DF &position);
+
+	const Vector3DF &getOrigin() const;
+
+
 private:
 	struct serialize {
 //		irr::s32 x;
 //		irr::s32 y;
 	};
-
 	std::string _type;
+	Vector3DF _origin;
+
+protected:
+	Vector2DF _staticPosition;
+	irr::scene::ISceneNode *_node;
 };
 
 std::ostream &operator<<(std::ostream &, const AEntity &);
