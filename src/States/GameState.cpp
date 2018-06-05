@@ -15,29 +15,34 @@
 
 GameState::GameState(AStateShare &_share) : AState(_share)
 {
-	BKeyboardController controller;
+	auto *controller = new BKeyboardController;
 
-	controller.registerBind(irr::KEY_UP, MOVE_UP);
-	controller.registerBind(irr::KEY_DOWN, MOVE_DOWN);
-	controller.registerBind(irr::KEY_LEFT, MOVE_LEFT);
-	controller.registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
-	_entity = new PlayerEntity(controller);
+	controller->registerBind(irr::KEY_UP, MOVE_UP);
+	controller->registerBind(irr::KEY_DOWN, MOVE_DOWN);
+	controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
+	controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
+	PlayerEntity *player = new PlayerEntity();
+	controller->registerControllable(player);
+	_entity = player;
 }
 
 GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_share)
 {
-	BKeyboardController controller;
+	auto *controller = new BKeyboardController;
 
-	controller.registerBind(irr::KEY_UP, MOVE_UP);
-	controller.registerBind(irr::KEY_DOWN, MOVE_DOWN);
-	controller.registerBind(irr::KEY_LEFT, MOVE_LEFT);
-	controller.registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
-	_entity = new PlayerEntity(controller);
+	controller->registerBind(irr::KEY_UP, MOVE_UP);
+	controller->registerBind(irr::KEY_DOWN, MOVE_DOWN);
+	controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
+	controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
+	PlayerEntity *player = new PlayerEntity();
+	controller->registerControllable(player);
+	_entity = player;
 	SaveManager::save(_emap, filename);
 }
 
 void GameState::update()
 {
+	_entity->update();
 }
 
 void GameState::load()

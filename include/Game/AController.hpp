@@ -26,7 +26,7 @@ public:
 	void registerControllable(Controllable *controllable);
 	virtual ~AController();
 protected:
-	Controllable *_controllable;
+	Controllable *_controllable = nullptr;
 };
 
 

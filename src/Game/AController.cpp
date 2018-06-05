@@ -14,4 +14,5 @@ AController::~AController()
 void AController::registerControllable(Controllable *controllable)
 {
 	_controllable = controllable;
+
 }

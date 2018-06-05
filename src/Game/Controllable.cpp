@@ -19,14 +19,13 @@ void Controllable::delEvent(ControlName_e c)
 
 void Controllable::update()
 {
-	for (auto &n : _binds) {
-		n.second();
-	}
+	for (auto &n : _actions)
+		_binds[n]();
 	_actions.clear();
 }
 
-Controllable::Controllable(AController &_controller)
-: _actions(), _binds(), _controller(_controller)
+Controllable::Controllable()
+: _actions(), _binds()
 {
 }
 

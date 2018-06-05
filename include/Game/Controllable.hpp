@@ -15,14 +15,12 @@
 
 class Controllable {
 public:
-	Controllable(AController &_controller);
+	explicit Controllable();
 	void callBind(ControlName_e c);
 protected:
 	void addEvent(ControlName_e c, std::function<void()>);
 	void delEvent(ControlName_e c);
 	virtual void update();
-
-	AController &_controller;
 private:
 	std::set<ControlName_e> _actions;
 	std::unordered_map<ControlName_e, std::function<void()>> _binds;

@@ -21,11 +21,11 @@ class EntitiesMap;
 
 class AEntity {
 public:
-	AEntity(const std::string &);
+	explicit AEntity(const std::string &);
 	virtual ~AEntity() = default;
 	void collide(AEntity &);
 	void update(EntitiesMap *);
-	void updateRender();
+	virtual void updateRender();
 	std::vector<std::string> getAttrs(const std::vector<std::string> &);
 	void extractAttrs(const std::vector<std::string> &);
 	const Vector2DI &getMapPos() const;
@@ -38,8 +38,8 @@ protected:
 	Vector2DI _pos;
 private:
 	struct serialize {
-		irr::s32 x;
-		irr::s32 y;
+//		irr::s32 x;
+//		irr::s32 y;
 	};
 
 	std::string _type;

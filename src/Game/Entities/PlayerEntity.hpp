@@ -13,12 +13,11 @@
 #include "../../../include/Game/Controllable.hpp"
 
 class PlayerEntity
-: public AEntity, public AMovable<float>, public Controllable {
+: public Controllable, public AMovable<float>, public AEntity  {
 public:
-	PlayerEntity(AController &_controller);
-
-protected:
-	void update() override;
+	PlayerEntity();
+	void update();
+	void updateRender() override;
 };
 
 

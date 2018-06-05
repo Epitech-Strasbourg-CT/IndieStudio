@@ -8,7 +8,7 @@
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 
-BKeyboardController::BKeyboardController()
+BKeyboardController::BKeyboardController(): _binds()
 {
 	auto &er = EventReceiver::getInstance();
 	er.registerEvent(100, irr::EET_KEY_INPUT_EVENT,
