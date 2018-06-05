@@ -8,7 +8,7 @@
 #include "../../include/Game/AEntity.hpp"
 
 AEntity::AEntity(const std::string &type)
-	: _type(type), _origin(), _staticPosition(), _node()
+	: ATrackable(), _type(type), _origin(), _staticPosition(), _node()
 {
 }
 
@@ -24,7 +24,7 @@ void AEntity::updateRender()
 
 void AEntity::dump(std::ostream &s) const
 {
-	struct AEntity::serialize ser = {};
+	struct AEntity::serialize ser = {x : getMapPos().X, y : getMapPos().Y};
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
 	memcpy(se.get(), &ser, sizeof(ser));
 	s << _type;
@@ -34,11 +34,11 @@ void AEntity::dump(std::ostream &s) const
 
 void AEntity::load(std::istream &s)
 {
-	struct AEntity::serialize ser {
-	};
+	struct AEntity::serialize ser;
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
+	setMapPos({X : ser.x, Y : ser.y});
 }
 
 std::ostream &operator<<(std::ostream &s, const AEntity &e)

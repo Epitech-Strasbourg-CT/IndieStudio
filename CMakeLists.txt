@@ -43,7 +43,8 @@ add_executable(bomberman
         include/Game/EntityFactory.hpp
         src/Game/SaveManager.cpp
         include/Game/SaveManager.hpp
-        include/Game/Movable.hpp
+        include/Game/ATrackable.hpp
+        include/Game/AMovable.hpp
         src/Game/Controllable.cpp
         include/Game/Controllable.hpp
         src/Game/AController.cpp
@@ -51,7 +52,9 @@ add_executable(bomberman
         src/Game/BKeyboardController.cpp
         include/Game/BKeyboardController.hpp
         src/Game/Entities/PlayerEntity.cpp
-        include/Game/Entities/PlayerEntity.hpp)
+        include/Game/Entities/PlayerEntity.hpp
+        src/Game/Entities/BlockEntity.cpp
+        include/Game/Entities/BlockEntity.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
