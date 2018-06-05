@@ -18,7 +18,9 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 		            {50, 50,  750, 100},
 		            "launch",
 		            [](MenuState *self) {
-			            StateMachine::getInstance().pop();
+		            	auto &sm = StateMachine::getInstance();
+		            	auto &res = self->getSharedResources();
+		            	sm.push(new GameState(res), false);
 		            }
 	            }},
 	{LOAD,      {
