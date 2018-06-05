@@ -25,7 +25,7 @@ void BackgroundState::load()
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialType(irr::video::EMT_SOLID);
 	_node->setPosition(irr::core::vector3df(0,-1, -47.38));
-	_node->setScale({4, 4, 4});
+	_node->setScale({1000, 1000, 1000});
 	_share.addSharedNode("menu", _node);
 
 	auto er = EventReceiver::getInstance();
