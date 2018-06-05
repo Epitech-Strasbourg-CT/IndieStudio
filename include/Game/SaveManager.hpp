@@ -5,13 +5,15 @@
 ** SaveManager.hpp
 */
 
-#ifndef BOMBERMAN_SAVEMANAGER_HPP
-#define BOMBERMAN_SAVEMANAGER_HPP
+#pragma once
 
+#include "EntitiesMap.hpp"
 
 class SaveManager {
-
+public:
+	SaveManager() = default;
+	static void save(EntitiesMap &, const std::string &);
+	static void load(EntitiesMap &, const std::string &);
+protected:
+private:
 };
-
-
-#endif /* !BOMBERMAN_SAVEMANAGER_HPP */

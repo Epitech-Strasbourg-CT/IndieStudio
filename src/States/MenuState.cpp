@@ -29,7 +29,8 @@ MenuState::_assets
 	if (type == irr::gui::EGET_BUTTON_CLICKED) {
 		StateMachine::getInstance().pop();
 	}
-}}};
+}}
+};
 
 MenuState::MenuState(AStateShare &_share) : AState(_share)
 {
@@ -39,12 +40,13 @@ void MenuState::load()
 {
 	auto &gm = IrrManager::getInstance();
 	auto &er = EventReceiver::getInstance();
-	er.registerEvent(irr::EEVENT_TYPE::EET_GUI_EVENT,
+	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
 	[this](const irr::SEvent &ev) {
 		auto id = ev.GUIEvent.Caller->getID();
 		if (ev.GUIEvent.EventType == irr::gui::EGET_BUTTON_CLICKED &&
 		MenuState::_assets.count(id) > 0)
 			MenuState::_assets.at(id)(ev.GUIEvent.EventType, this);
+		return true;
 	});
 	_launch = gm.getGuienv()->addButton({50, 50, 750, 100}, nullptr, 100,
 					    L"Launch game", L"Starts the game");
@@ -60,8 +62,7 @@ void MenuState::load()
 void MenuState::unload()
 {
 	auto &er = EventReceiver::getInstance();
-	er.unregisterEvent(irr::EEVENT_TYPE::EET_GUI_EVENT,
-			   irr::gui::EGET_BUTTON_CLICKED);
+	er.unregisterEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	_launch->remove();
 	_settings->remove();
 	_exit->remove();

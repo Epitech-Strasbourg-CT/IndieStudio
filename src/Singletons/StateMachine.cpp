@@ -41,6 +41,12 @@ void StateMachine::pop()
 	}
 }
 
+void StateMachine::popAll()
+{
+	while (!_states.empty())
+		pop();
+}
+
 int StateMachine::start()
 {
 	auto device = IrrManager::getInstance().getDevice();

@@ -21,6 +21,7 @@ public:
 	void replaceTop(
 	AState *gameState, bool keepLoaded);
 	void pop();
+	void popAll();
 	AState *top();
 	int start();
 private:
