@@ -54,7 +54,7 @@ MenuState::_assets
 {103, [](irr::s32 type, MenuState *self) {
 	std::map<irr::s32, std::function<void(MenuState *)>> events = {
 		{irr::gui::EGET_BUTTON_CLICKED, [](MenuState *self) {
-			StateMachine::getInstance().pop();
+			StateMachine::getInstance().popAll();
 		}}, {irr::gui::EGET_ELEMENT_HOVERED, [](MenuState *self) {
 			self->setButtonTexture(self->_exit, "exit2.png");
 		}}, {irr::gui::EGET_ELEMENT_LEFT, [](MenuState *self) {
