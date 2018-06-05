@@ -45,7 +45,13 @@ add_executable(bomberman
         include/Game/SaveManager.hpp
         include/Game/Movable.hpp
         src/Game/Controllable.cpp
-        include/Game/Controllable.hpp src/Game/AController.cpp include/Game/AController.hpp src/Game/BKeyboardController.cpp include/Game/BKeyboardController.hpp src/Game/Entities/PlayerEntity.cpp include/Game/Entities/PlayerEntity.hpp)
+        include/Game/Controllable.hpp
+        src/Game/AController.cpp
+        include/Game/AController.hpp
+        src/Game/BKeyboardController.cpp
+        include/Game/BKeyboardController.hpp
+        src/Game/Entities/PlayerEntity.cpp
+        include/Game/Entities/PlayerEntity.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
@@ -62,4 +68,35 @@ if(WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy
             ../libs/irrlicht/bin/Win64-VisualStudio/Irrlicht.dll
             ../bin/Irrlicht.dll)
-endif()
+endif(WIN32)
+
+set(IRRKLANG_DIR ./libs/irrklang)
+if(UNIX)
+        add_custom_command(TARGET bomberman PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ../libs/irrklang/bin/linux-gcc-64/ikpFlac.so
+            ../bin/ikpFlac.so)
+        add_custom_command(TARGET bomberman PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ../libs/irrklang/bin/linux-gcc-64/ikpMP3.so
+            ../bin/ikpMP3.so)
+        set(IRRKLANG_LIBRARY ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/libIrrKlang.so)
+endif(UNIX)
+if(WIN32)
+        add_custom_command(TARGET bomberman PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ../libs/irrklang/bin/winx64-visualStudio/ikpFlac.dll
+            ../bin/ikpFlac.dll)
+        add_custom_command(TARGET bomberman PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ../libs/irrklang/bin/winx64-visualStudio/ikpMP3.dll
+            ../bin/ikpMP3.dll)
+        add_custom_command(TARGET bomberman PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ../libs/irrklang/bin/winx64-visualStudio/irrKlang.dll
+            ../bin/irrKlang.dll)
+    set(IRRKLANG_LIBRARY ${PROJECT_SOURCE_DIR}/libs/irrklang/lib/Winx64-visualStudio/irrKlang.lib)
+endif(WIN32)
+
+target_link_libraries(bomberman ${IRRKLANG_LIBRARY})
+target_include_directories(bomberman PRIVATE ${IRRKLANG_DIR}/include)

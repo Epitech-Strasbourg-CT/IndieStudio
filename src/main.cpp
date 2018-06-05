@@ -19,3 +19,20 @@ int main()
 	device->setEventReceiver(&EventReceiver::getInstance());
 	return StateMachine::getInstance().start();
 }
+
+//#include <iostream>
+//#include <irrKlang.h>
+//#pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
+//
+//int main(int argc, const char** argv)
+//{
+//	irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
+//	if (!engine) return 1; // could not start engine
+//
+//	engine->play2D("assets/sounds/ophelia.mp3", true); // play some mp3 file, looped
+//
+//	std::cin.get(); // wait until user presses a key
+//
+//	engine->drop(); // delete engine
+//	return 0;
+//}
