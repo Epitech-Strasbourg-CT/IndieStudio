@@ -25,13 +25,21 @@ public:
 
 	void draw() override;
 
+	void setButtonTexture(irr::gui::IGUIButton *, std::string);
+
+	irr::gui::IGUIButton *getLaunch() const;
+	irr::gui::IGUIButton *getLoad() const;
+	irr::gui::IGUIButton *getSettings() const;
+	irr::gui::IGUIButton *getExit() const;
+
 private:
 	irr::gui::IGUIButton *_launch;
+	irr::gui::IGUIButton *_load;
 	irr::gui::IGUIButton *_settings;
 	irr::gui::IGUIButton *_exit;
 	irrklang::ISoundEngine *_engine;
 
-	static const std::unordered_map<irr::s32,
+	static const std::unordered_map<int,//irr::s32,
 	std::function<void(irr::s32, MenuState *)>> _assets;
 };
 

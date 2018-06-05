@@ -22,7 +22,7 @@ public:
 	void unregisterEvent(size_t id, irr::EEVENT_TYPE);
 private:
 	EventReceiver();
-	std::unordered_map<irr::EEVENT_TYPE,
+	std::unordered_map<size_t,//irr::EEVENT_TYPE,
 	std::unordered_map<size_t, std::function<bool(const irr::SEvent &)>>>
 	_binds;
 

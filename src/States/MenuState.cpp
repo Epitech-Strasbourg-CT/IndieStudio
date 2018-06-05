@@ -9,28 +9,60 @@
 #include "../../include/Singletons/IrrManager.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
+#include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/GameState.hpp"
 
 const std::unordered_map<irr::s32, std::function<void(irr::s32, MenuState *)>>
 MenuState::_assets
-{
-{100, [](irr::s32 type, MenuState *self) {
-	if (type == irr::gui::EGET_BUTTON_CLICKED) {
-		StateMachine::getInstance()
-		.push(new GameState(self->getSharedResources()), false);
-	}
+{{100, [](irr::s32 type, MenuState *self) {
+	std::map<irr::s32, std::function<void(MenuState *)>> events = {
+		{irr::gui::EGET_BUTTON_CLICKED, [](MenuState *self) {
+			StateMachine::getInstance()
+			.push(new GameState(self->getSharedResources()), false);
+		}}, {irr::gui::EGET_ELEMENT_HOVERED, [](MenuState *self) {
+			self->setButtonTexture(self->getLaunch(), "launch2.png");
+		}}, {irr::gui::EGET_ELEMENT_LEFT, [](MenuState *self) {
+			self->setButtonTexture(self->getLaunch(), "launch1.png");
+	}}};
+	if (events.find(type) != events.end())
+			events[type](self);
 }},
-{101, [](irr::s32 type, MenuState *self) {
-	if (type == irr::gui::EGET_BUTTON_CLICKED) {
-		StateMachine::getInstance().pop();
-	}
+{101, [](irr::s32 type,MenuState *self) {
+	std::map<irr::s32, std::function<void(MenuState *)>> events = {
+		{irr::gui::EGET_BUTTON_CLICKED, [](MenuState *self) {
+			StateMachine::getInstance().pop();
+		}}, {irr::gui::EGET_ELEMENT_HOVERED, [](MenuState *self) {
+			self->setButtonTexture(self->getLoad(), "load2.png");
+		}}, {irr::gui::EGET_ELEMENT_LEFT, [](MenuState *self) {
+			self->setButtonTexture(self->getLoad(), "load1.png");
+	}}};
+	if (events.find(type) != events.end())
+			events[type](self);
 }},
 {102, [](irr::s32 type, MenuState *self) {
-	if (type == irr::gui::EGET_BUTTON_CLICKED) {
-		StateMachine::getInstance().pop();
-	}
-}}
-};
+	std::map<irr::s32, std::function<void(MenuState *)>> events = {
+		{irr::gui::EGET_BUTTON_CLICKED, [](MenuState *self) {
+			StateMachine::getInstance().pop();
+		}}, {irr::gui::EGET_ELEMENT_HOVERED, [](MenuState *self) {
+			//self->setButtonTexture(self->_settings, "settings2.png");
+		}}, {irr::gui::EGET_ELEMENT_LEFT, [](MenuState *self) {
+			//self->setButtonTexture(self->_settings, "settings1.png");
+	}}};
+	if (events.find(type) != events.end())
+			events[type](self);
+}},
+{103, [](irr::s32 type, MenuState *self) {
+	std::map<irr::s32, std::function<void(MenuState *)>> events = {
+		{irr::gui::EGET_BUTTON_CLICKED, [](MenuState *self) {
+			StateMachine::getInstance().popAll();
+		}}, {irr::gui::EGET_ELEMENT_HOVERED, [](MenuState *self) {
+			self->setButtonTexture(self->getExit(), "exit2.png");
+		}}, {irr::gui::EGET_ELEMENT_LEFT, [](MenuState *self) {
+			self->setButtonTexture(self->getExit(), "exit1.png");
+	}}};
+	if (events.find(type) != events.end())
+			events[type](self);
+}}};
 
 MenuState::MenuState(AStateShare &_share) : AState(_share)
 {
@@ -49,19 +81,28 @@ void MenuState::load()
 	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
 	[this](const irr::SEvent &ev) {
 		auto id = ev.GUIEvent.Caller->getID();
-		if (ev.GUIEvent.EventType == irr::gui::EGET_BUTTON_CLICKED &&
+		if ((ev.GUIEvent.EventType == irr::gui::EGET_BUTTON_CLICKED 
+		|| ev.GUIEvent.EventType == irr::gui::EGET_ELEMENT_HOVERED 
+		|| ev.GUIEvent.EventType == irr::gui::EGET_ELEMENT_LEFT) &&
 		MenuState::_assets.count(id) > 0)
 			MenuState::_assets.at(id)(ev.GUIEvent.EventType, this);
 		return true;
 	});
-	_launch = gm.getGuienv()->addButton({50, 50, 750, 100}, nullptr, 100,
-					    L"Launch game", L"Starts the game");
-	_settings = gm.getGuienv()->addButton({50, 150, 750, 200}, nullptr,
-					      101,
-					      L"Settings", L"Settings menu");
-	_exit = gm.getGuienv()->addButton({50, 250, 750, 300}, nullptr, 102,
-					  L"Exit",
-					  L"Leaves the game");
+	
+	_launch = gm.getGuienv()->addButton({50, 50, 750, 100}, nullptr, 100, L"", L"Starts the game");
+	_launch->setImage(AssetsPool::getInstance().loadTexture("launche1.png"));
+	_launch->setPressedImage(AssetsPool::getInstance().loadTexture("launch2.png"));
+
+	_load = gm.getGuienv()->addButton({50, 150, 750, 200}, nullptr, 101, L"", L"Load game");
+	_load->setImage(AssetsPool::getInstance().loadTexture("load1.png"));
+	_load->setPressedImage(AssetsPool::getInstance().loadTexture("load2.png"));
+
+	_settings = gm.getGuienv()->addButton({50, 250, 750, 300}, nullptr,102, L"", L"Settings menu");
+
+	_exit = gm.getGuienv()->addButton({50, 350, 750, 400}, nullptr, 103, L"", L"Leaves the game");
+	_exit->setImage(AssetsPool::getInstance().loadTexture("exit1.png"));
+	_exit->setPressedImage(AssetsPool::getInstance().loadTexture("exit2.png"));
+	
 	if (_engine)
     	_engine->play2D("assets/sounds/ophelia.mp3", true); // play some mp3 file, looped
 	AState::load();
@@ -84,4 +125,28 @@ void MenuState::draw()
 	auto &im = IrrManager::getInstance();
 	im.getSmgr()->drawAll();
 	im.getGuienv()->drawAll();
+}
+
+void MenuState::setButtonTexture(irr::gui::IGUIButton *button, std::string filename) {
+	button->setImage(AssetsPool::getInstance().loadTexture(filename));
+}
+
+irr::gui::IGUIButton *MenuState::getLaunch() const
+{
+	return _launch;
+}
+
+irr::gui::IGUIButton *MenuState::getLoad() const
+{
+	return _load;
+}
+
+irr::gui::IGUIButton *MenuState::getSettings() const
+{
+	return _settings;
+}
+
+irr::gui::IGUIButton *MenuState::getExit() const
+{
+	return _exit;
 }
