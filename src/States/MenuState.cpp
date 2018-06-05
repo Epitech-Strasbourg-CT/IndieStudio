@@ -34,6 +34,12 @@ MenuState::_assets
 
 MenuState::MenuState(AStateShare &_share) : AState(_share)
 {
+	 _engine = irrklang::createIrrKlangDevice();
+}
+
+MenuState::~MenuState()
+{
+	_engine->drop();
 }
 
 void MenuState::load()
@@ -56,8 +62,11 @@ void MenuState::load()
 	_exit = gm.getGuienv()->addButton({50, 250, 750, 300}, nullptr, 102,
 					  L"Exit",
 					  L"Leaves the game");
+	if (_engine)
+    	_engine->play2D("assets/sounds/ophelia.mp3", true); // play some mp3 file, looped
 	AState::load();
 }
+
 
 void MenuState::unload()
 {

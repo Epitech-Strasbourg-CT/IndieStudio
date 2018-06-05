@@ -46,7 +46,7 @@ void EntitiesMap::updateRender()
 
 bool EntitiesMap::generate()
 {
-	return true;
+	
 }
 
 void EntitiesMap::clean()
