@@ -13,8 +13,9 @@ BKeyboardController::BKeyboardController(): _binds()
 	auto &er = EventReceiver::getInstance();
 	er.registerEvent(100, irr::EET_KEY_INPUT_EVENT,
 	[this](const irr::SEvent &ev) {
-		if (_binds.count(ev.KeyInput.Key) > 0 && _controllable)
-			_controllable->callBind(_binds[ev.KeyInput.Key]);
+		auto key = ev.KeyInput.Key;
+		if (_binds.count(key) > 0 && _controllable)
+			this->_isKeyDown[key] = ev.KeyInput.PressedDown;
 		return true;
 	});
 }
@@ -27,4 +28,11 @@ void BKeyboardController::registerBind(irr::EKEY_CODE code, ControlName_e c)
 void BKeyboardController::unregisterBind(irr::EKEY_CODE code)
 {
 	_binds.erase(code);
+}
+
+void BKeyboardController::updateInputs()
+{
+	for (auto &n : _isKeyDown)
+		if (n.second && _binds.count(n.first) > 0)
+			_controllable->callBind(_binds[n.first]);
 }

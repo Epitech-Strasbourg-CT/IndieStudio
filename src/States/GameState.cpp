@@ -15,36 +15,30 @@
 
 GameState::GameState(AStateShare &_share) : AState(_share)
 {
-	auto *controller = new BKeyboardController;
+	IrrManager::getInstance().getSmgr()
+		->addCameraSceneNodeFPS();
+//	auto *controller = new BKeyboardController;
+//
+//	controller->registerBind(irr::KEY_UP, MOVE_UP);
+//	controller->registerBind(irr::KEY_DOWN, MOVE_DOWN);
+//	controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
+//	controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
+//	PlayerEntity *player = new PlayerEntity();
 
-	controller->registerBind(irr::KEY_UP, MOVE_UP);
-	controller->registerBind(irr::KEY_DOWN, MOVE_DOWN);
-	controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
-	controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
-	PlayerEntity *player = new PlayerEntity();
-
-	AController::bindEntityToController(*controller, *player);
-	_entity = player;
+//	AController::bindEntityToController(*controller, *player);
+//	_entity = player;
+	_emap.generate();
 }
 
 GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_share)
 {
-	auto *controller = new BKeyboardController;
-
-	controller->registerBind(irr::KEY_UP, MOVE_UP);
-	controller->registerBind(irr::KEY_DOWN, MOVE_DOWN);
-	controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
-	controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
-	PlayerEntity *player = new PlayerEntity();
-	AController::bindEntityToController(*controller, *player);
-
-	_entity = player;
 	SaveManager::save(_emap, filename);
 }
 
 void GameState::update()
 {
-	_entity->update();
+	_emap.update();
+//	_entity->update();
 }
 
 void GameState::load()
@@ -67,6 +61,7 @@ void GameState::load()
 
 void GameState::updateRender()
 {
-	_entity->updateRender();
+	//_entity->updateRender();
+	_emap.updateRender();
 	AState::updateRender();
 }

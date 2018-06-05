@@ -6,6 +6,7 @@
 */
 
 #include "../../include/Game/EntitiesMap.hpp"
+#include "../../include/Game/Entities/BlockEntity.hpp"
 
 bool EntitiesMap::insert(AEntity &entity)
 {
@@ -46,6 +47,7 @@ void EntitiesMap::updateRender()
 
 bool EntitiesMap::generate()
 {
+	_map[{0,0}].push_back(new BlockEntity());
 	return true;
 }
 

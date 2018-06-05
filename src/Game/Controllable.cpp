@@ -19,6 +19,7 @@ void Controllable::delEvent(ControlName_e c)
 
 void Controllable::update()
 {
+	_controller->updateInputs();
 	for (auto &n : _actions)
 		if (_binds.count(n) >= 0)
 			_binds[n]();
