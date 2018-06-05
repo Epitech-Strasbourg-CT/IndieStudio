@@ -20,13 +20,13 @@ void BackgroundState::load()
 {
 	auto smgr = IrrManager::getInstance().getSmgr();
 	auto &assetsPool = AssetsPool::getInstance();
-	irr::scene::IMesh *mesh = assetsPool.loadMesh("tree.obj");
+	irr::scene::IMesh *mesh = assetsPool.loadMesh("menu/menu.obj");
 	_node = smgr->addMeshSceneNode(mesh);
-	auto texture = AssetsPool::getInstance().loadTexture("tree.png");
-	_node->setMaterialTexture(0, texture);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	_node->setPosition(irr::core::vector3df(0,0, -47));
-	_share.addSharedNode("tree", _node);
+	_node->setMaterialType(irr::video::EMT_SOLID);
+	_node->setPosition(irr::core::vector3df(0,-1, -47.38));
+	_node->setScale({4, 4, 4});
+	_share.addSharedNode("menu", _node);
 
 	auto er = EventReceiver::getInstance();
 	AState::load();
@@ -34,7 +34,7 @@ void BackgroundState::load()
 
 void BackgroundState::unload()
 {
-	_share.delSharedNode("tree");
+	_share.delSharedNode("menu");
 	_node->remove();
 	AState::unload();
 }
