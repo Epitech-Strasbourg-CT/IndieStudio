@@ -14,12 +14,6 @@
 class BombEntity : public AEntity {
 public:
 	BombEntity();
-
-	void collide(AEntity &entity) override;
-
-	void update(EntitiesMap *map) override;
-
-	void updateRender() override;
 };
 
 

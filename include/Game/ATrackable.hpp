@@ -15,7 +15,7 @@ public:
 	{
 	}
 
-	~ATrackable() = default;
+	virtual ~ATrackable() = default;
 
 	irr::core::vector2d<T> getPos()
 	{

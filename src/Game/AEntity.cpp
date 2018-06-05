@@ -24,7 +24,7 @@ void AEntity::updateRender()
 
 void AEntity::dump(std::ostream &s) const
 {
-	struct AEntity::serialize ser = {x : getMapPos().X, y : getMapPos().Y};
+	struct AEntity::serialize ser = {getMapPos().X, getMapPos().Y};
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
 	memcpy(se.get(), &ser, sizeof(ser));
 	s << _type;
@@ -38,7 +38,7 @@ void AEntity::load(std::istream &s)
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
-	setMapPos({X : ser.x, Y : ser.y});
+	setMapPos({ser.x, ser.y});
 }
 
 std::ostream &operator<<(std::ostream &s, const AEntity &e)

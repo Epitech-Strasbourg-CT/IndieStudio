@@ -20,9 +20,9 @@ MenuState::_assets
 			StateMachine::getInstance()
 			.push(new GameState(self->getSharedResources()), false);
 		}}, {irr::gui::EGET_ELEMENT_HOVERED, [](MenuState *self) {
-			self->setButtonTexture(self->_launch, "launch2.png");
+			self->setButtonTexture(self->getLaunch(), "launch2.png");
 		}}, {irr::gui::EGET_ELEMENT_LEFT, [](MenuState *self) {
-			self->setButtonTexture(self->_launch, "launch1.png");
+			self->setButtonTexture(self->getLaunch(), "launch1.png");
 	}}};
 	if (events.find(type) != events.end())
 			events[type](self);
@@ -32,9 +32,9 @@ MenuState::_assets
 		{irr::gui::EGET_BUTTON_CLICKED, [](MenuState *self) {
 			StateMachine::getInstance().pop();
 		}}, {irr::gui::EGET_ELEMENT_HOVERED, [](MenuState *self) {
-			self->setButtonTexture(self->_load, "load2.png");
+			self->setButtonTexture(self->getLoad(), "load2.png");
 		}}, {irr::gui::EGET_ELEMENT_LEFT, [](MenuState *self) {
-			self->setButtonTexture(self->_load, "load1.png");
+			self->setButtonTexture(self->getLoad(), "load1.png");
 	}}};
 	if (events.find(type) != events.end())
 			events[type](self);
@@ -56,9 +56,9 @@ MenuState::_assets
 		{irr::gui::EGET_BUTTON_CLICKED, [](MenuState *self) {
 			StateMachine::getInstance().popAll();
 		}}, {irr::gui::EGET_ELEMENT_HOVERED, [](MenuState *self) {
-			self->setButtonTexture(self->_exit, "exit2.png");
+			self->setButtonTexture(self->getExit(), "exit2.png");
 		}}, {irr::gui::EGET_ELEMENT_LEFT, [](MenuState *self) {
-			self->setButtonTexture(self->_exit, "exit1.png");
+			self->setButtonTexture(self->getExit(), "exit1.png");
 	}}};
 	if (events.find(type) != events.end())
 			events[type](self);
@@ -129,4 +129,24 @@ void MenuState::draw()
 
 void MenuState::setButtonTexture(irr::gui::IGUIButton *button, std::string filename) {
 	button->setImage(AssetsPool::getInstance().loadTexture(filename));
+}
+
+irr::gui::IGUIButton *MenuState::getLaunch() const
+{
+	return _launch;
+}
+
+irr::gui::IGUIButton *MenuState::getLoad() const
+{
+	return _load;
+}
+
+irr::gui::IGUIButton *MenuState::getSettings() const
+{
+	return _settings;
+}
+
+irr::gui::IGUIButton *MenuState::getExit() const
+{
+	return _exit;
 }

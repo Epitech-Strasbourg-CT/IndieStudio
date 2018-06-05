@@ -24,11 +24,15 @@ class AEntity : public virtual ATrackable<float> {
 public:
 	explicit AEntity(const std::string & = "entity");
 	virtual ~AEntity() = default;
-	void collide(AEntity &);
-	void update(EntitiesMap *);
+
+	virtual void collide(AEntity &);
+
+	virtual void update(EntitiesMap *);
 	virtual void updateRender();
-	void dump(std::ostream &s) const;
-	void load(std::istream &s);
+
+	virtual void dump(std::ostream &s) const;
+
+	virtual void load(std::istream &s);
 
 	Vector2DI getMapPos() const;
 	void setMapPos(const Vector2DI &position);
