@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "ATrackable.hpp"
 #include <iostream>
 #include <irrlicht.h>
 #include <regex>
@@ -19,7 +20,7 @@ using Vector2DI = irr::core::vector2di;
 
 class EntitiesMap;
 
-class AEntity {
+class AEntity : public ATrackable<float> {
 public:
 	explicit AEntity(const std::string & = "entity");
 	virtual ~AEntity() = default;
@@ -37,11 +38,10 @@ public:
 
 	const Vector3DF &getOrigin() const;
 
-
 private:
 	struct serialize {
-//		irr::s32 x;
-//		irr::s32 y;
+		irr::s32 x;
+		irr::s32 y;
 	};
 	std::string _type;
 	Vector3DF _origin;
@@ -53,4 +53,3 @@ protected:
 
 std::ostream &operator<<(std::ostream &, const AEntity &);
 AEntity &operator>>(std::istream &, AEntity &);
-
