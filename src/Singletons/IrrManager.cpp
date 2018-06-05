@@ -12,19 +12,21 @@ IrrManager IrrManager::_instance;
 IrrManager::~IrrManager()
 {
 	_device->drop();
+	_engine->drop();
 }
 
 IrrManager::IrrManager()
-: _width(800),
-_height(600)
+	: _width(800),
+	  _height(600)
 {
 	_device = irr::createDevice(
-	irr::video::EDT_OPENGL,
-	irr::core::dimension2d<irr::u32>(_width, _height),
-	32, false, false, false, nullptr);
+		irr::video::EDT_OPENGL,
+		irr::core::dimension2d<irr::u32>(_width, _height),
+		32, false, false, false, nullptr);
 	_driver = _device->getVideoDriver();
 	_smgr = _device->getSceneManager();
 	_guienv = _device->getGUIEnvironment();
+	_engine = irrklang::createIrrKlangDevice();
 }
 
 irr::IrrlichtDevice *IrrManager::getDevice() const
@@ -45,6 +47,11 @@ irr::scene::ISceneManager *IrrManager::getSmgr() const
 irr::gui::IGUIEnvironment *IrrManager::getGuienv() const
 {
 	return _guienv;
+}
+
+irrklang::ISoundEngine *IrrManager::getEngine() const
+{
+	return _engine;
 }
 
 IrrManager &IrrManager::getInstance()

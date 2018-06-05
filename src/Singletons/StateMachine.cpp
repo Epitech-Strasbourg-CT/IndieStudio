@@ -52,9 +52,9 @@ int StateMachine::start()
 	auto device = IrrManager::getInstance().getDevice();
 	auto driver = IrrManager::getInstance().getDriver();
 
-	while (device->run()) {
+	while (device->run() && !_states.empty()) {
 		driver->beginScene(true, true,
-		irr::video::SColor(255, 100, 101, 140));
+		                   irr::video::SColor(255, 100, 101, 140));
 		if (!_states.empty())
 			_states.top()->update();
 		if (!_states.empty())

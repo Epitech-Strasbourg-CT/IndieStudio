@@ -10,6 +10,7 @@
 
 #include <irrlicht.h>
 #include <memory>
+#include <irrKlang.h>
 
 class IrrManager {
 public:
@@ -20,6 +21,8 @@ public:
 	irr::video::IVideoDriver *getDriver() const;
 	irr::scene::ISceneManager *getSmgr() const;
 	irr::gui::IGUIEnvironment *getGuienv() const;
+	irrklang::ISoundEngine *getEngine() const;
+
 private:
 	IrrManager();
 
@@ -27,6 +30,7 @@ private:
 	irr::video::IVideoDriver *_driver;
 	irr::scene::ISceneManager *_smgr;
 	irr::gui::IGUIEnvironment *_guienv;
+	irrklang::ISoundEngine *_engine;
 	irr::u32 _width;
 	irr::u32 _height;
 

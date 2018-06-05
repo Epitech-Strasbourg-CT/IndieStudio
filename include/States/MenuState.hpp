@@ -10,37 +10,48 @@
 #include <irrTypes.h>
 #include <irrKlang.h>
 #include <IGUIButton.h>
+#include <vector>
 #include "../Abstracts/AState.hpp"
 
 #ifndef BOMBERMAN_MENUSTATE_HPP
-#define BOMBERMAN_MENUSTATE_HPP
+	#define BOMBERMAN_MENUSTATE_HPP
+
+	#define BOUTON_NUMBER 4
+
+enum MenuActions {
+	LAUNCH = 100,
+	LOAD,
+	SETTINGS,
+	EXIT_GAME
+};
 
 class MenuState : public AState {
 public:
-	MenuState(AStateShare &_share);
+
+	explicit MenuState(AStateShare &_share);
 	~MenuState();
 
+
+	void loadBouttons();
+	void unloadBouttons();
 	void load() override;
 	void unload() override;
 
 	void draw() override;
 
-	void setButtonTexture(irr::gui::IGUIButton *, std::string);
+	void applyEventBoutton(const irr::SEvent &ev, MenuActions id);
+	irr::gui::IGUIButton *getBoutton(MenuActions) const;
 
-	irr::gui::IGUIButton *getLaunch() const;
-	irr::gui::IGUIButton *getLoad() const;
-	irr::gui::IGUIButton *getSettings() const;
-	irr::gui::IGUIButton *getExit() const;
+	struct BouttonsDesc {
+		irr::core::rect<irr::s32> pos;
+		std::string name;
+		std::function<void(MenuState *)> fct;
+	};
 
 private:
-	irr::gui::IGUIButton *_launch;
-	irr::gui::IGUIButton *_load;
-	irr::gui::IGUIButton *_settings;
-	irr::gui::IGUIButton *_exit;
-	irrklang::ISoundEngine *_engine;
-
-	static const std::unordered_map<int,//irr::s32,
-	std::function<void(irr::s32, MenuState *)>> _assets;
+	std::vector<irr::gui::IGUIButton *> _bouttons;
+	static const std::map<MenuActions , BouttonsDesc> _descs;
+	irrklang::ISound *_sound;
 };
 
 #endif //BOMBERMAN_MENUSTATE_HPP
