@@ -16,3 +16,14 @@ void AController::registerControllable(Controllable *controllable)
 	_controllable = controllable;
 
 }
+
+void AController::updateInputs()
+{
+
+}
+
+void AController::bindEntityToController(AController &con, Controllable &ent)
+{
+	con.registerControllable(&ent);
+	ent.saveController(&con);
+}

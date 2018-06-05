@@ -7,7 +7,8 @@
 
 #include "../../include/Game/AEntity.hpp"
 
-AEntity::AEntity(const std::string &type) : _type(type)
+AEntity::AEntity(const std::string &type)
+	: _type(type), _origin(), _staticPosition(), _node()
 {
 }
 
@@ -19,15 +20,7 @@ void AEntity::updateRender()
 {
 }
 
-const Vector2DI &AEntity::getMapPos() const
-{
-	return (_pos);
-}
-
-const Vector3DF &AEntity::getNodePos() const
-{
-	return (_node->getPosition());
-}
+// region Save & load
 
 void AEntity::dump(std::ostream &s) const
 {
@@ -41,23 +34,11 @@ void AEntity::dump(std::ostream &s) const
 
 void AEntity::load(std::istream &s)
 {
-	struct AEntity::serialize ser {};
+	struct AEntity::serialize ser {
+	};
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
-}
-
-void AEntity::collide(AEntity &)
-{
-}
-
-void AEntity::extractAttrs(const std::vector<std::string> &)
-{
-}
-
-std::vector<std::string> AEntity::getAttrs(const std::vector<std::string> &)
-{
-	return std::vector<std::string>();
 }
 
 std::ostream &operator<<(std::ostream &s, const AEntity &e)
@@ -70,4 +51,38 @@ AEntity &operator>>(std::istream &s, AEntity &e)
 {
 	e.load(s);
 	return e;
+}
+
+// endregion
+
+void AEntity::collide(AEntity &)
+{
+}
+
+const Vector3DF &AEntity::getOrigin() const
+{
+	return _origin;
+}
+
+Vector2DI AEntity::getMapPos() const
+{
+	auto x = static_cast<int>(_staticPosition.X);
+	auto y = static_cast<int>(_staticPosition.Y);
+
+	return irr::core::vector2di(x, y);
+}
+
+void AEntity::setMapPos(const Vector2DI &position)
+{
+	_staticPosition = irr::core::vector2df(position.X, position.Y);
+}
+
+const Vector2DF &AEntity::getStaticPos() const
+{
+	return _staticPosition;
+}
+
+void AEntity::setStaticPos(const Vector2DF &position)
+{
+	_staticPosition = position;
 }

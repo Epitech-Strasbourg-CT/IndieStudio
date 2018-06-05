@@ -11,7 +11,7 @@
 
 #include "../Abstracts/AState.hpp"
 #include "../Game/EntitiesMap.hpp"
-#include "../../src/Game/Entities/PlayerEntity.hpp"
+#include "../Game/Entities/PlayerEntity.hpp"
 
 class GameState : public AState {
 public:
@@ -19,6 +19,7 @@ public:
 	GameState(AStateShare &_share, std::string &);
 	void load() override;
 	void update() override;
+	void updateRender() override;
 
 private:
 	EntitiesMap _emap;

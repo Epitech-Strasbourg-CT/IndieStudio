@@ -1,6 +1,5 @@
 cmake-build-*
 .idea
-bin/
 *.o
 bomberman
 build/

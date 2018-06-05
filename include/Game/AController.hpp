@@ -23,8 +23,11 @@ enum ControlName_e {
 
 class AController {
 public:
-	void registerControllable(Controllable *controllable);
+	virtual void updateInputs();
 	virtual ~AController();
+	static void bindEntityToController(AController &, Controllable &);
+private:
+	void registerControllable(Controllable *controllable);
 protected:
 	Controllable *_controllable = nullptr;
 };

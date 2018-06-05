@@ -5,7 +5,7 @@
 ** PlayerEntity.cpp
 */
 
-#include "PlayerEntity.hpp"
+#include "../../../include/Game/Entities/PlayerEntity.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
 
@@ -19,20 +19,16 @@ PlayerEntity::PlayerEntity()
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialTexture(0, am.loadTexture("sydney.bmp"));
 	addEvent(MOVE_UP, [this]() {
-		this->dirTop(0.1);
-		std::cout << "TRIGGER" << std::endl;
+		this->dirTop(0.3);
 	});
 	addEvent(MOVE_DOWN, [this]() {
-		this->dirBottom(0.1);
-		std::cout << "TRIGGER" << std::endl;
+		this->dirBottom(0.3);
 	});
 	addEvent(MOVE_LEFT, [this]() {
-		std::cout << "TRIGGER" << std::endl;
-		this->dirLeft(0.1);
+		this->dirLeft(0.3);
 	});
 	addEvent(MOVE_RIGHT, [this]() {
-		std::cout << "TRIGGER" << std::endl;
-		this->dirRight(0.1);
+		this->dirRight(0.3);
 	});
 }
 
@@ -43,7 +39,11 @@ void PlayerEntity::update()
 
 void PlayerEntity::updateRender()
 {
-//	if (getNodePos() != _pos)
-//		_node->setPosition(pos);
-//	AEntity::updateRender();
+	if (getPos() != _staticPosition) {
+		auto pos = getOrigin();
+		pos.X += getPos().X;
+		pos.Y += getPos().Y;
+		_node->setPosition(pos);
+	}
+	AEntity::updateRender();
 }
