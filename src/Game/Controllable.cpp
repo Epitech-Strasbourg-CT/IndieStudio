@@ -20,16 +20,22 @@ void Controllable::delEvent(ControlName_e c)
 void Controllable::update()
 {
 	for (auto &n : _actions)
-		_binds[n]();
+		if (_binds.count(n) >= 0)
+			_binds[n]();
 	_actions.clear();
 }
 
 Controllable::Controllable()
-: _actions(), _binds()
+: _actions(), _binds(), _controller(nullptr)
 {
 }
 
 void Controllable::callBind(ControlName_e c)
 {
 	this->_actions.insert(c);
+}
+
+void Controllable::saveController(AController *controller)
+{
+	_controller.reset(controller);
 }

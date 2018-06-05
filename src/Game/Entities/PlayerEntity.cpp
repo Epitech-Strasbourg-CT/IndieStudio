@@ -5,12 +5,12 @@
 ** PlayerEntity.cpp
 */
 
-#include "PlayerEntity.hpp"
+#include "../../../include/Game/Entities/PlayerEntity.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
 
 PlayerEntity::PlayerEntity()
-: AEntity("Player"), Controllable()
+: AEntity("Player"), Controllable(), _oldPos()
 {
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
@@ -43,7 +43,12 @@ void PlayerEntity::update()
 
 void PlayerEntity::updateRender()
 {
-//	if (getNodePos() != _pos)
-//		_node->setPosition(pos);
-//	AEntity::updateRender();
+	if (getPos() != _oldPos) {
+		auto pos = _node->getPosition();
+		pos.X += getPos().X;
+		pos.Y += getPos().Y;
+		_node->setPosition(pos);
+		_oldPos = getg Pos();
+	}
+	AEntity::updateRender();
 }

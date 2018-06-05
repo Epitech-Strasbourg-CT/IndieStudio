@@ -21,7 +21,7 @@ void AEntity::updateRender()
 
 const Vector2DI &AEntity::getMapPos() const
 {
-	return (_pos);
+	return (_mapPos);
 }
 
 const Vector3DF &AEntity::getNodePos() const
@@ -32,8 +32,8 @@ const Vector3DF &AEntity::getNodePos() const
 void AEntity::dump(std::ostream &s) const
 {
 	struct AEntity::serialize ser = {
-//		x: _pos.X,
-//		y: _pos.Y,
+//		x: _mapPos.X,
+//		y: _mapPos.Y,
 	};
 	char *se = new char[sizeof(ser)];
 	memcpy(se, &ser, sizeof(ser));
@@ -49,23 +49,13 @@ void AEntity::load(std::istream &s)
 
 	s.read(se, sizeof(ser));
 	memcpy(&ser, se, sizeof(ser));
-//	_pos.X = ser.x;
-//	_pos.Y = ser.y;
+//	_mapPos.X = ser.x;
+//	_mapPos.Y = ser.y;
 }
 
 void AEntity::collide(AEntity &)
 {
 
-}
-
-void AEntity::extractAttrs(const std::vector<std::string> &)
-{
-
-}
-
-std::vector<std::string> AEntity::getAttrs(const std::vector<std::string> &)
-{
-	return std::vector<std::string>();
 }
 
 std::ostream &operator<<(std::ostream &s, const AEntity &e)
