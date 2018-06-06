@@ -31,6 +31,8 @@ add_executable(bomberman
         include/Singletons/EventReceiver.hpp
         src/States/MenuState.cpp
         include/States/MenuState.hpp
+        src/States/SettingsState.cpp
+        include/States/SettingsState.hpp
         src/States/BackgroundState.cpp
         include/States/BackgroundState.hpp
         src/Abstracts/AStateShare.cpp
