@@ -13,26 +13,82 @@
 
 const std::map<SettingsActions, SettingsState::BouttonsDesc>
 	SettingsState::_descs{
-	{VOL_UP,    {
+	{MASTER_VOL_UP,    {
 		            {700, 50,  750, 100},
-		            "volup",
+		            "masterVolUp",
 		            [](SettingsState *self) {
-				auto engine = IrrManager::getInstance().getEngine();
-	 	            	engine->setSoundVolume(engine->getSoundVolume() + 0.1);
+				    auto &manager = IrrManager::getInstance();
+				    manager.setMasterVolume(manager.getMasterVolume() + (irrklang::ik_f32 )0.1);
 		}
 	            }},
-	{VOL_DOWN,    {
+	{MASTER_VOL_DOWN,    {
 		            {50, 50,  100, 100},
-		            "voldown",
+		            "masterVolDown",
 		            [](SettingsState *self) {
-				auto engine = IrrManager::getInstance().getEngine();
-		            	engine->setSoundVolume(engine->getSoundVolume() - 0.1);
+				    auto &manager = IrrManager::getInstance();
+				    manager.setMasterVolume(manager.getMasterVolume() - (irrklang::ik_f32 )0.1);
 		            }
-	}}
+	}},
+	{MUSIC_VOL_UP,    {
+			{700, 150,  750, 200},
+			"musicVolDown",
+			[](SettingsState *self) {
+				auto &manager = IrrManager::getInstance();
+				manager.setMusicVolume(manager.getMusicVolume() + (irrklang::ik_f32 )0.1);
+			}
+	}},
+	{MUSIC_VOL_DOWN, {
+			{50, 150,  100, 200},
+			"musicVolDown",
+			[](SettingsState *self) {
+				auto &manager = IrrManager::getInstance();
+				manager.setMusicVolume(manager.getMusicVolume() - (irrklang::ik_f32 )0.1);
+			}
+	}},
+	{SFX_VOL_UP,	{
+		{700, 250,  750, 300},
+		"musicVolDown",
+		[](SettingsState *self) {
+			auto &manager = IrrManager::getInstance();
+			manager.setEffectsVolume(manager.getEffectsVolume() + (irrklang::ik_f32 )0.1);
+		}
+	}},
+	{SFX_VOL_DOWN,    {
+		{50, 250,  100, 300},
+		"musicVolDown",
+		[](SettingsState *self) {
+			auto &manager = IrrManager::getInstance();
+			manager.setEffectsVolume(manager.getEffectsVolume() - (irrklang::ik_f32 )0.1);
+		}
+	}},
+	{VOL_APPLY,    {
+		{525, 500,  625, 550},
+		"volApply",
+		[](SettingsState *self) {
+			StateMachine::getInstance().pop();
+		}
+	}},
+	{VOL_CANCEL,    {
+		{650, 500,  750, 550},
+		"volCancel",
+		[](SettingsState *self) {
+			auto &manager = IrrManager::getInstance();
+
+			manager.setMasterVolume(self->_master);
+			manager.setMusicVolume(self->_music);
+			manager.setEffectsVolume(self->_sfx);
+			StateMachine::getInstance().pop();
+		}
+	}},
 };
 
-SettingsState::SettingsState(AStateShare &_share) : AState(_share), _sound()
+SettingsState::SettingsState(AStateShare &_share) : AState(_share)
 {
+	auto &manager = IrrManager::getInstance();
+
+	_master = manager.getMasterVolume();
+	_music = manager.getMusicVolume();
+	_sfx = manager.getEffectsVolume();
 }
 
 SettingsState::~SettingsState()
@@ -60,9 +116,9 @@ void SettingsState::draw()
 
 irr::gui::IGUIButton *SettingsState::getBoutton(SettingsActions id) const
 {
-	if (id < VOL_UP || id > VOL_UP + SETTINGS_BOUTON_NUMBER)
+	if (id < MASTER_VOL_UP || id > MASTER_VOL_UP + SETTINGS_BOUTON_NUMBER)
 		return nullptr;
-	return (_bouttons.at(id - VOL_UP));
+	return (_bouttons.at(id - MASTER_VOL_UP));
 }
 
 void SettingsState::unloadBouttons()

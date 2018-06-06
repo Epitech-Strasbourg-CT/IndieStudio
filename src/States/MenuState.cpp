@@ -48,7 +48,7 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 };
 
 MenuState::MenuState(AStateShare &_share)
-: AState(_share), _sound(), _songName("assets/sounds/MenuSong.mp3")
+: AState(_share)
 {
 }
 
@@ -59,20 +59,16 @@ MenuState::~MenuState()
 void MenuState::load()
 {
 	loadBouttons();
-	auto engine = IrrManager::getInstance().getEngine();
-	if (IrrManager::getInstance().getEngine())
-		_sound =
-			engine->play2D(_songName, false, false, true);
+	_sound = AssetsPool::getInstance().loadSound(AssetsPool::MENU, true);
 	AState::load();
 }
 
 void MenuState::unload()
 {
 	unloadBouttons();
-	if (_sound) {
-		//_sound->stop();
-		//_sound->drop();
-	}
+//	if (_sound)
+//		AssetsPool::getInstance().unloadSound(AssetsPool::MENU, _sound);
+//	_sound = nullptr;
 	AState::unload();
 }
 
@@ -96,6 +92,7 @@ void MenuState::unloadBouttons()
 	er.unregisterEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	for (auto &n : _bouttons)
 		n->remove();
+	_bouttons.clear();
 }
 
 void MenuState::loadBouttons()
