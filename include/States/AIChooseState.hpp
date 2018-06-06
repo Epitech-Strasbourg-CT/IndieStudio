@@ -10,11 +10,15 @@
 
 	#include <irrlicht.h>
 	#include "../Abstracts/AState.hpp"
+	#include "../../src/Game/Traveling.hpp"
 
 class AIChooseState : public AState {
 public:
 	AIChooseState(AStateShare &_share);
 	void update();
+
+private:
+	Traveling _trav;
 };
 
 

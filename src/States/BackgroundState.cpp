@@ -48,7 +48,7 @@ void BackgroundState::loadCharacter()
 		_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 		_node->setMaterialType(irr::video::EMT_SOLID);
 		_node->setScale({25, 25, 25});
-		_node->setRotation({0, static_cast<irr::f32>(-90 + i * 20), 0});
+		_node->setRotation({0, static_cast<irr::f32>(-100 + i * 20), 0});
 		_node->setPosition({static_cast<irr::f32>(100 + i * 30), 20,
 				    static_cast<irr::f32>(-300 - i * 20)});
 		_share.addSharedNode("player" + std::to_string(i + 1), _node);

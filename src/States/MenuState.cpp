@@ -142,22 +142,16 @@ void MenuState::applyEventBoutton(const irr::SEvent &ev, MenuActions id)
 	}
 }
 
-#define TAU (2.0 * M_PI)
-#define STEP (TAU / 2000.0)
-
 void MenuState::update()
 {
+	auto step  = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
 	irr::f32 min = 2.7;
 	irr::f32 max = 4.4;
 	static irr::f32 inc = 0;
 	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
-
+//
 	cam.setTarget({450, 0, 100});
-//	2.3 < x < 4.1
-
-	inc += STEP;
-//	inc = fmodf(inc, TAU);
-//	std::cout << sinf(inc) << " " << _camRotate.getInc() << std::endl;
-	_camRotate.setInc((sinf(inc) - -1.0) * (max - min) / (1.0 - -1.0) + min);
+	inc += step;
+	_camRotate.setInc(static_cast<irr::f32>((sinf(inc) - -1.0) * (max - min) / (1.0 - -1.0) + min));
 	cam.setPosition(_camRotate.calc());
 }
