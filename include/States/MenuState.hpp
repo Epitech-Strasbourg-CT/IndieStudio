@@ -12,7 +12,7 @@
 #include <IGUIButton.h>
 #include <vector>
 #include "../Abstracts/AState.hpp"
-#include "../../src/Game/SphericalCoordinate.hpp"
+#include "../Game/SphericalCoordinate.hpp"
 
 #ifndef BOMBERMAN_MENUSTATE_HPP
 	#define BOMBERMAN_MENUSTATE_HPP
@@ -62,10 +62,12 @@ private:
 	irrklang::ISoundEngine *_engine;
 
 	SphericalCoordinate _camRotate;
-	int _rotate;
 
-	static const std::unordered_map<int,//irr::s32,
-	std::function<void(irr::s32, MenuState *)>> _assets;
+//	static const std::unordered_map<int,//irr::s32,
+//	std::function<void(irr::s32, MenuState *)>> _assets;
+//	std::vector<irr::gui::IGUIButton *> _bouttons;
+//	static const std::map<MenuActions , BouttonsDesc> _descs;
+//	irrklang::ISound *_sound;
 };
 
 #endif //BOMBERMAN_MENUSTATE_HPP

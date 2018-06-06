@@ -55,28 +55,14 @@ int StateMachine::start()
 	auto guienv = IrrManager::getInstance().getGuienv();
 
 	while (device->run() && !_states.empty()) {
-		driver->beginScene(true, true,
-		                   irr::video::SColor(255, 100, 101, 140));
+		driver->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		if (!_states.empty())
 			_states.top()->update();
 		if (!_states.empty())
 			_states.top()->updateRender();
 		if (!_states.empty())
 			_states.top()->draw();
-		irr::core::vector3df pos = {rayon * sinf(azimuth) * sin(inc), rayon * cosf(azimuth), rayon * sinf(azimuth) * cosf(inc)};
-		pos.X += 450;
-		pos.Z += 100;
-//		std::cout << "X: " << pos.X << " Y: " << pos.Y << " Z: " << pos.Z << std::endl;
-		inc += 0.005;
-//		inc = fmodf(inc, 2 * M_PI);
-		cam->setPosition(pos);
 		smgr->drawAll();
-//		irr::core::vector3df pos = cam->getPosition();
-//		if (pos.Y >= 180)
-//			pos.Y -= 5;
-//		if (pos.Z <= -200)
-//			pos.Z += 5;
-//		cam->setPosition(pos);
 		guienv->drawAll();
 		driver->endScene();
 	}

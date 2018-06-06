@@ -23,7 +23,7 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 		            [](MenuState *self) {
 		            	auto &sm = StateMachine::getInstance();
 		            	auto &res = self->getSharedResources();
-		            	sm.push(new GameState(res), false);
+		            	sm.push(new AIChooseState(res), false);
 		            }
 	            }},
 	{LOAD,      {
@@ -50,8 +50,7 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 };
 
 MenuState::MenuState(AStateShare &_share) : AState(_share),
-_camRotate(2.3, static_cast<irr::f32>(3.14159265 / 3.0), 700, {450, 0, 100}),
-_rotate(1)
+_camRotate(2.3, static_cast<irr::f32>(3.14159265 / 3.0), 700, {450, 0, 100})
 {
 }
 
@@ -158,7 +157,7 @@ void MenuState::update()
 
 	inc += STEP;
 //	inc = fmodf(inc, TAU);
-	std::cout << sinf(inc) << " " << _camRotate.getInc() << std::endl;
+//	std::cout << sinf(inc) << " " << _camRotate.getInc() << std::endl;
 	_camRotate.setInc((sinf(inc) - -1.0) * (max - min) / (1.0 - -1.0) + min);
 	cam.setPosition(_camRotate.calc());
 }

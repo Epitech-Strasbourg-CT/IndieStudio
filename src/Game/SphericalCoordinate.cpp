@@ -5,7 +5,7 @@
 ** SphericalCoordinate.cpp
 */
 
-#include "SphericalCoordinate.hpp"
+#include "../../include/Game/SphericalCoordinate.hpp"
 
 SphericalCoordinate::SphericalCoordinate() :  _inc(0), _azimuth(0), _rayon(0), _origin()
 {
