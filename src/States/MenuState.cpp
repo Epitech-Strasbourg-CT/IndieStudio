@@ -16,7 +16,7 @@
 const std::map<MenuActions, MenuState::BouttonsDesc>
 	MenuState::_descs{
 	{LAUNCH,    {
-		            {50, 50,  750, 100},
+		            {200, 50,  600, 75},
 		            "launch",
 		            [](MenuState *self) {
 		            	auto &sm = StateMachine::getInstance();
@@ -25,21 +25,21 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 		            }
 	            }},
 	{LOAD,      {
-		            {50, 150, 750, 200},
+		            {200, 150, 600, 175},
 		            "load",
 		            [](MenuState *self) {
 			            StateMachine::getInstance().pop();
 		            }
 	            }},
 	{SETTINGS,  {
-		            {50, 250, 750, 300},
+		            {200, 250, 600, 275},
 		            "settings",
 		            [](MenuState *self) {
 			            StateMachine::getInstance().push(new SettingsState(self->_share), false);
 		            }
 	            }},
 	{EXIT_GAME, {
-		            {50, 350, 750, 400},
+		            {200, 350, 600, 375},
 		            "exit",
 		            [](MenuState *self) {
 			            StateMachine::getInstance().popAll();
