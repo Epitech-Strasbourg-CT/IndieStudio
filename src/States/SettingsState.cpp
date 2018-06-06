@@ -116,7 +116,7 @@ void SettingsState::draw()
 
 irr::gui::IGUIButton *SettingsState::getBoutton(SettingsActions id) const
 {
-	if (id < MASTER_VOL_UP || id > MASTER_VOL_UP + SETTINGS_BOUTON_NUMBER)
+	if (id < MASTER_VOL_UP || id > MASTER_VOL_UP + SETTINGS_BUTTON_NUMBER)
 		return nullptr;
 	return (_bouttons.at(id - MASTER_VOL_UP));
 }
