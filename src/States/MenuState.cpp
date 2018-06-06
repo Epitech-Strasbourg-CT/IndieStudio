@@ -5,6 +5,7 @@
 **
 */
 
+#include "../../include/States/SettingsState.hpp"
 #include "../../include/States/MenuState.hpp"
 #include "../../include/Singletons/IrrManager.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
@@ -34,7 +35,8 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 		            {50, 250, 750, 300},
 		            "settings",
 		            [](MenuState *self) {
-			            StateMachine::getInstance().pop();
+				    //self->setVisible(false);
+			            StateMachine::getInstance().push(new SettingsState(self->_share), false);
 		            }
 	            }},
 	{EXIT_GAME, {
@@ -68,8 +70,8 @@ void MenuState::unload()
 {
 	unloadBouttons();
 	if (_sound) {
-		_sound->stop();
-		_sound->drop();
+		//_sound->stop();
+		//_sound->drop();
 	}
 	AState::unload();
 }
