@@ -6,20 +6,19 @@
 */
 
 #ifndef BOMBERMAN_STATE_MACHINE_HPP
-#define BOMBERMAN_STATE_MACHINE_HPP
+	#define BOMBERMAN_STATE_MACHINE_HPP
 
-#include <stack>
-#include <memory>
-#include <iostream>
-#include "../Abstracts/AState.hpp"
+	#include <stack>
+	#include <memory>
+	#include <iostream>
+	#include "../Abstracts/AState.hpp"
 
 class StateMachine {
 public:
 	static StateMachine &getInstance();
 
 	void push(AState *gameState, bool keepLoaded);
-	void replaceTop(
-	AState *gameState, bool keepLoaded);
+	void replaceTop(AState *gameState, bool keepLoaded);
 	void pop();
 	void popAll();
 	AState *top();

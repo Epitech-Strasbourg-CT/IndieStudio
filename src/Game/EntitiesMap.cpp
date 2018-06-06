@@ -8,9 +8,19 @@
 #include "../../include/Game/EntitiesMap.hpp"
 #include "../../include/Game/Entities/BlockEntity.hpp"
 
+const std::unordered_map<char, std::function<AEntity *()>>
+EntitiesMap::_generationMap = {
+	{'X', []() {
+		return nullptr;
+	}},
+	{'0', [](){
+		return nullptr;
+	}}
+};
+
 const std::vector<std::string> EntitiesMap::_mapTemplate = {
 	"XXXXXXXXXXXXXXXXXXX",
-	"X  0000000000000  X",
+	"X1 0000000000000 2X",
 	"X X0X0X0X0X0X0X0X X",
 	"X00000000000000000X",
 	"X0X0X0X0X0X0X0X0X0X",
@@ -22,92 +32,6 @@ const std::vector<std::string> EntitiesMap::_mapTemplate = {
 	"X0X0X0X0X0X0X0X0X0X",
 	"X00000000000000000X",
 	"X X0X0X0X0X0X0X0X X",
-	"X  0000000000000  X",
+	"X3 0000000000000 4X",
 	"XXXXXXXXXXXXXXXXXXX",
 };
-
-bool EntitiesMap::insert(AEntity &entity)
-{
-	bool res = false;
-	if (entity.getMapPos().X < WIDTH && entity.getMapPos().Y < HEIGHT) {
-		_map[entity.getMapPos()].push_back(&entity);
-		res = true;
-	}
-	return res;
-}
-
-bool EntitiesMap::erase(AEntity &entity)
-{
-	bool res = false;
-	if (entity.getMapPos().X < WIDTH && entity.getMapPos().Y < HEIGHT) {
-		for (auto &i : _map[entity.getMapPos()])
-			if (&entity == i) {
-				_pending.push_back(&entity);
-				res = true;
-			}
-	}
-	return res;
-}
-
-void EntitiesMap::update()
-{
-	for (auto &i : _map)
-		for (auto &k : i.second)
-			k->update(this);
-}
-
-void EntitiesMap::updateRender()
-{
-	for (auto &i : _map)
-		for (auto &k : i.second)
-			k->updateRender();
-}
-
-bool EntitiesMap::generate()
-{
-	_map[{0,0}].push_back(new BlockEntity());
-	return true;
-}
-
-void EntitiesMap::clean()
-{
-	for (auto i : _pending)
-		remove(*i);
-	_pending.clear();
-};
-
-std::vector<AEntity *> const &EntitiesMap::getEntities(irr::core::vector2di &pos) {
-	if (pos.X < WIDTH && pos.Y < HEIGHT)
-		return _map[pos];
-	throw 
-		std::runtime_error("Out of map position.");
-}
-
-std::set<AEntity *> EntitiesMap::getList() const
-{
-	std::set<AEntity *> res;
-
-	for (auto &i : _map)
-		for (auto &k : i.second)
-			res.insert(k);
-	return res;
-}
-
-std::map<irr::core::vector2di, std::vector<AEntity *>> const &EntitiesMap::getMap()
-{
-	return _map;
-}
-
-void EntitiesMap::remove(AEntity &entity)
-{
-	auto tmp = _map[entity.getMapPos()];
-
-	for (int i = 0; i < tmp.size(); ++i)
-		if (&entity == tmp[i])
-			tmp.erase(tmp.begin() + i);
-}
-
-EntitiesMap::EntitiesMap()
-{
-
-}

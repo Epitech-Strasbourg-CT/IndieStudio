@@ -15,11 +15,17 @@
 #ifndef BOMBERMAN_SETTINGSSTATE_HPP
 	#define BOMBERMAN_SETTINGSSTATE_HPP
 
-	#define SETTINGS_BOUTON_NUMBER 2
+	#define SETTINGS_BOUTON_NUMBER 8
 
 enum SettingsActions {
-	VOL_UP = 200,
-	VOL_DOWN
+	MASTER_VOL_UP = 200,
+	MASTER_VOL_DOWN,
+	MUSIC_VOL_UP,
+	MUSIC_VOL_DOWN,
+	SFX_VOL_UP,
+	SFX_VOL_DOWN,
+	VOL_APPLY,
+	VOL_CANCEL
 };
 
 class SettingsState : public AState {
@@ -48,7 +54,9 @@ public:
 private:
 	std::vector<irr::gui::IGUIButton *> _bouttons;
 	static const std::map<SettingsActions , BouttonsDesc> _descs;
-	irrklang::ISound *_sound;
+	irrklang::ik_f32 _master;
+	irrklang::ik_f32 _music;
+	irrklang::ik_f32 _sfx;
 };
 
 #endif //BOMBERMAN_SETTINGSSTATE_HPP

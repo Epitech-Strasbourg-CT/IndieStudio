@@ -51,16 +51,19 @@ int StateMachine::start()
 {
 	auto device = IrrManager::getInstance().getDevice();
 	auto driver = IrrManager::getInstance().getDriver();
+	auto smgr = IrrManager::getInstance().getSmgr();
+	auto guienv = IrrManager::getInstance().getGuienv();
 
 	while (device->run() && !_states.empty()) {
-		driver->beginScene(true, true,
-		                   irr::video::SColor(255, 100, 101, 140));
+		driver->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		if (!_states.empty())
 			_states.top()->update();
 		if (!_states.empty())
 			_states.top()->updateRender();
 		if (!_states.empty())
 			_states.top()->draw();
+		smgr->drawAll();
+		guienv->drawAll();
 		driver->endScene();
 	}
 	return 0;

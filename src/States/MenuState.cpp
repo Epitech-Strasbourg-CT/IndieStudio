@@ -6,40 +6,42 @@
 */
 
 #include "../../include/States/SettingsState.hpp"
+#include <cmath>
 #include "../../include/States/MenuState.hpp"
 #include "../../include/Singletons/IrrManager.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/GameState.hpp"
+#include "../../include/States/AIChooseState.hpp"
 
 const std::map<MenuActions, MenuState::BouttonsDesc>
 	MenuState::_descs{
 	{LAUNCH,    {
-		            {200, 50,  600, 75},
+		            {50, 50,  750, 100},
 		            "launch",
 		            [](MenuState *self) {
 		            	auto &sm = StateMachine::getInstance();
 		            	auto &res = self->getSharedResources();
-		            	sm.push(new GameState(res), false);
+		            	sm.push(new AIChooseState(res), false);
 		            }
 	            }},
 	{LOAD,      {
-		            {200, 150, 600, 175},
+		            {50, 150, 750, 200},
 		            "load",
 		            [](MenuState *self) {
 			            StateMachine::getInstance().pop();
 		            }
 	            }},
 	{SETTINGS,  {
-		            {200, 250, 600, 275},
+		            {50, 250, 750, 300},
 		            "settings",
 		            [](MenuState *self) {
 			            StateMachine::getInstance().push(new SettingsState(self->_share), false);
 		            }
 	            }},
 	{EXIT_GAME, {
-		            {200, 350, 600, 375},
+		            {50, 350, 750, 400},
 		            "exit",
 		            [](MenuState *self) {
 			            StateMachine::getInstance().popAll();
@@ -47,8 +49,8 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 	            }},
 };
 
-MenuState::MenuState(AStateShare &_share)
-: AState(_share), _sound(), _songName("assets/sounds/indieTest.mp3")
+MenuState::MenuState(AStateShare &_share) : AState(_share),
+_camRotate(2.3, static_cast<irr::f32>(3.14159265 / 3.0), 700, {450, 0, 100})
 {
 }
 
@@ -59,20 +61,16 @@ MenuState::~MenuState()
 void MenuState::load()
 {
 	loadBouttons();
-	auto engine = IrrManager::getInstance().getEngine();
-	if (IrrManager::getInstance().getEngine())
-		_sound =
-			engine->play2D(_songName, false, false, true);
+	_sound = AssetsPool::getInstance().loadSound(AssetsPool::MENU, true);
 	AState::load();
 }
 
 void MenuState::unload()
 {
 	unloadBouttons();
-	if (_sound) {
-		//_sound->stop();
-		//_sound->drop();
-	}
+//	if (_sound)
+//		AssetsPool::getInstance().unloadSound(AssetsPool::MENU, _sound);
+//	_sound = nullptr;
 	AState::unload();
 }
 
@@ -96,6 +94,7 @@ void MenuState::unloadBouttons()
 	er.unregisterEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	for (auto &n : _bouttons)
 		n->remove();
+	_bouttons.clear();
 }
 
 void MenuState::loadBouttons()
@@ -141,4 +140,24 @@ void MenuState::applyEventBoutton(const irr::SEvent &ev, MenuActions id)
 		default:
 			break;
 	}
+}
+
+#define TAU (2.0 * M_PI)
+#define STEP (TAU / 2000.0)
+
+void MenuState::update()
+{
+	irr::f32 min = 2.7;
+	irr::f32 max = 4.4;
+	static irr::f32 inc = 0;
+	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
+
+	cam.setTarget({450, 0, 100});
+//	2.3 < x < 4.1
+
+	inc += STEP;
+//	inc = fmodf(inc, TAU);
+//	std::cout << sinf(inc) << " " << _camRotate.getInc() << std::endl;
+	_camRotate.setInc((sinf(inc) - -1.0) * (max - min) / (1.0 - -1.0) + min);
+	cam.setPosition(_camRotate.calc());
 }

@@ -23,6 +23,14 @@ public:
 	irr::gui::IGUIEnvironment *getGuienv() const;
 	irrklang::ISoundEngine *getEngine() const;
 	irr::core::vector2di getSize() const;
+
+	irrklang::ik_f32 getMasterVolume() const;
+	irrklang::ik_f32 getEffectsVolume() const;
+	irrklang::ik_f32 getMusicVolume() const;
+
+	void setMasterVolume(irrklang::ik_f32);
+	void setEffectsVolume(irrklang::ik_f32);
+	void setMusicVolume(irrklang::ik_f32);
 private:
 	IrrManager();
 
@@ -33,6 +41,11 @@ private:
 	irrklang::ISoundEngine *_engine;
 	irr::u32 _width;
 	irr::u32 _height;
+
+	//FIXME Norme
+	irrklang::ik_f32 _master;
+	irrklang::ik_f32 _effects;
+	irrklang::ik_f32 _musics;
 
 	static IrrManager _instance;
 };

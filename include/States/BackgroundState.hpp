@@ -24,6 +24,10 @@ public:
 
 private:
 	irr::scene::ISceneNode *_node;
+
+	void loadCharacter();
+
+	void loadSkyBox();
 };
 
 #endif /* !BOMBERMAN_BACKGROUNDSTATE_HPP */

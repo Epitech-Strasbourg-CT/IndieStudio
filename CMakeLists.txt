@@ -8,7 +8,6 @@ set(CMAKE_EXE_LINKER_FLAGS "-W -Wall -Wextra -g ")
 
 
 add_executable(bomberman
-        #src/prout.cpp)
         src/main.cpp
         src/Singletons/StateMachine.cpp
         include/Singletons/StateMachine.hpp
@@ -62,7 +61,11 @@ add_executable(bomberman
         src/Game/Entities/FireEntity.cpp
         src/Game/Entities/FireEntity.hpp
         src/Game/Entities/BonusEntity.cpp
-        src/Game/Entities/BonusEntity.hpp)
+        src/Game/Entities/BonusEntity.hpp
+        src/Game/SphericalCoordinate.cpp
+        include/Game/SphericalCoordinate.hpp
+        src/States/AIChooseState.cpp
+        include/States/AIChooseState.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
@@ -85,27 +88,27 @@ set(IRRKLANG_DIR ./libs/irrklang)
 if(UNIX)
         add_custom_command(TARGET bomberman PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
-            ../libs/irrklang/bin/linux-gcc-64/ikpFlac.so
-            ../bin/ikpFlac.so)
+                ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/ikpFlac.so
+                ${PROJECT_SOURCE_DIR}/bin/ikpFlac.so)
         add_custom_command(TARGET bomberman PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
-            ../libs/irrklang/bin/linux-gcc-64/ikpMP3.so
-            ../bin/ikpMP3.so)
+                ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/ikpMP3.so
+                ${PROJECT_SOURCE_DIR}/bin/ikpMP3.so)
         set(IRRKLANG_LIBRARY ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/libIrrKlang.so)
 endif(UNIX)
 if(WIN32)
         add_custom_command(TARGET bomberman PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
-            ../libs/irrklang/bin/winx64-visualStudio/ikpFlac.dll
-            ../bin/ikpFlac.dll)
+                ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/winx64-visualStudio/ikpFlac.dll
+                ${PROJECT_SOURCE_DIR}/bin/ikpFlac.dll)
         add_custom_command(TARGET bomberman PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
-            ../libs/irrklang/bin/winx64-visualStudio/ikpMP3.dll
-            ../bin/ikpMP3.dll)
+                ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/winx64-visualStudio/ikpMP3.dll
+                ${PROJECT_SOURCE_DIR}/bin/ikpMP3.dll)
         add_custom_command(TARGET bomberman PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
-            ../libs/irrklang/bin/winx64-visualStudio/irrKlang.dll
-            ../bin/irrKlang.dll)
+                ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/winx64-visualStudio/irrKlang.dll
+                ${PROJECT_SOURCE_DIR}/bin/irrKlang.dll)
     set(IRRKLANG_LIBRARY ${PROJECT_SOURCE_DIR}/libs/irrklang/lib/Winx64-visualStudio/irrKlang.lib)
 endif(WIN32)
 

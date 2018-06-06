@@ -12,6 +12,7 @@
 #include <IGUIButton.h>
 #include <vector>
 #include "../Abstracts/AState.hpp"
+#include "../Game/SphericalCoordinate.hpp"
 
 #ifndef BOMBERMAN_MENUSTATE_HPP
 	#define BOMBERMAN_MENUSTATE_HPP
@@ -37,6 +38,8 @@ public:
 	void load() override;
 	void unload() override;
 
+	void update() override;
+
 	void draw() override;
 
 	void applyEventBoutton(const irr::SEvent &ev, MenuActions id);
@@ -52,7 +55,19 @@ private:
 	std::vector<irr::gui::IGUIButton *> _bouttons;
 	static const std::map<MenuActions , BouttonsDesc> _descs;
 	irrklang::ISound *_sound;
-	const char *_songName;
+	irr::gui::IGUIButton *_launch;
+	irr::gui::IGUIButton *_load;
+	irr::gui::IGUIButton *_settings;
+	irr::gui::IGUIButton *_exit;
+	irrklang::ISoundEngine *_engine;
+
+	SphericalCoordinate _camRotate;
+
+//	static const std::unordered_map<int,//irr::s32,
+//	std::function<void(irr::s32, MenuState *)>> _assets;
+//	std::vector<irr::gui::IGUIButton *> _bouttons;
+//	static const std::map<MenuActions , BouttonsDesc> _descs;
+//	irrklang::ISound *_sound;
 };
 
 #endif //BOMBERMAN_MENUSTATE_HPP

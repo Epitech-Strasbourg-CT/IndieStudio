@@ -24,12 +24,12 @@ void SplashState::update()
 
 void SplashState::load()
 {
-	auto cam = IrrManager::getInstance().getSmgr()
-	->addCameraSceneNode();
-	if (!cam)
-		throw std::runtime_error("Can't create a new Camera.");
-	cam->setPosition(irr::core::vector3df(0, 0, -50));
-	_nodes.push_back(cam);
+//	auto cam = IrrManager::getInstance().getSmgr()
+//	->addCameraSceneNode();
+//	if (!cam)
+//		throw std::runtime_error("Can't create a new Camera.");
+//	cam->setPosition(irr::core::vector3df(0, 0, -50));
+//	_nodes.push_back(cam);
 	_start = Time::timestamp();
 	AState::load();
 }

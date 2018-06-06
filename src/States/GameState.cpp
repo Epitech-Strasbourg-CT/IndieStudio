@@ -35,7 +35,7 @@ GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_sh
 
 void GameState::update()
 {
-	_emap.update();
+//	_emap.update();
 	_entity->update();
 }
 
@@ -45,11 +45,11 @@ void GameState::load()
 	//auto &gm = IrrManager::getInstance();
 	//auto &ap = AssetsPool::getInstance();
 
-	auto &n = _share.getSharedNode("menu");
-	n.setVisible(false);
-	addAlteredNode(&n, [](irr::scene::ISceneNode *n) {
-		n->setVisible(true);
-	});
+//	auto &n = _share.getSharedNode("menu");
+//	n.setVisible(false);
+//	addAlteredNode(&n, [](irr::scene::ISceneNode *n) {
+//		n->setVisible(true);
+//	});
 //	auto mesh = ap.loadMesh("sydney.md2");
 //	_node = gm.getSmgr()->addMeshSceneNode(mesh);
 //	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
@@ -60,6 +60,6 @@ void GameState::load()
 void GameState::updateRender()
 {
 	_entity->updateRender();
-	_emap.updateRender();
+//	_emap.updateRender();
 	AState::updateRender();
 }
