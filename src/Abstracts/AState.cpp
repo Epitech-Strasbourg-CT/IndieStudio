@@ -48,8 +48,9 @@ void AState::transitionPop()
 {
 }
 
-void AState::transitionPush()
+void AState::transitionPush(bool keep)
 {
+	static_cast<void>(keep);
 }
 
 void AState::addAlteredNode
@@ -65,7 +66,7 @@ AStateShare &AState::getSharedResources() const
 	return _share;
 }
 
-void AState::pushing()
+void AState::pushing(bool keep)
 {
 
 }

@@ -45,8 +45,8 @@ void BackgroundState::transitionPop()
 	StateMachine::getInstance().pop();
 }
 
-void BackgroundState::transitionPush()
+void BackgroundState::transitionPush(bool keep)
 {
-	AState::transitionPush();
+	AState::transitionPush(keep);
 	StateMachine::getInstance().push(new MenuState(_share), true);
 }

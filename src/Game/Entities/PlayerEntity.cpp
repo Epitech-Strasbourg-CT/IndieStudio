@@ -13,10 +13,11 @@ PlayerEntity::PlayerEntity() : AEntity("player"), ATrackable(), Controllable()
 {
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
-	auto mesh = am.loadMesh("sydney.md2");
+	auto mesh = am.loadMesh("player/link-idle.ms3d");
 	_node = im.getSmgr()->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	_node->setMaterialTexture(0, am.loadTexture("sydney.bmp"));
+	_node->setMaterialTexture(0, am.loadTexture("player/player1.png"));
+	_node->setScale({15, 15, 15});
 	addEvent(MOVE_UP, [this]() { this->dirTop(0.3); });
 	addEvent(MOVE_DOWN, [this]() { this->dirBottom(0.3); });
 	addEvent(MOVE_LEFT, [this]() { this->dirLeft(0.3); });

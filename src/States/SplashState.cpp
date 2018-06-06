@@ -30,26 +30,12 @@ void SplashState::load()
 		throw std::runtime_error("Can't create a new Camera.");
 	cam->setPosition(irr::core::vector3df(0, 0, -50));
 	_nodes.push_back(cam);
-	auto mesh = AssetsPool::getInstance().loadMesh("sydney.md2");
-	irr::scene::IMeshSceneNode *n = IrrManager::getInstance().getSmgr()
-	->addMeshSceneNode(mesh);
-	auto texture = AssetsPool::getInstance().loadTexture("sydney.bmp");
-
-	_nodes.push_back(n);
-	n->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	n->setMaterialTexture(0, texture);
-
 	_start = Time::timestamp();
 	AState::load();
 }
 
 void SplashState::unload()
 {
-	std::cout << "Unload Splash" << std::endl;
-	_share.delSharedNode("sydney");
-	for (auto &n : _nodes)
-		n->remove();
-	_nodes.clear();
 	AState::unload();
 }
 
@@ -64,9 +50,9 @@ _duration(1000)
 void SplashState::draw()
 {
 	IrrManager::getInstance().getDriver()->draw2DImage(
-	AssetsPool::getInstance().loadTexture("bomber.jpg"),
+	AssetsPool::getInstance().loadTexture("logo.png"),
 	irr::core::position2d<irr::s32>(0,0),
-	irr::core::rect<irr::s32>(0,0,800,600),
+	irr::core::rect<irr::s32>(0,0,500,200),
 	0,
 	irr::video::SColor(255, 255, 255, 255),
 	false);
