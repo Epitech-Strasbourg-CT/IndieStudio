@@ -12,6 +12,7 @@
 #include <list>
 #include <map>
 #include <set>
+#include <unordered_map>
 #include "AEntity.hpp"
 
 #define HEIGHT 15
@@ -19,7 +20,7 @@
 
 class EntitiesMap {
 public:
-	EntitiesMap() = default;
+	EntitiesMap();
 
 	bool insert(AEntity &entity);
 	bool erase(AEntity &entity);
@@ -35,6 +36,9 @@ private:
 
 	std::list<AEntity *> _pending;
 	std::map<irr::core::vector2di, std::vector<AEntity *>> _map;
+	static const std::vector<std::string> _mapTemplate;
+	static const std::unordered_map<char, std::function<AEntity *()>>
+	_generationMap;
 };
 
 

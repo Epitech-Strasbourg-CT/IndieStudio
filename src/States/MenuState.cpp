@@ -35,7 +35,6 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 		            {50, 250, 750, 300},
 		            "settings",
 		            [](MenuState *self) {
-				    //self->setVisible(false);
 			            StateMachine::getInstance().push(new SettingsState(self->_share), false);
 		            }
 	            }},
@@ -48,7 +47,8 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 	            }},
 };
 
-MenuState::MenuState(AStateShare &_share) : AState(_share), _sound()
+MenuState::MenuState(AStateShare &_share)
+: AState(_share), _sound(), _songName("assets/sounds/MenuSong.mp3")
 {
 }
 
@@ -62,7 +62,7 @@ void MenuState::load()
 	auto engine = IrrManager::getInstance().getEngine();
 	if (IrrManager::getInstance().getEngine())
 		_sound =
-			engine->play2D("assets/sounds/ophelia.mp3", false, false, true);
+			engine->play2D(_songName, false, false, true);
 	AState::load();
 }
 

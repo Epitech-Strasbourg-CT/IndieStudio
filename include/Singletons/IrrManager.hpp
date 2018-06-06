@@ -22,7 +22,7 @@ public:
 	irr::scene::ISceneManager *getSmgr() const;
 	irr::gui::IGUIEnvironment *getGuienv() const;
 	irrklang::ISoundEngine *getEngine() const;
-
+	irr::core::vector2di getSize() const;
 private:
 	IrrManager();
 

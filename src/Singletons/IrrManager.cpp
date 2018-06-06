@@ -58,3 +58,8 @@ IrrManager &IrrManager::getInstance()
 {
 	return _instance;
 }
+
+irr::core::vector2di IrrManager::getSize() const
+{
+	return {_width, _height};
+}

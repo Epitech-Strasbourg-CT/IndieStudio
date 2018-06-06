@@ -52,6 +52,7 @@ private:
 	std::vector<irr::gui::IGUIButton *> _bouttons;
 	static const std::map<MenuActions , BouttonsDesc> _descs;
 	irrklang::ISound *_sound;
+	const char *_songName;
 };
 
 #endif //BOMBERMAN_MENUSTATE_HPP

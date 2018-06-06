@@ -8,6 +8,24 @@
 #include "../../include/Game/EntitiesMap.hpp"
 #include "../../include/Game/Entities/BlockEntity.hpp"
 
+const std::vector<std::string> EntitiesMap::_mapTemplate = {
+	"XXXXXXXXXXXXXXXXXXX",
+	"X  0000000000000  X",
+	"X X0X0X0X0X0X0X0X X",
+	"X00000000000000000X",
+	"X0X0X0X0X0X0X0X0X0X",
+	"X00000000000000000X",
+	"X0X0X0X0X0X0X0X0X0X",
+	"X00000000000000000X",
+	"X0X0X0X0X0X0X0X0X0X",
+	"X00000000000000000X",
+	"X0X0X0X0X0X0X0X0X0X",
+	"X00000000000000000X",
+	"X X0X0X0X0X0X0X0X X",
+	"X  0000000000000  X",
+	"XXXXXXXXXXXXXXXXXXX",
+};
+
 bool EntitiesMap::insert(AEntity &entity)
 {
 	bool res = false;
@@ -87,4 +105,9 @@ void EntitiesMap::remove(AEntity &entity)
 	for (int i = 0; i < tmp.size(); ++i)
 		if (&entity == tmp[i])
 			tmp.erase(tmp.begin() + i);
+}
+
+EntitiesMap::EntitiesMap()
+{
+
 }
