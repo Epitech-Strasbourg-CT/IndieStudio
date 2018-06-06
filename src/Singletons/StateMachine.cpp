@@ -12,7 +12,7 @@ StateMachine StateMachine::_instance;
 void StateMachine::push(AState *gameState, bool keepLoaded)
 {
 	if (!_states.empty()) {
-		_states.top()->pushing();
+		_states.top()->pushing(keepLoaded);
 		_states.top()->setEnable(false);
 	}
 	if (!keepLoaded && !_states.empty())
@@ -20,7 +20,7 @@ void StateMachine::push(AState *gameState, bool keepLoaded)
 	_states.push(std::unique_ptr<AState>(gameState));
 	gameState->setEnable(true);
 	gameState->load();
-	gameState->transitionPush();
+	gameState->transitionPush(keepLoaded);
 }
 
 void StateMachine::pop()

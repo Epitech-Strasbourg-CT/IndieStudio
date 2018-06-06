@@ -20,7 +20,7 @@ public:
 	void load() override;
 	void unload() override;
 	void transitionPop() override;
-	void transitionPush() override;
+	void transitionPush(bool keep) override;
 
 private:
 	irr::scene::ISceneNode *_node;

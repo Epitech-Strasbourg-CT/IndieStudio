@@ -30,9 +30,9 @@ public:
 
 	virtual bool isLoaded() const;
 	virtual void transitionPop();
-	virtual void transitionPush();
+	virtual void transitionPush(bool keep);
 	virtual void popping();
-	virtual void pushing();
+	virtual void pushing(bool keep);
 
 	AStateShare &getSharedResources() const;
 	void addAlteredNode(
