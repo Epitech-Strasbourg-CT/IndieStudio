@@ -20,22 +20,20 @@ using Vector2DI = irr::core::vector2di;
 
 class EntitiesMap;
 
-class AEntity : public virtual ATrackable<float> {
+class AEntity : public ATrackable<int> {
 public:
 	explicit AEntity(const std::string & = "entity");
 	virtual ~AEntity() = default;
 
 	virtual void collide(AEntity &);
+	bool isStackable() const;
 
 	virtual void update(EntitiesMap *);
 	virtual void updateRender();
 
 	virtual void dump(std::ostream &s) const;
-
 	virtual void load(std::istream &s);
 
-	Vector2DI getMapPos() const;
-	void setMapPos(const Vector2DI &position);
 
 	const Vector3DF &getOrigin() const;
 
@@ -49,7 +47,7 @@ private:
 
 protected:
 	irr::scene::ISceneNode *_node;
-	irr::core::vector2di _mapPos;
+	bool _stackable;
 };
 
 std::ostream &operator<<(std::ostream &, const AEntity &);

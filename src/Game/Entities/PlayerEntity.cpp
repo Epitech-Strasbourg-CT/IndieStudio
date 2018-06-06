@@ -18,10 +18,64 @@ PlayerEntity::PlayerEntity() : AEntity("player"), ATrackable(), Controllable()
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialTexture(0, am.loadTexture("player/player1.png"));
 	_node->setScale({15, 15, 15});
-	addEvent(MOVE_UP, [this]() { this->dirTop(0.3); });
-	addEvent(MOVE_DOWN, [this]() { this->dirBottom(0.3); });
-	addEvent(MOVE_LEFT, [this]() { this->dirLeft(0.3); });
-	addEvent(MOVE_RIGHT, [this]() { this->dirRight(0.3); });
+
+	// region move
+
+	addEvent(MOVE_UP, [this]() {
+		//TODO tryMove with pool
+		this->dirTop(1);
+		auto EntityPos = this->AEntity::getPosition();
+		auto MovablePos = this->AMovable::getPosition();
+		if (MovablePos.Y > BORDERY) {
+			std::cout << "case TOP\n";
+			EntityPos.Y += 1;
+			MovablePos.Y = 0;
+			this->AMovable::setPosition(MovablePos);
+			this->AEntity::setPosition(EntityPos);
+		}
+	});
+
+	addEvent(MOVE_DOWN, [this]() {
+		//TODO tryMove with pool
+		this->dirBottom(1);
+		auto EntityPos = this->AEntity::getPosition();
+		auto MovablePos = this->AMovable::getPosition();
+		if (MovablePos.Y < 0) {
+			std::cout << "case DOWN\n";
+			EntityPos.Y -= 1;
+			MovablePos.Y = BORDERY;
+			this->AMovable::setPosition(MovablePos);
+			this->AEntity::setPosition(EntityPos);
+		}
+	});
+
+	addEvent(MOVE_LEFT, [this]() {
+		//TODO tryMove with pool
+		this->dirLeft(1);
+		auto EntityPos = this->AEntity::getPosition();
+		auto MovablePos = this->AMovable::getPosition();
+		if (MovablePos.X < 0) {
+			std::cout << "case LEFT\n";
+			EntityPos.X -= 1;
+			MovablePos.X = BORDERX;
+			this->AMovable::setPosition(MovablePos);
+			this->AEntity::setPosition(EntityPos);
+		}
+	});
+	addEvent(MOVE_RIGHT, [this]() {
+		//TODO tryMove with pool
+		this->dirRight(1);
+		auto EntityPos = this->AEntity::getPosition();
+		auto MovablePos = this->AMovable::getPosition();
+		if (MovablePos.X > BORDERX) {
+			std::cout << "case RIGHT\n";
+			EntityPos.X += 1;
+			MovablePos.X = 0;
+			this->AMovable::setPosition(MovablePos);
+			this->AEntity::setPosition(EntityPos);
+		}
+	});
+	// endregion
 }
 
 void PlayerEntity::update()
@@ -32,12 +86,14 @@ void PlayerEntity::update()
 void PlayerEntity::updateRender()
 {
 	auto nodePos = _node->getPosition();
-	auto pos = getPos();
+	auto pos = AEntity::getPosition();
+	irr::core::vector2di Opos = AMovable::getPosition();
 	auto origin = getOrigin();
 
-	if (origin.X + pos.X != nodePos.X || origin.Y + pos.Y != nodePos.Y) {
-		nodePos.X = origin.X + pos.X;
-		nodePos.Y = origin.Y + pos.Y;
+	if (origin.X + pos.X * BORDERX + Opos.X != nodePos.X ||
+	    origin.Y + pos.Y * BORDERY + Opos.Y != nodePos.Y) {
+		nodePos.X = origin.X + pos.X * BORDERX + Opos.X;
+		nodePos.Y = origin.Y + pos.Y * BORDERY + Opos.Y;
 		_node->setPosition(nodePos);
 	}
 	AEntity::updateRender();

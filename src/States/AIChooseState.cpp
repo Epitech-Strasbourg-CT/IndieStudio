@@ -17,7 +17,7 @@ void AIChooseState::update()
 {
 	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
 
-	std::cout << cam.getPosition().X << " " << cam.getPosition().Y << " " << cam.getPosition().Z << std::endl;
+	//std::cout << cam.getPosition().X << " " << cam.getPosition().Y << " " << cam.getPosition().Z << std::endl;
 	cam.setPosition({100, 40, -400});
 	cam.setTarget({450, 100, 100});
 	AState::update();

@@ -11,9 +11,12 @@
 #include "../AMovable.hpp"
 #include "../Controllable.hpp"
 
+#define BORDERX 30
+#define BORDERY 30
+
 class PlayerEntity : public Controllable,
 		     public AEntity,
-		     public AMovable<float> {
+		     public AMovable<int> {
 public:
 	PlayerEntity();
 	void update();

@@ -21,25 +21,44 @@
 
 class EntitiesMap {
 public:
-	EntitiesMap() = default;
+	EntitiesMap();
 
 	bool insert(AEntity *e, const irr::core::vector2di &v = {0, 0});
 	bool erase(AEntity *e);
 	bool moveTo(AEntity *e, const irr::core::vector2di &v);
 	bool canMoveTo(AEntity *e, const irr::core::vector2di &v);
 
+	void updateInsert();
+	void updateErase();
+	void updateMove();
 
 	bool generate();
 
-	void update();
-	void updateRender();
+	//void update();
+	//void updateRender();
+
 
 private:
 
-	std::list<AEntity *> _toErase;
-	std::list<AEntity *> _toMove;
-
 	std::vector<std::vector<std::vector<std::unique_ptr<AEntity>>>> _map;
+
+	struct MoveTrans {
+		AEntity *e;
+		irr::core::vector2di v;
+	};
+
+	struct EraseTrans {
+		AEntity *e;
+	};
+
+	struct InsertTrans {
+		AEntity *e;
+		irr::core::vector2di v;
+	};
+
+	std::list<struct EraseTrans> _toErase;
+	std::list<struct InsertTrans> _toInsert;
+	std::list<struct MoveTrans> _toMove;
 
 	static const std::vector<std::string>
 	_mapTemplate;
