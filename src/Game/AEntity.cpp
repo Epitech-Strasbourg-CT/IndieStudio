@@ -8,7 +8,7 @@
 #include "../../include/Game/AEntity.hpp"
 
 AEntity::AEntity(const std::string &type)
-	: ATrackable(), _type(type), _origin(), _staticPosition(), _node()
+: ATrackable(), _type(type), _origin(), _node()
 {
 }
 
@@ -66,23 +66,10 @@ const Vector3DF &AEntity::getOrigin() const
 
 Vector2DI AEntity::getMapPos() const
 {
-	auto x = static_cast<int>(_staticPosition.X);
-	auto y = static_cast<int>(_staticPosition.Y);
-
-	return irr::core::vector2di(x, y);
+	return _mapPos;
 }
 
 void AEntity::setMapPos(const Vector2DI &position)
 {
-	_staticPosition = irr::core::vector2df(position.X, position.Y);
-}
-
-const Vector2DF &AEntity::getStaticPos() const
-{
-	return _staticPosition;
-}
-
-void AEntity::setStaticPos(const Vector2DF &position)
-{
-	_staticPosition = position;
+	_mapPos = position;
 }

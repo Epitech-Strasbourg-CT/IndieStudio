@@ -16,7 +16,7 @@
 const std::map<MenuActions, MenuState::BouttonsDesc>
 	MenuState::_descs{
 	{LAUNCH,    {
-		            {200, 50,  600, 75},
+		            {50, 50,  750, 100},
 		            "launch",
 		            [](MenuState *self) {
 		            	auto &sm = StateMachine::getInstance();
@@ -25,21 +25,21 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 		            }
 	            }},
 	{LOAD,      {
-		            {200, 150, 600, 175},
+		            {50, 150, 750, 200},
 		            "load",
 		            [](MenuState *self) {
 			            StateMachine::getInstance().pop();
 		            }
 	            }},
 	{SETTINGS,  {
-		            {200, 250, 600, 275},
+		            {50, 250, 750, 300},
 		            "settings",
 		            [](MenuState *self) {
 			            StateMachine::getInstance().push(new SettingsState(self->_share), false);
 		            }
 	            }},
 	{EXIT_GAME, {
-		            {200, 350, 600, 375},
+		            {50, 350, 750, 400},
 		            "exit",
 		            [](MenuState *self) {
 			            StateMachine::getInstance().popAll();
@@ -48,7 +48,7 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 };
 
 MenuState::MenuState(AStateShare &_share)
-: AState(_share), _sound(), _songName("assets/sounds/indieTest.mp3")
+: AState(_share), _sound(), _songName("assets/sounds/MenuSong.mp3")
 {
 }
 

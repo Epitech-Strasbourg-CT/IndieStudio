@@ -18,25 +18,31 @@
 #define HEIGHT 15
 #define WIDTH 19
 
+
 class EntitiesMap {
 public:
-	EntitiesMap();
+	EntitiesMap() = default;
 
-	bool insert(AEntity &entity);
-	bool erase(AEntity &entity);
-	std::vector<AEntity *> const &getEntities(irr::core::vector2di &);
+	bool insert(AEntity *e, const irr::core::vector2di &v = {0, 0});
+	bool erase(AEntity *e);
+	bool moveTo(AEntity *e, const irr::core::vector2di &v);
+	bool canMoveTo(AEntity *e, const irr::core::vector2di &v);
+
+
 	bool generate();
-	void clean();
+
 	void update();
 	void updateRender();
-	std::set<AEntity *> getList() const;
-	std::map<irr::core::vector2di, std::vector<AEntity *>> const &getMap();
-private:
-	void remove(AEntity &);
 
-	std::list<AEntity *> _pending;
-	std::map<irr::core::vector2di, std::vector<AEntity *>> _map;
-	static const std::vector<std::string> _mapTemplate;
+private:
+
+	std::list<AEntity *> _toErase;
+	std::list<AEntity *> _toMove;
+
+	std::vector<std::vector<std::vector<std::unique_ptr<AEntity>>>> _map;
+
+	static const std::vector<std::string>
+	_mapTemplate;
 	static const std::unordered_map<char, std::function<AEntity *()>>
 	_generationMap;
 };

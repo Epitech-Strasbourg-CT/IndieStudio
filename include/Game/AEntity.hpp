@@ -37,9 +37,6 @@ public:
 	Vector2DI getMapPos() const;
 	void setMapPos(const Vector2DI &position);
 
-	const Vector2DF &getStaticPos() const;
-	void setStaticPos(const Vector2DF &position);
-
 	const Vector3DF &getOrigin() const;
 
 private:
@@ -51,8 +48,8 @@ private:
 	Vector3DF _origin;
 
 protected:
-	Vector2DF _staticPosition;
 	irr::scene::ISceneNode *_node;
+	irr::core::vector2di _mapPos;
 };
 
 std::ostream &operator<<(std::ostream &, const AEntity &);

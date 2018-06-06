@@ -35,7 +35,7 @@ GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_sh
 
 void GameState::update()
 {
-	_emap.update();
+//	_emap.update();
 	_entity->update();
 }
 
@@ -60,6 +60,6 @@ void GameState::load()
 void GameState::updateRender()
 {
 	_entity->updateRender();
-	_emap.updateRender();
+//	_emap.updateRender();
 	AState::updateRender();
 }
