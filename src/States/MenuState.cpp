@@ -48,7 +48,7 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 };
 
 MenuState::MenuState(AStateShare &_share)
-: AState(_share), _sound(), _songName("assets/sounds/MenuSong.mp3")
+: AState(_share), _sound(), _songName("assets/sounds/indieTest.mp3")
 {
 }
 
