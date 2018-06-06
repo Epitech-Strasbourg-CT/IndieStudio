@@ -11,6 +11,7 @@
 #include <irrKlang.h>
 #include <IGUIButton.h>
 #include "../Abstracts/AState.hpp"
+#include "../../src/Game/SphericalCoordinate.hpp"
 
 #ifndef BOMBERMAN_MENUSTATE_HPP
 #define BOMBERMAN_MENUSTATE_HPP
@@ -22,6 +23,8 @@ public:
 
 	void load() override;
 	void unload() override;
+
+	void update() override;
 
 	void draw() override;
 
@@ -38,6 +41,9 @@ private:
 	irr::gui::IGUIButton *_settings;
 	irr::gui::IGUIButton *_exit;
 	irrklang::ISoundEngine *_engine;
+
+	SphericalCoordinate _camRotate;
+	int _rotate;
 
 	static const std::unordered_map<int,//irr::s32,
 	std::function<void(irr::s32, MenuState *)>> _assets;

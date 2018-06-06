@@ -12,9 +12,13 @@
 int main()
 {
 	auto shared = AStateShare();
+	shared.addSharedNode("cam", IrrManager::getInstance().getSmgr()
+	->addCameraSceneNode(0, irr::core::vector3df(-80, 900, -500), irr::core::vector3df(0, 0, 0)));
 	auto splash = new SplashState(shared);
 	StateMachine::getInstance().push(splash, false);
 	auto device = IrrManager::getInstance().getDevice();
 	device->setEventReceiver(&EventReceiver::getInstance());
-	return StateMachine::getInstance().start();
+	auto ret = StateMachine::getInstance().start();
+	shared.delSharedNode("cam");
+	return ret;
 }
