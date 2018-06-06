@@ -72,6 +72,9 @@ void BackgroundState::loadSkyBox()
 void BackgroundState::unload()
 {
 	_share.delSharedNode("menu");
+	_share.delSharedNode("skybox");
+	for (auto i = 0; i < 4; i++)
+		_share.delSharedNode("player" + std::to_string(i + 1));
 	_node->remove();
 	AState::unload();
 }
