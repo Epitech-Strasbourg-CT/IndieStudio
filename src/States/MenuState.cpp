@@ -23,7 +23,8 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 		            [](MenuState *self) {
 		            	auto &sm = StateMachine::getInstance();
 		            	auto &res = self->getSharedResources();
-		            	sm.push(new AIChooseState(res), false);
+		            	//sm.push(new AIChooseState(res), false);
+			        sm.push(new GameState(res), false);
 		            }
 	            }},
 	{LOAD,      {

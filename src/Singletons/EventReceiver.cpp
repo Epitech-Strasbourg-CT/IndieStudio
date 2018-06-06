@@ -17,7 +17,7 @@ bool EventReceiver::OnEvent(const irr::SEvent &event)
 	if (_binds.count(event.EventType) <= 0)
 		return false;
 	for (auto it = _binds[type].begin(); it != _binds[type].end(); it++) {
-		if (it->second (event) == false)
+		if (!it->second (event))
 			it = _binds[type].erase(it);
 	}
 	if (_binds[type].empty())

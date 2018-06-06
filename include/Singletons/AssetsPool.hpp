@@ -42,7 +42,7 @@ private:
 	struct soundInfo {
 		AssetsPool::Types type;
 		std::string name;
-		irrklang::ik_f32 (IrrManager::*vol)(void) const;
+		irrklang::ik_f32 (IrrManager::*vol)() const;
 	};
 	std::string _rootModelPath;
 	std::string _rootTexturePath;
@@ -50,14 +50,7 @@ private:
 	std::map<std::string, irr::video::ITexture *> _textures;
 	std::vector<std::vector<irrklang::ISound *>> _sModule;
 
-	//FIXME CONST STATIC
-	const std::vector<soundInfo> _sounds = {
-			{
-				MUSIC,
-				"assets/sounds/MenuSong.mp3",
-				&IrrManager::getMusicVolume,
-			}
-	};
+	static const std::vector<soundInfo> _sounds;;
 	static AssetsPool _meshPool;
 };
 

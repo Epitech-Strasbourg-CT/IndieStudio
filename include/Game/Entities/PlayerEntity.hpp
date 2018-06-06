@@ -11,15 +11,15 @@
 #include "../AMovable.hpp"
 #include "../Controllable.hpp"
 
-#define BORDERX 30
-#define BORDERY 30
+#define BORDERX 10.0
+#define BORDERY 10.0
 
 class PlayerEntity : public Controllable,
 		     public AEntity,
 		     public AMovable<int> {
 public:
 	PlayerEntity();
-	void update();
+	void update(EntitiesMap *map) override;
 	void updateRender() override;
 	void dump(std::ostream &s) const;
 	void load(std::istream &s);

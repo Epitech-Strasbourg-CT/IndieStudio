@@ -17,7 +17,7 @@ public:
 
 	virtual ~ATrackable() = default;
 
-	const irr::core::vector2d<T> &getPosition() const
+	virtual const irr::core::vector2d<T> &getPosition() const
 	{
 		return _position;
 	}
