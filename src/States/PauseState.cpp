@@ -105,6 +105,8 @@ void PauseState::unload()
 
 void PauseState::update()
 {
+	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
+		StateMachine::getInstance().pop();
 	AState::update();
 }
 
