@@ -36,7 +36,7 @@ PlayerEntity::PlayerEntity()
 		this->dirRight(1);
 	});
 	addEvent(DROP_BOMB, [this]() {
-		this->dropBomb(AMovable::getPosX(), AMovable::getPosY());
+		this->dropBomb(AEntity::getPosX(), AEntity::getPosY());
 	});
 	// endregion
 }

@@ -107,6 +107,12 @@ void SettingsState::unload()
 	AState::unload();
 }
 
+void SettingsState::update()
+{
+	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
+		StateMachine::getInstance().pop();
+}
+
 void SettingsState::draw()
 {
 	auto &im = IrrManager::getInstance();
