@@ -20,43 +20,43 @@ public:
 	~AMovable() = default;
 	void dirLeft(T val)
 	{
-		ATrackable<T>::_pos.X -= val;
+		ATrackable<T>::_position.X -= val;
 	}
 
 	void dirRight(T val)
 	{
-		ATrackable<T>::_pos.X += val;
+		ATrackable<T>::_position.X += val;
 	}
 
 	void dirTop(T val)
 	{
-		ATrackable<T>::_pos.Y += val;
+		ATrackable<T>::_position.Y += val;
 	}
 
 	void dirBottom(T val)
 	{
-		ATrackable<T>::_pos.Y -= val;
+		ATrackable<T>::_position.Y -= val;
 	}
 
 	AMovable &operator=(irr::core::vector2d<T> &other)
 	{
-		ATrackable<T>::_pos.X = other.X;
-		ATrackable<T>::_pos.Y = other.Y;
+		ATrackable<T>::_position.X = other.X;
+		ATrackable<T>::_position.Y = other.Y;
 		return *this;
 	}
 
 	irr::core::vector2d<T> operator+=(irr::core::vector2d<T> &other)
 	{
-		ATrackable<T>::_pos.X += other.X;
-		ATrackable<T>::_pos.Y += other.Y;
-		return ATrackable<T>::_pos;
+		ATrackable<T>::_position.X += other.X;
+		ATrackable<T>::_position.Y += other.Y;
+		return ATrackable<T>::_position;
 	}
 
 	irr::core::vector2d<T> operator-=(irr::core::vector2d<T> &other)
 	{
-		ATrackable<T>::_pos.X += other.X;
-		ATrackable<T>::_pos.Y += other.Y;
-		return ATrackable<T>::_pos;
+		ATrackable<T>::_position.X += other.X;
+		ATrackable<T>::_position.Y += other.Y;
+		return ATrackable<T>::_position;
 	}
 };
 
