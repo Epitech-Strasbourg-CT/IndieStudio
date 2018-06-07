@@ -57,11 +57,11 @@ add_executable(bomberman
         src/Game/Entities/BlockEntity.cpp
         include/Game/Entities/BlockEntity.hpp
         src/Game/Entities/BombEntity.cpp
-        src/Game/Entities/BombEntity.hpp
+        include/Game/Entities/BombEntity.hpp
         src/Game/Entities/FireEntity.cpp
-        src/Game/Entities/FireEntity.hpp
+        include/Game/Entities/FireEntity.hpp
         src/Game/Entities/BonusEntity.cpp
-        src/Game/Entities/BonusEntity.hpp
+        include/Game/Entities/BonusEntity.hpp
         src/Game/SphericalCoordinate.cpp
         include/Game/SphericalCoordinate.hpp
         src/States/AIChooseState.cpp

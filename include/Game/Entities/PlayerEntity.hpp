@@ -7,11 +7,12 @@
 
 #pragma once
 
+#include "../../Abstracts/ABombDropper.hpp"
 #include "../AEntity.hpp"
 #include "../AMovable.hpp"
 #include "../Controllable.hpp"
-#include "../../Abstracts/ABombDropper.hpp"
 
+#define ANGLE_SUP 180
 #define BORDERX 10.0
 #define BORDERY 10.0
 
@@ -22,12 +23,16 @@ class PlayerEntity : public Controllable,
 public:
 	PlayerEntity();
 	void update(EntitiesMap *map) override;
+	void updatePosition(EntitiesMap *map);
 	void updateRender() override;
-	void dump(std::ostream &s) const override;
-	void load(std::istream &s) override;
+	void updateRenderDir();
+	void updateRenderPosition();
+	void dump(std::ostream &s) const;
+	void load(std::istream &s);
 
 private:
 	struct serialize {
 	};
 	irr::core::vector2di _old;
+	irr::core::vector2di _look;
 };

@@ -5,7 +5,7 @@
 ** BombEntity.cpp
 */
 
-#include "BombEntity.hpp"
+#include "../../../include/Game/Entities/BombEntity.hpp"
 
 BombEntity::BombEntity(int x, int y): AEntity("Bomb", x, y)
 {

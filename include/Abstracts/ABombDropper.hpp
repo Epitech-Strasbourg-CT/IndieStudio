@@ -10,7 +10,7 @@
 #include <queue>
 #include "../../include/Game/EntitiesMap.hpp"
 #include "../../include/Game/EntityFactory.hpp"
-#include "../../src/Game/Entities/BombEntity.hpp"
+#include "../Game/Entities/BombEntity.hpp"
 
 class ABombDropper {
 	public:
