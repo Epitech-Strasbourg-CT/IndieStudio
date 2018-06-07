@@ -40,6 +40,7 @@ public:
 	void load() override;
 	void unload() override;
 
+	void update() override;
 	void draw() override;
 
 	void applyEventButton(const irr::SEvent &ev, SettingsActions id);
