@@ -11,12 +11,15 @@
 #include "../AMovable.hpp"
 #include "../Controllable.hpp"
 
+#define BORDERX 10.0
+#define BORDERY 10.0
+
 class PlayerEntity : public Controllable,
 		     public AEntity,
-		     public AMovable<float> {
+		     public AMovable<int> {
 public:
 	PlayerEntity();
-	void update();
+	void update(EntitiesMap *map) override;
 	void updateRender() override;
 	void dump(std::ostream &s) const;
 	void load(std::istream &s);
@@ -24,4 +27,5 @@ public:
 private:
 	struct serialize {
 	};
+	irr::core::vector2di _old;
 };

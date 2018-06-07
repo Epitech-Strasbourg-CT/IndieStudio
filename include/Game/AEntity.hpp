@@ -12,32 +12,27 @@
 #include <irrlicht.h>
 #include <regex>
 
-using Vector3DF = irr::core::vector3df;
-using Vector2DF = irr::core::vector2df;
-
-using Vector3DI = irr::core::vector3di;
-using Vector2DI = irr::core::vector2di;
+#define ENTITY_SIZE_X 16.0
+#define ENTITY_SIZE_Y 16.0
 
 class EntitiesMap;
 
-class AEntity : public virtual ATrackable<float> {
+class AEntity : public ATrackable<int> {
 public:
 	explicit AEntity(const std::string & = "entity");
 	virtual ~AEntity() = default;
 
 	virtual void collide(AEntity &);
+	bool isStackable() const;
 
 	virtual void update(EntitiesMap *);
 	virtual void updateRender();
+	irr::core::vector2d<float> calculateConvertedPosition() const;
 
 	virtual void dump(std::ostream &s) const;
-
 	virtual void load(std::istream &s);
 
-	Vector2DI getMapPos() const;
-	void setMapPos(const Vector2DI &position);
-
-	const Vector3DF &getOrigin() const;
+	const irr::core::vector3df &getOrigin() const;
 
 private:
 	struct serialize {
@@ -45,11 +40,11 @@ private:
 		irr::s32 y;
 	};
 	std::string _type;
-	Vector3DF _origin;
+	irr::core::vector3df _origin;
 
 protected:
 	irr::scene::ISceneNode *_node;
-	irr::core::vector2di _mapPos;
+	bool _stackable;
 };
 
 std::ostream &operator<<(std::ostream &, const AEntity &);

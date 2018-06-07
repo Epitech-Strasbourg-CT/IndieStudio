@@ -14,6 +14,7 @@
 class BlockEntity : public AEntity {
 public:
 	BlockEntity();
+	void updateRender() override;
 
 private:
 	struct serialize {

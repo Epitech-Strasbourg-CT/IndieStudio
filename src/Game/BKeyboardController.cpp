@@ -8,10 +8,11 @@
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 
-BKeyboardController::BKeyboardController(): _binds()
+BKeyboardController::BKeyboardController(size_t id)
+: _id(id), _binds(), _isKeyDown()
 {
 	auto &er = EventReceiver::getInstance();
-	er.registerEvent(100, irr::EET_KEY_INPUT_EVENT,
+	er.registerEvent(_id, irr::EET_KEY_INPUT_EVENT,
 	[this](const irr::SEvent &ev) {
 		auto key = ev.KeyInput.Key;
 		if (_binds.count(key) > 0 && _controllable)

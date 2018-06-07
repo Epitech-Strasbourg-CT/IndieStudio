@@ -9,7 +9,7 @@
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 
-PlayerEntity::PlayerEntity() : AEntity("player"), ATrackable(), Controllable()
+PlayerEntity::PlayerEntity() : AEntity("player"), AMovable(), Controllable()
 {
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
@@ -18,29 +18,87 @@ PlayerEntity::PlayerEntity() : AEntity("player"), ATrackable(), Controllable()
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialTexture(0, am.loadTexture("player/player1.png"));
 	_node->setScale({15, 15, 15});
-	addEvent(MOVE_UP, [this]() { this->dirTop(0.3); });
-	addEvent(MOVE_DOWN, [this]() { this->dirBottom(0.3); });
-	addEvent(MOVE_LEFT, [this]() { this->dirLeft(0.3); });
-	addEvent(MOVE_RIGHT, [this]() { this->dirRight(0.3); });
-}
+	// region move
 
-void PlayerEntity::update()
-{
-	Controllable::update();
+	addEvent(MOVE_UP, [this]() {
+		//TODO tryMove with pool
+		this->_node->setRotation({0, 90, 0});
+		this->dirTop(1);
+		auto EntityPos = this->AEntity::getPosition();
+		auto MovablePos = this->AMovable::getPosition();
+		if (MovablePos.Y > BORDERY) {
+			EntityPos.Y += 1;
+			MovablePos.Y = 0;
+			this->AMovable::setPosition(MovablePos);
+			this->AEntity::setPosition(EntityPos);
+			std::cout << this->AEntity::getPosition().X  << " " << this->AEntity::getPosition().Y<< std::endl;
+		}
+	});
+
+	addEvent(MOVE_DOWN, [this]() {
+		//TODO tryMove with pool
+		this->_node->setRotation({0, 90 + 180, 0});
+		this->dirBottom(1);
+		auto EntityPos = this->AEntity::getPosition();
+		auto MovablePos = this->AMovable::getPosition();
+		if (MovablePos.Y < 0) {
+			EntityPos.Y -= 1;
+			MovablePos.Y = BORDERY;
+			this->AMovable::setPosition(MovablePos);
+			this->AEntity::setPosition(EntityPos);
+			std::cout << this->AEntity::getPosition().X  << " " << this->AEntity::getPosition().Y<< std::endl;
+		}
+	});
+
+	addEvent(MOVE_LEFT, [this]() {
+		//TODO tryMove with pool
+		this->_node->setRotation({0, 0, 0});
+		this->dirLeft(1);
+		auto EntityPos = this->AEntity::getPosition();
+		auto MovablePos = this->AMovable::getPosition();
+		if (MovablePos.X < 0) {
+			EntityPos.X -= 1;
+			MovablePos.X = BORDERX;
+			this->AMovable::setPosition(MovablePos);
+			this->AEntity::setPosition(EntityPos);
+			std::cout << this->AEntity::getPosition().X  << " " << this->AEntity::getPosition().Y<< std::endl;
+		}
+	});
+	addEvent(MOVE_RIGHT, [this]() {
+		//TODO tryMove with pool
+		this->_node->setRotation({0, 180, 0});
+		this->dirRight(1);
+		auto EntityPos = this->AEntity::getPosition();
+		auto MovablePos = this->AMovable::getPosition();
+		if (MovablePos.X > BORDERX) {
+			EntityPos.X += 1;
+			MovablePos.X = 0;
+			this->AMovable::setPosition(MovablePos);
+			this->AEntity::setPosition(EntityPos);
+			std::cout << this->AEntity::getPosition().X  << " " << this->AEntity::getPosition().Y<< std::endl;
+
+		}
+	});
+	// endregion
 }
 
 void PlayerEntity::updateRender()
 {
 	auto nodePos = _node->getPosition();
-	auto pos = getPos();
+	auto pos = calculateConvertedPosition();
+	irr::core::vector2di Opos = AMovable::getPosition();
+	irr::core::vector2df Rpos {};
 	auto origin = getOrigin();
 
-	if (origin.X + pos.X != nodePos.X || origin.Y + pos.Y != nodePos.Y) {
-		nodePos.X = origin.X + pos.X;
-		nodePos.Y = origin.Y + pos.Y;
+	Rpos.X = static_cast<irr::f32>(ENTITY_SIZE_X / BORDERX * static_cast<float>(Opos.X));
+	Rpos.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / BORDERY * static_cast<float>(Opos.Y));
+	if (origin.X + pos.X + Rpos.X != nodePos.X ||
+	    origin.Z + pos.Y + Rpos.Y != nodePos.Z) {
+		nodePos.Y = origin.Y;
+		nodePos.X = origin.X + pos.X + Rpos.X;
+		nodePos.Z = origin.Z + pos.Y + Rpos.Y;
 		_node->setPosition(nodePos);
 	}
-	AEntity::updateRender();
 }
 
 void PlayerEntity::dump(std::ostream &s) const
@@ -61,4 +119,10 @@ void PlayerEntity::load(std::istream &s)
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
+}
+
+void PlayerEntity::update(EntitiesMap *map)
+{
+	Controllable::update();
+	AEntity::update(map);
 }

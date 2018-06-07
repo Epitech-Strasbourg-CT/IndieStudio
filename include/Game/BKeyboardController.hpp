@@ -13,11 +13,12 @@
 
 class BKeyboardController : public AController {
 public:
-	BKeyboardController();
+	BKeyboardController(size_t id);
 	void registerBind(irr::EKEY_CODE code, ControlName_e c);
 	void unregisterBind(irr::EKEY_CODE code);
 	void updateInputs() override;
 private:
+	size_t _id;
 	std::unordered_map
 	<irr::EKEY_CODE, ControlName_e>
 	_binds;
