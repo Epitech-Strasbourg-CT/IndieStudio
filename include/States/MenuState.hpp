@@ -33,8 +33,8 @@ public:
 	~MenuState();
 
 
-	void loadBouttons();
-	void unloadBouttons();
+	void loadButtons();
+	void unloadButtons();
 	void load() override;
 	void unload() override;
 
@@ -42,18 +42,18 @@ public:
 
 	void draw() override;
 
-	void applyEventBoutton(const irr::SEvent &ev, MenuActions id);
-	irr::gui::IGUIButton *getBoutton(MenuActions) const;
+	void applyEventButton(const irr::SEvent &ev, MenuActions id);
+	irr::gui::IGUIButton *getButton(MenuActions) const;
 
-	struct BouttonsDesc {
+	struct ButtonsDesc {
 		irr::core::rect<irr::s32> pos;
 		std::string name;
 		std::function<void(MenuState *)> fct;
 	};
 
 private:
-	std::vector<irr::gui::IGUIButton *> _bouttons;
-	static const std::map<MenuActions , BouttonsDesc> _descs;
+	std::vector<irr::gui::IGUIButton *> _buttons;
+	static const std::map<MenuActions , ButtonsDesc> _descs;
 	irrklang::ISound *_sound;
 	irr::gui::IGUIButton *_launch;
 	irr::gui::IGUIButton *_load;
@@ -65,8 +65,8 @@ private:
 
 //	static const std::unordered_map<int,//irr::s32,
 //	std::function<void(irr::s32, MenuState *)>> _assets;
-//	std::vector<irr::gui::IGUIButton *> _bouttons;
-//	static const std::map<MenuActions , BouttonsDesc> _descs;
+//	std::vector<irr::gui::IGUIButton *> _buttons;
+//	static const std::map<MenuActions , ButtonsDesc> _descs;
 //	irrklang::ISound *_sound;
 };
 

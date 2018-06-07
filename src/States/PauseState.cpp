@@ -11,6 +11,8 @@
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/States/SettingsState.hpp"
+#include "../../include/Game/SaveManager.hpp"
+#include "../../include/Time.hpp"
 
 const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 	PauseState::_descs{
@@ -34,6 +36,10 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 		{50, 250, 750, 300},
 		"save",
 		[](PauseState *self) {
+			SaveManager sm;
+			auto &res = self->getSharedResources();
+
+			//sm.save(res.getEntityMap(), std::to_string(Time::timestamp());
 		}
 	}},
 	{PauseState::EXIT_GAME, {
@@ -62,8 +68,8 @@ void PauseState::loadButtons()
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
 		auto name = n.second.name;
-		b->setImage(ap.loadTexture("bouttons/" + name + ".png"));
-		b->setPressedImage(ap.loadTexture("bouttons/" + name + "_hover.png"));
+		b->setImage(ap.loadTexture("buttons/" + name + ".png"));
+		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
 		_buttons.push_back(b);
 	}
 
@@ -112,8 +118,8 @@ void PauseState::draw()
 void PauseState::applyEventButton(const irr::SEvent &ev, PauseState::Actions id)
 {
 	auto b = getButton(id);
-	auto hover_name = "bouttons/" + _descs.at(id).name + "_hover.png";
-	auto name = "bouttons/" + _descs.at(id).name + ".png";
+	auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
+	auto name = "buttons/" + _descs.at(id).name + ".png";
 	auto &ap = AssetsPool::getInstance();
 
 	switch (ev.GUIEvent.EventType) {
