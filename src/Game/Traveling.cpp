@@ -6,37 +6,36 @@
 */
 
 #include <iostream>
-#include "Traveling.hpp"
+#include "../../include/Game/Traveling.hpp"
 #include "../../include/Singletons/IrrManager.hpp"
 
-Traveling::Traveling(irr::core::vector3df const &finalLook) : _coor(),
+Traveling::Traveling(irr::scene::ICameraSceneNode &cam, irr::core::vector3df const &finalLook, irr::f32 startPointRatio) : _coor(),
 _startPoint(), _point(), _finalLook(finalLook), _needMoveCamToPoint(true),
-_needMovePoint(true), _cur(0), _finalTime(60), _follow(0.1), _endExac(5), _endFollow(0.1)
+_needMovePoint(true), _cur(0), _finalTime(60), _follow(0.1), _endExac(5),
+_endFollow(0.1), _accelEndFollow(0)
 {
 	_cube = IrrManager::getInstance().getSmgr()->addCubeSceneNode();
 	_cube->setVisible(false);
-}
 
-Traveling::~Traveling()
-{
-}
-
-void Traveling::init(irr::scene::ICameraSceneNode &cam)
-{
 	auto targetPos = cam.getPosition();
 	std::cout << cam.getTarget().X << " " << cam.getTarget().Y << " " << cam.getTarget().Z << std::endl;
 	irr::core::vector3df vect({
-				  (cam.getTarget().X - cam.getPosition().X) * static_cast<irr::f32>(0.5),
-				  (cam.getTarget().Y - cam.getPosition().Y) * static_cast<irr::f32>(0.5),
-				  (cam.getTarget().Z - cam.getPosition().Z) * static_cast<irr::f32>(0.5)
-  	});
+				  (cam.getTarget().X - cam.getPosition().X) * static_cast<irr::f32>(startPointRatio),
+				  (cam.getTarget().Y - cam.getPosition().Y) * static_cast<irr::f32>(startPointRatio),
+				  (cam.getTarget().Z - cam.getPosition().Z) * static_cast<irr::f32>(startPointRatio)
+				  });
 //	std::cout << vect.X << " " << vect.Y << " " << vect.Z << std::endl;
 	targetPos += vect;
 	_cube->setPosition(targetPos);
 	cam.setTarget(targetPos);
 	_startPoint = targetPos;
 	_point = targetPos;
+	_coor.emplace_back(0, cam.getPosition());
 //	_point = cam.getPosition();
+}
+
+Traveling::~Traveling()
+{
 }
 
 void Traveling::push(size_t time, irr::core::vector3df const &coor)
@@ -125,6 +124,7 @@ void Traveling::moveCameraToEnd(irr::scene::ICameraSceneNode &cam)
 	if (isVectSupEq((c2.second - camPos), -_endExac) && isVectInfEq((c2.second - camPos), _endExac))
 		_needMovePoint = false;
 	camPos += vect;
+	_endFollow += _accelEndFollow;
 	cam.setPosition(camPos);
 }
 
@@ -174,4 +174,9 @@ void Traveling::setEndFollow(irr::f32 len)
 	if (len < 0 || len > 1)
 		return;
 	_endFollow = len;
+}
+
+void Traveling::setAccelEndFollow(irr::f32 accel)
+{
+	_accelEndFollow = accel;
 }

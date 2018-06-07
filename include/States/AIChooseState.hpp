@@ -10,7 +10,7 @@
 
 	#include <irrlicht.h>
 	#include "../Abstracts/AState.hpp"
-	#include "../../src/Game/Traveling.hpp"
+	#include "../Game/Traveling.hpp"
 
 class AIChooseState : public AState {
 public:
