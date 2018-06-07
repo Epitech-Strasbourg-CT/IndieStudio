@@ -20,7 +20,6 @@ AIChooseState::_descs{
 	 {50, 50,  750, 100},
 	 "launch",
 	 [](AIChooseState *self) {
-	 	std::cout << self->_state[0] << " " << self->_state[1] << " " << self->_state[2] << " " << self->_state[3] << std::endl;
 	 	if(std::find(self->_state.begin(), self->_state.end(), 1) == self->_state.end())
 			return;
 	 	self->getSharedResources().setIAState(self->_state);
@@ -103,8 +102,8 @@ void AIChooseState::loadBouttons()
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
 		auto name = n.second.name;
-		b->setImage(ap.loadTexture("bouttons/" + name + ".png"));
-		b->setPressedImage(ap.loadTexture("bouttons/" + name + "_hover.png"));
+		b->setImage(ap.loadTexture("buttons/" + name + ".png"));
+		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
 		_bouttons.push_back(b);
 	}
 
@@ -134,8 +133,8 @@ void AIChooseState::applyEventBoutton(const irr::SEvent &ev,
 AIChooseState::MenuActions id) //TODO Coding Style
 {
 	auto b = getBoutton(id);
-	auto hover_name = "bouttons/" + std::string(((_state[id - 401] == 0) ? "ia" : "player")) + "_hover.png";
-	auto name = "bouttons/" + std::string(((_state[id - 401] == 0) ? "ia" : "player")) + ".png";
+	auto hover_name = "buttons/" + std::string(((_state[id - 401] == 0) ? "ia" : "player")) + "_hover.png";
+	auto name = "buttons/" + std::string(((_state[id - 401] == 0) ? "ia" : "player")) + ".png";
 	auto &ap = AssetsPool::getInstance();
 
 	switch (ev.GUIEvent.EventType) {
@@ -147,13 +146,13 @@ AIChooseState::MenuActions id) //TODO Coding Style
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
 			if (id == 400)
-				b->setImage(ap.loadTexture("bouttons/launch_hover.png"));
+				b->setImage(ap.loadTexture("buttons/launch_hover.png"));
 			else
 				b->setImage(ap.loadTexture(hover_name));
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			if (id == 400)
-				b->setImage(ap.loadTexture("bouttons/launch.png"));
+				b->setImage(ap.loadTexture("buttons/launch.png"));
 			else
 				b->setImage(ap.loadTexture(name));
 			break;
@@ -165,12 +164,12 @@ AIChooseState::MenuActions id) //TODO Coding Style
 void AIChooseState::switchBtnState(irr::gui::IGUIButton *btn, int id)
 {
 	if (_state[id] == 0) {
-		btn->setImage(AssetsPool::getInstance().loadTexture("bouttons/player.png"));
-		btn->setPressedImage(AssetsPool::getInstance().loadTexture("bouttons/player_hover.png"));
+		btn->setImage(AssetsPool::getInstance().loadTexture("buttons/player.png"));
+		btn->setPressedImage(AssetsPool::getInstance().loadTexture("buttons/player_hover.png"));
 		_state[id] = 1;
 	} else {
-		btn->setImage(AssetsPool::getInstance().loadTexture("bouttons/ia.png"));
-		btn->setPressedImage(AssetsPool::getInstance().loadTexture("bouttons/ia_hover.png"));
+		btn->setImage(AssetsPool::getInstance().loadTexture("buttons/ia.png"));
+		btn->setPressedImage(AssetsPool::getInstance().loadTexture("buttons/ia_hover.png"));
 		_state[id] = 0;
 	}
 }

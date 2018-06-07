@@ -7,13 +7,13 @@
 
 #include "../../include/Singletons/AssetsPool.hpp"
 
-const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds = {
-{
-	MUSIC,
-	"assets/sounds/MenuSong.mp3",
-	&IrrManager::getMusicVolume,
-	}
-};
+//const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds = {
+//{
+//	MUSIC,
+//	"assets/sounds/MenuSong.mp3",
+//	&IrrManager::getMusicVolume,
+//	}
+//};
 
 AssetsPool AssetsPool::_meshPool("assets/models/", "assets/textures/");
 

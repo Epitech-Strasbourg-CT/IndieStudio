@@ -8,8 +8,17 @@
 #ifndef BOMBERMAN_TRANSITIONTOGAMESTATE_HPP
 	#define BOMBERMAN_TRANSITIONTOGAMESTATE_HPP
 
-class TransitionToGameState {
+	#include <irrlicht.h>
+	#include "../Abstracts/AState.hpp"
+	#include "../Game/Traveling.hpp"
 
+class TransitionToGameState : public AState {
+public:
+	TransitionToGameState(AStateShare &_share);
+	void update() override;
+
+private:
+	Traveling _trav;
 };
 
 #endif /* !BOMBERMAN_TRANSITIONTOGAMESTATE_HPP */
