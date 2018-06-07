@@ -12,6 +12,7 @@
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/Game/SaveManager.hpp"
 #include "../../include/Game/BKeyboardController.hpp"
+#include "../../include/States/PauseState.hpp"
 
 GameState::GameState(AStateShare &_share) : AState(_share)
 {
@@ -29,7 +30,11 @@ GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_sh
 
 void GameState::update()
 {
-	_emap.update();
+
+	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
+		StateMachine::getInstance().push(new PauseState(getSharedResources()), false);
+	else
+		_emap.update();
 }
 
 void GameState::load()

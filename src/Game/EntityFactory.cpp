@@ -6,10 +6,19 @@
 */
 
 #include "../../include/Game/EntityFactory.hpp"
+#include "../../include/Game/Entities/PlayerEntity.hpp"
+#include "../../include/Game/Entities/BlockEntity.hpp"
 
-EntityFactory::EntityFactory()
+EntityFactory::EntityFactory() : _fac({{"entity", []() {
+	return std::unique_ptr<AEntity>(new AEntity("entity"));
+}}, {"player", []() {
+	return std::unique_ptr<PlayerEntity>(new PlayerEntity());
+}}, {"block", []() {
+	return std::unique_ptr<BlockEntity>(new BlockEntity());
+}}, {"bomb", []() {
+	return std::unique_ptr<BombEntity>(new BombEntity());
+}},})
 {
-
 }
 
 EntityFactory::~EntityFactory()

@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_EXE_LINKER_FLAGS "-W -Wall -Wextra -g ")
 
-
+# region src
 add_executable(bomberman
         src/main.cpp
         src/Singletons/StateMachine.cpp
@@ -44,30 +44,53 @@ add_executable(bomberman
         include/Game/EntityFactory.hpp
         src/Game/SaveManager.cpp
         include/Game/SaveManager.hpp
+
         include/Game/ATrackable.hpp
         include/Game/AMovable.hpp
+
         src/Game/Controllable.cpp
         include/Game/Controllable.hpp
+
         src/Game/AController.cpp
         include/Game/AController.hpp
+
         src/Game/BKeyboardController.cpp
         include/Game/BKeyboardController.hpp
+
         src/Game/Entities/PlayerEntity.cpp
         include/Game/Entities/PlayerEntity.hpp
+
+        src/Game/Entities/PotEntity.cpp
+        include/Game/Entities/PotEntity.hpp
+
         src/Game/Entities/BlockEntity.cpp
         include/Game/Entities/BlockEntity.hpp
+
         src/Game/Entities/BombEntity.cpp
-        src/Game/Entities/BombEntity.hpp
+        include/Game/Entities/BombEntity.hpp
+
         src/Game/Entities/FireEntity.cpp
-        src/Game/Entities/FireEntity.hpp
+        include/Game/Entities/FireEntity.hpp
+
         src/Game/Entities/BonusEntity.cpp
-        src/Game/Entities/BonusEntity.hpp
+        include/Game/Entities/BonusEntity.hpp
+
         src/Game/SphericalCoordinate.cpp
         include/Game/SphericalCoordinate.hpp
+
         src/States/AIChooseState.cpp
         include/States/AIChooseState.hpp
+
+        src/States/PauseState.cpp
+        include/States/PauseState.hpp
+
         src/Game/Traveling.cpp
-        include/Game/Traveling.hpp)
+        include/Game/Traveling.hpp
+
+        src/Abstracts/ABombDropper.cpp
+        include/Abstracts/ABombDropper.hpp)
+
+# endregion
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"

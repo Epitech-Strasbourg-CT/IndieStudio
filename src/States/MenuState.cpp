@@ -14,8 +14,9 @@
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/GameState.hpp"
 #include "../../include/States/AIChooseState.hpp"
+#include "../../include/States/PauseState.hpp"
 
-const std::map<MenuActions, MenuState::BouttonsDesc>
+const std::map<MenuActions, MenuState::ButtonsDesc>
 	MenuState::_descs{
 	{LAUNCH,    {
 		            {50, 50,  750, 100},
@@ -24,21 +25,26 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 		            	auto &sm = StateMachine::getInstance();
 		            	auto &res = self->getSharedResources();
 		            	sm.push(new AIChooseState(res), false);
-//			        sm.push(new GameState(res), false);
+			        sm.push(new GameState(res), false);
 		            }
 	            }},
 	{LOAD,      {
 		            {50, 150, 750, 200},
 		            "load",
 		            [](MenuState *self) {
-			            StateMachine::getInstance().pop();
+			            //StateMachine::getInstance().pop();
+				    auto &sm = StateMachine::getInstance();
+				    auto &res = self->getSharedResources();
+				    sm.push(new PauseState(res), false);
 		            }
 	            }},
 	{SETTINGS,  {
 		            {50, 250, 750, 300},
 		            "settings",
 		            [](MenuState *self) {
-			            StateMachine::getInstance().push(new SettingsState(self->_share), false);
+				    auto &sm = StateMachine::getInstance();
+				    auto &res = self->getSharedResources();
+			            sm.push(new SettingsState(res), false);
 		            }
 	            }},
 	{EXIT_GAME, {
@@ -61,14 +67,14 @@ MenuState::~MenuState()
 
 void MenuState::load()
 {
-	loadBouttons();
+	loadButtons();
 	_sound = AssetsPool::getInstance().loadSound(AssetsPool::MENU, true);
 	AState::load();
 }
 
 void MenuState::unload()
 {
-	unloadBouttons();
+	unloadButtons();
 //	if (_sound)
 //		AssetsPool::getInstance().unloadSound(AssetsPool::MENU, _sound);
 //	_sound = nullptr;
@@ -82,23 +88,23 @@ void MenuState::draw()
 	im.getGuienv()->drawAll();
 }
 
-irr::gui::IGUIButton *MenuState::getBoutton(MenuActions id) const
+irr::gui::IGUIButton *MenuState::getButton(MenuActions id) const
 {
 	if (id < LAUNCH || id > LAUNCH + BOUTON_NUMBER)
 		return nullptr;
-	return (_bouttons.at(id - LAUNCH));
+	return (_buttons.at(id - LAUNCH));
 }
 
-void MenuState::unloadBouttons()
+void MenuState::unloadButtons()
 {
 	auto &er = EventReceiver::getInstance();
 	er.unregisterEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT);
-	for (auto &n : _bouttons)
+	for (auto &n : _buttons)
 		n->remove();
-	_bouttons.clear();
+	_buttons.clear();
 }
 
-void MenuState::loadBouttons()
+void MenuState::loadButtons()
 {
 	auto gui = IrrManager::getInstance().getGuienv();
 	auto &er = EventReceiver::getInstance();
@@ -107,25 +113,25 @@ void MenuState::loadBouttons()
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
 		auto name = n.second.name;
-		b->setImage(ap.loadTexture("bouttons/" + name + ".png"));
-		b->setPressedImage(ap.loadTexture("bouttons/" + name + "_hover.png"));
-		_bouttons.push_back(b);
+		b->setImage(ap.loadTexture("buttons/" + name + ".png"));
+		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
+		_buttons.push_back(b);
 	}
 
 	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
 	                 [this](const irr::SEvent &ev) {
 		                 auto id = static_cast<MenuActions>(ev.GUIEvent.Caller->getID());
 		                 if (MenuState::_descs.count(id) > 0)
-			                 this->applyEventBoutton(ev, id);
+			                 this->applyEventButton(ev, id);
 		                 return true;
 	                 });
 }
 
-void MenuState::applyEventBoutton(const irr::SEvent &ev, MenuActions id)
+void MenuState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 {
-	auto b = getBoutton(id);
-	auto hover_name = "bouttons/" + _descs.at(id).name + "_hover.png";
-	auto name = "bouttons/" + _descs.at(id).name + ".png";
+	auto b = getButton(id);
+	auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
+	auto name = "buttons/" + _descs.at(id).name + ".png";
 	auto &ap = AssetsPool::getInstance();
 
 	switch (ev.GUIEvent.EventType) {

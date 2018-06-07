@@ -9,7 +9,7 @@
 #include "../../include/Abstracts/AStateShare.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 
-AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _stateIA(4)
+AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _stateIA(4), _map()
 {
 	EventReceiver::getInstance().registerEvent(0, irr::EET_KEY_INPUT_EVENT,
         [this](const irr::SEvent &ev) {
@@ -60,9 +60,21 @@ bool AStateShare::setIAState(std::vector<int> const &stateIA)
 	_stateIA = stateIA;
 	return true;
 }
+EntitiesMap *AStateShare::getMap() const
+{
+	if (_map == nullptr)
+		throw std::runtime_error("Map isn't load");
+	return _map;
+}
 
 std::vector<int> AStateShare::getIAState()
 {
 	return _stateIA;
+}
+
+
+void AStateShare::setMap(EntitiesMap *map)
+{
+	AStateShare::_map = map;
 }
 

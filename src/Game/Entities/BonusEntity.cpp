@@ -5,7 +5,7 @@
 ** BonusEntity.cpp
 */
 
-#include "BonusEntity.hpp"
+#include "../../../include/Game/Entities/BonusEntity.hpp"
 
 BonusEntity::BonusEntity(): AEntity("Fire")
 {
