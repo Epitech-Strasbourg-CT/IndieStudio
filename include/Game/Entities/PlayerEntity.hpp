@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "../../Abstracts/ABombDropper.hpp"
 #include "../AEntity.hpp"
 #include "../AMovable.hpp"
 #include "../Controllable.hpp"
@@ -16,6 +17,7 @@
 #define BORDERY 10.0
 
 class PlayerEntity : public Controllable,
+		     public ABombDropper,
 		     public AEntity,
 		     public AMovable<int> {
 public:

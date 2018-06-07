@@ -25,6 +25,7 @@ EntitiesMap::_generationMap = {
 		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN);
 		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
 		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
+		controller->registerBind(irr::KEY_SPACE, DROP_BOMB);
 		PlayerEntity *player = new PlayerEntity();
 		AController::bindEntityToController(*controller, *player);
 		return player;

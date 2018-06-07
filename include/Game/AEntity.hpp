@@ -19,7 +19,7 @@ class EntitiesMap;
 
 class AEntity : public ATrackable<int> {
 public:
-	explicit AEntity(const std::string &);
+	explicit AEntity(const std::string &, int x = 0, int y = 0);
 	virtual ~AEntity() = default;
 
 	virtual void collide(AEntity &);

@@ -8,7 +8,7 @@
 #ifndef BOMBERMAN_BONUSENTITY_HPP
 #define BOMBERMAN_BONUSENTITY_HPP
 
-#include "../../../include/Game/AEntity.hpp"
+#include "../AEntity.hpp"
 
 class BonusEntity: public AEntity {
 public:

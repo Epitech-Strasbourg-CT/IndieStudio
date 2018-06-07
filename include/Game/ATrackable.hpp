@@ -11,7 +11,7 @@
 
 template <typename T> class ATrackable {
 public:
-	ATrackable() : _position()
+	ATrackable(int x = 0, int y = 0) : _position(x, y)
 	{
 	}
 

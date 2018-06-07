@@ -14,7 +14,6 @@
 #include <set>
 #include <unordered_map>
 #include "AEntity.hpp"
-#include "Entities/PlayerEntity.hpp"
 
 #define HEIGHT 15
 #define WIDTH 19

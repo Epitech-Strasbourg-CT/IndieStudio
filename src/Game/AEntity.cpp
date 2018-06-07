@@ -7,8 +7,8 @@
 
 #include "../../include/Game/AEntity.hpp"
 
-AEntity::AEntity(const std::string &type)
-: ATrackable(),
+AEntity::AEntity(const std::string &type, int x, int y)
+: ATrackable(x, y),
 _type(type),
 _origin(-200, 200, -100),
 _correction(),

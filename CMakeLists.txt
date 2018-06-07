@@ -57,11 +57,11 @@ add_executable(bomberman
         src/Game/Entities/PotEntity.cpp
         include/Game/Entities/PotEntity.hpp
         src/Game/Entities/BombEntity.cpp
-        src/Game/Entities/BombEntity.hpp
+        include/Game/Entities/BombEntity.hpp
         src/Game/Entities/FireEntity.cpp
-        src/Game/Entities/FireEntity.hpp
+        include/Game/Entities/FireEntity.hpp
         src/Game/Entities/BonusEntity.cpp
-        src/Game/Entities/BonusEntity.hpp
+        include/Game/Entities/BonusEntity.hpp
         src/Game/SphericalCoordinate.cpp
         include/Game/SphericalCoordinate.hpp
         src/States/AIChooseState.cpp
@@ -69,7 +69,9 @@ add_executable(bomberman
         src/States/PauseState.cpp
         include/States/PauseState.hpp
         src/Game/Traveling.cpp
-        include/Game/Traveling.hpp src/Game/Entities/BlockEntity.cpp src/Game/Entities/BlockEntity.hpp)
+        include/Game/Traveling.hpp
+        src/Abstracts/ABombDropper.cpp
+        include/Abstracts/ABombDropper.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
