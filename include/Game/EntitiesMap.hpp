@@ -21,12 +21,17 @@
 
 class EntitiesMap {
 public:
+	using EMap = std::vector<std::vector
+	        <std::vector<std::unique_ptr<AEntity>>>>;
+
 	EntitiesMap();
 
 	bool insert(AEntity *e, const irr::core::vector2di &v = {0, 0});
 	bool erase(AEntity *e);
 	bool moveTo(AEntity *e, const irr::core::vector2di &v);
 	bool canMoveTo(const irr::core::vector2di &v);
+
+	EMap &getMap();
 
 	void updateInsert();
 	void updateErase();
@@ -40,7 +45,7 @@ public:
 
 private:
 
-	std::vector<std::vector<std::vector<std::unique_ptr<AEntity>>>> _map;
+	EMap _map;
 
 	struct MoveTrans {
 		AEntity *e;

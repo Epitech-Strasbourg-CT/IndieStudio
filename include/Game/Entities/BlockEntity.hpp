@@ -5,18 +5,15 @@
 ** BlockEntity.hpp
 */
 
-#pragma once
+#ifndef BOMBERMAN_BLOCKENTITY_HPP
+	#define BOMBERMAN_BLOCKENTITY_HPP
 
-#include "../AEntity.hpp"
-#include "../AMovable.hpp"
-#include "../Controllable.hpp"
+	#include "../../../include/Game/AEntity.hpp"
 
-class BlockEntity : public AEntity {
+class BlockEntity: public AEntity {
 public:
-	BlockEntity();
-	void updateRender() override;
-
-private:
-	struct serialize {
-	};
+	explicit BlockEntity();
 };
+
+
+#endif /* !BOMBERMAN_BLOCKENTITY_HPP */

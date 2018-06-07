@@ -54,8 +54,8 @@ add_executable(bomberman
         include/Game/BKeyboardController.hpp
         src/Game/Entities/PlayerEntity.cpp
         include/Game/Entities/PlayerEntity.hpp
-        src/Game/Entities/BlockEntity.cpp
-        include/Game/Entities/BlockEntity.hpp
+        src/Game/Entities/PotEntity.cpp
+        include/Game/Entities/PotEntity.hpp
         src/Game/Entities/BombEntity.cpp
         include/Game/Entities/BombEntity.hpp
         src/Game/Entities/FireEntity.cpp

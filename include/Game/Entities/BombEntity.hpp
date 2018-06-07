@@ -13,8 +13,9 @@
 
 class BombEntity : public AEntity {
 public:
-	BombEntity(int x = 0, int y = 0);
+	BombEntity();
 
+	void updateRender() override;
 	bool hasExploded() const;
 };
 

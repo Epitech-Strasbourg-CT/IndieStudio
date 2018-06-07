@@ -8,13 +8,15 @@
 #pragma once
 
 #include "AEntity.hpp"
+#include "Entities/PlayerEntity.hpp"
+#include "Entities/BlockEntity.hpp"
 #include <algorithm>
 #include <functional>
 #include <map>
 #include <memory>
 
 class EntityFactory {
-	public:
+public:
 	EntityFactory();
 	~EntityFactory();
 
