@@ -3,3 +3,5 @@ cmake-build-*
 *.o
 bomberman
 build/
+.vscode
+bin/
