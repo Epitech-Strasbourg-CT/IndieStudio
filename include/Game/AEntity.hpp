@@ -12,8 +12,8 @@
 #include <irrlicht.h>
 #include <regex>
 
-#define ENTITY_SIZE_X 16.0
-#define ENTITY_SIZE_Y 16.0
+#define ENTITY_SIZE_X 3.0
+#define ENTITY_SIZE_Y 3.0
 
 class EntitiesMap;
 

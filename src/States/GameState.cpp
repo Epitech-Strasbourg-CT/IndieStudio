@@ -14,14 +14,8 @@
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/States/PauseState.hpp"
 
-GameState::GameState(AStateShare &_share) : AState(_share)
+GameState::GameState(AStateShare &_share) : AState(_share), _canPause(true)
 {
-	auto mycam = IrrManager::getInstance().getSmgr()->addCameraSceneNodeFPS();
-	auto pos = mycam->getPosition();
-	pos.Y = 300;
-	pos.Z = -100;
-	pos.X = -100;
-	mycam->setPosition(pos);
 	_emap.generate();
 }
 
@@ -32,8 +26,9 @@ GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_sh
 
 void GameState::update()
 {
-
-	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
+	if (!getSharedResources().isKeyDown(irr::KEY_ESCAPE) && !_canPause)
+		_canPause = true;
+	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE) && _canPause)
 		StateMachine::getInstance().push(new PauseState(getSharedResources()), false);
 	else
 		_emap.update();
@@ -43,8 +38,16 @@ void GameState::load()
 {
 }
 
+
+
 void GameState::updateRender()
 {
 	_emap.updateRender();
 	AState::updateRender();
+}
+
+void GameState::transitionPop()
+{
+	_canPause = false;
+	AState::transitionPop();
 }

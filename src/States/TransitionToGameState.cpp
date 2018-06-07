@@ -11,7 +11,7 @@
 #include "../../include/States/GameState.hpp"
 
 TransitionToGameState::TransitionToGameState(AStateShare &_share) : AState(
-_share), _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {690, 60, 685}, 1.1)
+_share), _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {690, 60, 690}, 1.1)
 {
 	_trav.setFolow(0.04);
 	_trav.setEndFollow(0.01);
@@ -21,7 +21,7 @@ _share), _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode
 	_trav.push(30, {100, 190, 500});
 	_trav.push(30, {300, 150, 650});
 	_trav.push(30, {500, 150, 800});
-	_trav.push(50, {690, 130, 720});
+	_trav.push(50, {690, 100, 715});
 }
 
 void TransitionToGameState::update()

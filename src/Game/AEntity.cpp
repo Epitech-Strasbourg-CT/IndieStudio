@@ -10,7 +10,7 @@
 AEntity::AEntity(const std::string &type, int x, int y)
 : ATrackable(x, y),
 _type(type),
-_origin(-200, 200, -100),
+_origin(660, 65, 675),
 _correction(),
 _node(),
 _stackable(true)

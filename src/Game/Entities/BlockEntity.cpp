@@ -18,5 +18,5 @@ BlockEntity::BlockEntity() : AEntity("Block")
 	_node = im.getSmgr()->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialTexture(0, am.loadTexture("block/Brick.png"));
-	_node->setScale({0.11, 0.11, 0.11});
+	_node->setScale({0.02, 0.02, 0.02});
 }

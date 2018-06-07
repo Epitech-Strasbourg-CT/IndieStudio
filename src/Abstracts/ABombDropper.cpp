@@ -36,8 +36,6 @@ void ABombDropper::update(EntitiesMap *map)
 
 void ABombDropper::_updateBomb(EntitiesMap *map, int x, int y)
 {
-//	for (auto &e: map->getMap().at(x).at(y))
-//		std::cout << "oui" << std::endl;
 	if (_currentBomb < _maxBomb) {
 		EntityFactory fac;
 		auto bomb = fac.createEntity("bomb");

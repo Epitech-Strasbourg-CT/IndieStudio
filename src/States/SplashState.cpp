@@ -25,6 +25,7 @@ void SplashState::update()
 void SplashState::load()
 {
 	_start = Time::timestamp();
+	AssetsPool::getInstance().loadMesh("bomb/bomb.obj");
 	AState::load();
 }
 
@@ -50,5 +51,6 @@ void SplashState::draw()
 	0,
 	irr::video::SColor(255, 255, 255, 255),
 	false);
+
 	AState::draw();
 }

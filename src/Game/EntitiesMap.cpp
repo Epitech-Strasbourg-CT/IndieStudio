@@ -32,8 +32,8 @@ EntitiesMap::_generationMap = {
 	}},
 	{'0', [](){
 		AEntity *e = nullptr;
-//		if ((rand() % 6) < 4)
-//			e = new PotEntity();
+		if ((rand() % 6) < 4)
+			e = new PotEntity();
 		return e;
 	}}
 };

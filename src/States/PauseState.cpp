@@ -51,7 +51,9 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 	}}
 };
 
-PauseState::PauseState(AStateShare &_share) : AState(_share)
+PauseState::PauseState(AStateShare &_share)
+: AState(_share),
+_escLock(true)
 {
 }
 
@@ -93,6 +95,7 @@ void PauseState::unloadButtons()
 
 void PauseState::load()
 {
+	_escLock = getSharedResources().isKeyDown(irr::KEY_ESCAPE);
 	loadButtons();
 	AState::load();
 }
@@ -105,8 +108,10 @@ void PauseState::unload()
 
 void PauseState::update()
 {
-	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
+	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE) && !_escLock)
 		StateMachine::getInstance().pop();
+	else if (!getSharedResources().isKeyDown(irr::KEY_ESCAPE))
+		_escLock = false;
 	AState::update();
 }
 
