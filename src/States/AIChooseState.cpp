@@ -8,14 +8,14 @@
 #include <iostream>
 #include "../../include/States/AIChooseState.hpp"
 
-AIChooseState::AIChooseState(AStateShare &_share) : AState(_share), _trav({170, 52, -300})
+AIChooseState::AIChooseState(AStateShare &_share) : AState(_share),
+_trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {170, 52, -300}, 0.1)
 {
-	_trav.init(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")));
-	_trav.setFinalTime(200);
+	_trav.setFinalTime(60);
 	_trav.setFolow(0.04);
 	_trav.setEndFollow(0.04);
 	_trav.setEndExactitude(5);
-	_trav.push(0, _share.getSharedNode("cam").getPosition());
+	_trav.setAccelEndFollow(0.01);
 //	_trav.push(50, {0, 0, 0});
 //	_trav.push(50, {130, 70, -500});
 //	_trav.push(50, {100, 120, -400});

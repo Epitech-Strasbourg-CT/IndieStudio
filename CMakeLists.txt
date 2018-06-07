@@ -65,7 +65,9 @@ add_executable(bomberman
         src/Game/SphericalCoordinate.cpp
         include/Game/SphericalCoordinate.hpp
         src/States/AIChooseState.cpp
-        include/States/AIChooseState.hpp)
+        include/States/AIChooseState.hpp
+        src/Game/Traveling.cpp
+        include/Game/Traveling.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
