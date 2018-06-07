@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2018
 ** bomberman
 ** File description:
-** BlockEntity.hpp
+** PotEntity.hpp
 */
 
 #pragma once
@@ -11,9 +11,9 @@
 #include "../AMovable.hpp"
 #include "../Controllable.hpp"
 
-class BlockEntity : public AEntity {
+class PotEntity : public AEntity {
 public:
-	BlockEntity();
+	PotEntity();
 	void updateRender() override;
 
 private:

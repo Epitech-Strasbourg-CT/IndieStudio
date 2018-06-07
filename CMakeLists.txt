@@ -54,8 +54,8 @@ add_executable(bomberman
         include/Game/BKeyboardController.hpp
         src/Game/Entities/PlayerEntity.cpp
         include/Game/Entities/PlayerEntity.hpp
-        src/Game/Entities/BlockEntity.cpp
-        include/Game/Entities/BlockEntity.hpp
+        src/Game/Entities/PotEntity.cpp
+        include/Game/Entities/PotEntity.hpp
         src/Game/Entities/BombEntity.cpp
         src/Game/Entities/BombEntity.hpp
         src/Game/Entities/FireEntity.cpp
@@ -69,7 +69,7 @@ add_executable(bomberman
         src/States/PauseState.cpp
         include/States/PauseState.hpp
         src/Game/Traveling.cpp
-        include/Game/Traveling.hpp)
+        include/Game/Traveling.hpp src/Game/Entities/BlockEntity.cpp src/Game/Entities/BlockEntity.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"

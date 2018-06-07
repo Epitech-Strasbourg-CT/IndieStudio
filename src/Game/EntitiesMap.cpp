@@ -6,9 +6,10 @@
 */
 
 #include "../../include/Game/EntitiesMap.hpp"
-#include "../../include/Game/Entities/BlockEntity.hpp"
+#include "../../include/Game/Entities/PotEntity.hpp"
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/Game/Entities/PlayerEntity.hpp"
+#include "Entities/BlockEntity.hpp"
 
 const std::unordered_map<char, std::function<AEntity *()>>
 EntitiesMap::_generationMap = {
@@ -31,7 +32,7 @@ EntitiesMap::_generationMap = {
 	{'0', [](){
 		AEntity *e = nullptr;
 		if ((rand() % 6) < 4)
-			e = new BlockEntity();
+			e = new PotEntity();
 		return e;
 	}}
 };

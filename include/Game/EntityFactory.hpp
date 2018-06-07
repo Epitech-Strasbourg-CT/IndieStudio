@@ -9,7 +9,7 @@
 
 #include "AEntity.hpp"
 #include "Entities/PlayerEntity.hpp"
-#include "Entities/BlockEntity.hpp"
+#include "Entities/PotEntity.hpp"
 #include <algorithm>
 #include <functional>
 #include <map>
@@ -43,8 +43,8 @@ private:
 			{"block",
 				[]() {
 					return (nullptr);
-//					return std::unique_ptr<BlockEntity>(
-//						new BlockEntity(<#initializer#>));
+//					return std::unique_ptr<PotEntity>(
+//						new PotEntity(<#initializer#>));
 				}},
 	};
 };
