@@ -9,7 +9,11 @@
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 
-PlayerEntity::PlayerEntity() : AEntity("player"), AMovable(), Controllable()
+PlayerEntity::PlayerEntity()
+: AEntity("player"),
+AMovable(),
+Controllable(),
+_old(AMovable::getPosition())
 {
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
@@ -21,65 +25,35 @@ PlayerEntity::PlayerEntity() : AEntity("player"), AMovable(), Controllable()
 	// region move
 
 	addEvent(MOVE_UP, [this]() {
-		//TODO tryMove with pool
-		this->_node->setRotation({0, 90, 0});
 		this->dirTop(1);
-		auto EntityPos = this->AEntity::getPosition();
-		auto MovablePos = this->AMovable::getPosition();
-		if (MovablePos.Y > BORDERY) {
-			EntityPos.Y += 1;
-			MovablePos.Y = 0;
-			this->AMovable::setPosition(MovablePos);
-			this->AEntity::setPosition(EntityPos);
-			std::cout << this->AEntity::getPosition().X  << " " << this->AEntity::getPosition().Y<< std::endl;
-		}
 	});
-
 	addEvent(MOVE_DOWN, [this]() {
-		//TODO tryMove with pool
-		this->_node->setRotation({0, 90 + 180, 0});
 		this->dirBottom(1);
-		auto EntityPos = this->AEntity::getPosition();
-		auto MovablePos = this->AMovable::getPosition();
-		if (MovablePos.Y < 0) {
-			EntityPos.Y -= 1;
-			MovablePos.Y = BORDERY;
-			this->AMovable::setPosition(MovablePos);
-			this->AEntity::setPosition(EntityPos);
-			std::cout << this->AEntity::getPosition().X  << " " << this->AEntity::getPosition().Y<< std::endl;
-		}
 	});
-
 	addEvent(MOVE_LEFT, [this]() {
-		//TODO tryMove with pool
-		this->_node->setRotation({0, 0, 0});
 		this->dirLeft(1);
-		auto EntityPos = this->AEntity::getPosition();
-		auto MovablePos = this->AMovable::getPosition();
-		if (MovablePos.X < 0) {
-			EntityPos.X -= 1;
-			MovablePos.X = BORDERX;
-			this->AMovable::setPosition(MovablePos);
-			this->AEntity::setPosition(EntityPos);
-			std::cout << this->AEntity::getPosition().X  << " " << this->AEntity::getPosition().Y<< std::endl;
-		}
 	});
 	addEvent(MOVE_RIGHT, [this]() {
-		//TODO tryMove with pool
-		this->_node->setRotation({0, 180, 0});
 		this->dirRight(1);
+	});
+	// endregion
+}
+
+
+void PlayerEntity::update(EntitiesMap *map)
+{
+	if (_old != AMovable::getPosition()) {
 		auto EntityPos = this->AEntity::getPosition();
 		auto MovablePos = this->AMovable::getPosition();
 		if (MovablePos.X > BORDERX) {
 			EntityPos.X += 1;
 			MovablePos.X = 0;
-			this->AMovable::setPosition(MovablePos);
-			this->AEntity::setPosition(EntityPos);
-			std::cout << this->AEntity::getPosition().X  << " " << this->AEntity::getPosition().Y<< std::endl;
-
 		}
-	});
-	// endregion
+		this->AMovable::setPosition(MovablePos);
+		this->AEntity::setPosition(EntityPos);
+	}
+	Controllable::update();
+	AEntity::update(map);
 }
 
 void PlayerEntity::updateRender()
@@ -95,8 +69,8 @@ void PlayerEntity::updateRender()
 	if (origin.X + pos.X + Rpos.X != nodePos.X ||
 	    origin.Z + pos.Y + Rpos.Y != nodePos.Z) {
 		nodePos.Y = origin.Y;
-		nodePos.X = origin.X + pos.X + Rpos.X;
-		nodePos.Z = origin.Z + pos.Y + Rpos.Y;
+		nodePos.X = origin.X + pos.X + Rpos.X - _correction.X;
+		nodePos.Z = origin.Z + pos.Y + Rpos.Y - _correction.Y;
 		_node->setPosition(nodePos);
 	}
 }
@@ -119,10 +93,4 @@ void PlayerEntity::load(std::istream &s)
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
-}
-
-void PlayerEntity::update(EntitiesMap *map)
-{
-	Controllable::update();
-	AEntity::update(map);
 }

@@ -18,7 +18,8 @@ GameState::GameState(AStateShare &_share) : AState(_share)
 	auto mycam = IrrManager::getInstance().getSmgr()->addCameraSceneNodeFPS();
 	auto pos = mycam->getPosition();
 	pos.Y = 300;
-	pos.Z = -300;
+	pos.Z = -100;
+	pos.X = -100;
 	mycam->setPosition(pos);
 	_emap.generate();
 }

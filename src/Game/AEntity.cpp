@@ -8,7 +8,12 @@
 #include "../../include/Game/AEntity.hpp"
 
 AEntity::AEntity(const std::string &type)
-: ATrackable(), _type(type), _origin(-200, 200, -100), _node(), _stackable(true)
+: ATrackable(),
+_type(type),
+_origin(-200, 200, -100),
+_correction(),
+_node(),
+_stackable(true)
 {
 }
 
@@ -25,8 +30,8 @@ void AEntity::updateRender()
 	if (origin.X + pos.X != nodePos.X ||
 	    origin.Z + pos.Y != nodePos.Z) {
 		nodePos.Y = origin.Y;
-		nodePos.X = origin.X + pos.X;
-		nodePos.Z = origin.Z + pos.Y;
+		nodePos.X = origin.X + pos.X - _correction.X;
+		nodePos.Z = origin.Z + pos.Y - _correction.Y;
 		_node->setPosition(nodePos);
 	}
 }

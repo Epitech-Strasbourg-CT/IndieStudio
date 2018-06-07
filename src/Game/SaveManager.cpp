@@ -13,7 +13,7 @@ void SaveManager::save(EntitiesMap &map, const std::string &filename)
 //	std::ofstream file(filename, std::ofstream::out);
 //	if (!file.good())
 //		throw std::runtime_error("Can't save the Entities");
-//	auto entities = map.getList();
+//	auto entities = _map.getList();
 //	for (auto *n : entities)
 //		file << *n;
 }

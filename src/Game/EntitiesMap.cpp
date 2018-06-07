@@ -32,7 +32,6 @@ EntitiesMap::_generationMap = {
 		AEntity *e = nullptr;
 		if ((rand() % 6) < 4)
 			e = new BlockEntity();
-
 		return e;
 	}}
 };
@@ -105,7 +104,6 @@ void EntitiesMap::updateInsert()
 		if (x < 0 || x > WIDTH || y < 0 || y > HEIGHT)
 			continue;
 		_map[y][x].push_back(std::unique_ptr<AEntity>(n.e));
-		n.v.Y = -n.v.Y;
 		n.e->setPosition(n.v);
 	}
 	_toInsert.clear();
