@@ -11,6 +11,7 @@
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/MenuState.hpp"
+#include "../../include/States/GameState.hpp"
 
 BackgroundState::BackgroundState(AStateShare &_share) : AState(_share)
 {
@@ -30,6 +31,7 @@ void BackgroundState::load()
 
 	loadCharacter();
 	loadSkyBox();
+	loadMap();
 	auto er = EventReceiver::getInstance();
 	AState::load();
 }
@@ -89,4 +91,21 @@ void BackgroundState::transitionPush(bool keep)
 {
 	AState::transitionPush(keep);
 	StateMachine::getInstance().push(new MenuState(_share), true);
+}
+
+void BackgroundState::loadMap()
+{
+	auto smgr = IrrManager::getInstance().getSmgr();
+	auto &assetsPool = AssetsPool::getInstance();
+	auto *mesh = assetsPool.loadMesh("map/map.obj");
+	if (!mesh)
+		throw std::runtime_error("Cannot instantiate map");
+
+	_node = smgr->addMeshSceneNode(mesh);
+	_node->setPosition({700, 0, 600});
+	_node->setScale({500, 500, 500});
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	_node->setMaterialType(irr::video::EMT_SOLID);
+
+	_share.addSharedNode("map", _node);
 }

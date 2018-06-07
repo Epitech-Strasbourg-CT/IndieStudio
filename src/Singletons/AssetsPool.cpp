@@ -7,6 +7,14 @@
 
 #include "../../include/Singletons/AssetsPool.hpp"
 
+const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds = {
+{
+	MUSIC,
+	"assets/sounds/MenuSong.mp3",
+	&IrrManager::getMusicVolume,
+	}
+};
+
 AssetsPool AssetsPool::_meshPool("assets/models/", "assets/textures/");
 
 AssetsPool &AssetsPool::getInstance()
@@ -27,8 +35,7 @@ irr::video::ITexture *AssetsPool::loadTexture(const std::string &file)
 	irr::io::path path = std::string(_rootTexturePath + file).c_str();
 	if (_meshs.count(file) > 0)
 		return _textures.at(file);
-	irr::video::ITexture *texture = IrrManager::getInstance().getDriver()->getTexture(
-		path);
+	irr::video::ITexture *texture = IrrManager::getInstance().getDriver()->getTexture(path);
 	if (!texture)
 		throw std::runtime_error("Can't load textures " + file);
 	_textures[file] = texture;

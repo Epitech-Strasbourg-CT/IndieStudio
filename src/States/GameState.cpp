@@ -15,11 +15,10 @@
 
 GameState::GameState(AStateShare &_share) : AState(_share)
 {
-	auto mycam = IrrManager::getInstance().getSmgr()->addCameraSceneNodeFPS();
-	auto pos = mycam->getPosition();
-	pos.Y = 300;
-	pos.X = -220;
-	mycam->setPosition(pos);
+//	auto mycam = IrrManager::getInstance().getSmgr()->addCameraSceneNodeFPS();
+//	mycam->setPosition({690, 130, 720});
+//	mycam->setTarget({690, 60, 685});
+//	IrrManager::getInstance().getSmgr()->addCubeSceneNode()->setPosition({690, 60, 685});
 	_emap.generate();
 }
 

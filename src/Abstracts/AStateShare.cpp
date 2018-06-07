@@ -9,7 +9,7 @@
 #include "../../include/Abstracts/AStateShare.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 
-AStateShare::AStateShare(): _sharedNodes(), _isKeyDown()
+AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _stateIA(4)
 {
 	EventReceiver::getInstance().registerEvent(0, irr::EET_KEY_INPUT_EVENT,
         [this](const irr::SEvent &ev) {
@@ -53,5 +53,16 @@ bool AStateShare::isKeyDown(irr::EKEY_CODE keyCode) const
 	if (_isKeyDown.count(keyCode) > 0)
 		return _isKeyDown.at(keyCode);
 	return false;
+}
+
+bool AStateShare::setIAState(std::vector<int> const &stateIA)
+{
+	_stateIA = stateIA;
+	return true;
+}
+
+std::vector<int> AStateShare::getIAState()
+{
+	return _stateIA;
 }
 

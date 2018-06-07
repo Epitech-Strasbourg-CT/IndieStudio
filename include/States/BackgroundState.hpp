@@ -28,6 +28,8 @@ private:
 	void loadCharacter();
 
 	void loadSkyBox();
+
+	void loadMap();
 };
 
 #endif /* !BOMBERMAN_BACKGROUNDSTATE_HPP */
