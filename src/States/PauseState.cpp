@@ -12,29 +12,37 @@
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/States/SettingsState.hpp"
 
-const std::map<PauseActions, PauseState::ButtonsDesc>
-	MenuState::_descs{
-	{RESUME,    {
+const std::map<PauseState::Actions , PauseState::ButtonsDesc>
+	PauseState::_descs{
+	{PauseState::RESUME,    {
 		{50, 50,  750, 100},
 		"resume",
 		[](PauseState *self) {
 			StateMachine::getInstance().pop();
 		}
 	}},
-	{SETTINGS,  {
-		{50, 250, 750, 300},
+	{PauseState::SETTINGS,  {
+		{50, 150, 750, 200},
 		"settings",
 		[](PauseState *self) {
-			StateMachine::getInstance().push(new SettingsState(self->_share), false);
+			auto &sm = StateMachine::getInstance();
+			auto &res = self->getSharedResources();
+			sm.push(new SettingsState(res), false);
 		}
 	}},
-	{EXIT_GAME, {
+	{PauseState::SAVE, {
+		{50, 250, 750, 300},
+		"save",
+		[](PauseState *self) {
+		}
+	}},
+	{PauseState::EXIT_GAME, {
 		{50, 350, 750, 400},
 		"exit",
 		[](PauseState *self) {
 			StateMachine::getInstance().popAll();
 		}
-	}},
+	}}
 };
 
 PauseState::PauseState(AStateShare &_share) : AState(_share)
@@ -61,7 +69,7 @@ void PauseState::loadButtons()
 
 	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
 		[this](const irr::SEvent &ev) {
-			auto id = static_cast<PauseActions>(ev.GUIEvent.Caller->getID());
+			auto id = static_cast<Actions>(ev.GUIEvent.Caller->getID());
 			if (PauseState::_descs.count(id) > 0)
 				this->applyEventButton(ev, id);
 			return true;
@@ -101,7 +109,7 @@ void PauseState::draw()
 	im.getGuienv()->drawAll();
 }
 
-void PauseState::applyEventButton(const irr::SEvent &ev, PauseActions id)
+void PauseState::applyEventButton(const irr::SEvent &ev, PauseState::Actions id)
 {
 	auto b = getButton(id);
 	auto hover_name = "bouttons/" + _descs.at(id).name + "_hover.png";
@@ -123,7 +131,7 @@ void PauseState::applyEventButton(const irr::SEvent &ev, PauseActions id)
 	}
 }
 
-irr::gui::IGUIButton *PauseState::getButton(PauseActions id) const
+irr::gui::IGUIButton *PauseState::getButton(PauseState::Actions id) const
 {
 	if (id < RESUME || id > RESUME + PAUSE_BUTTON_NUMBER)
 		return nullptr;

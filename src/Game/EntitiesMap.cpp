@@ -35,3 +35,36 @@ const std::vector<std::string> EntitiesMap::_mapTemplate = {
 	"X3 0000000000000 4X",
 	"XXXXXXXXXXXXXXXXXXX",
 };
+
+bool EntitiesMap::insert(AEntity *e, const irr::core::vector2di &v)
+{
+	return false;
+}
+
+bool EntitiesMap::erase(AEntity *e)
+{
+	return false;
+}
+
+bool EntitiesMap::moveTo(AEntity *e, const irr::core::vector2di &v)
+{
+	return false;
+}
+
+bool EntitiesMap::canMoveTo(AEntity *e, const irr::core::vector2di &v)
+{
+	return false;
+}
+
+bool EntitiesMap::generate()
+{
+	return false;
+}
+
+void EntitiesMap::update()
+{
+}
+
+void EntitiesMap::updateRender()
+{
+}

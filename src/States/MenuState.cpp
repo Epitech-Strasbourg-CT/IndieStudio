@@ -14,6 +14,7 @@
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/GameState.hpp"
 #include "../../include/States/AIChooseState.hpp"
+#include "../../include/States/PauseState.hpp"
 
 const std::map<MenuActions, MenuState::BouttonsDesc>
 	MenuState::_descs{
@@ -31,14 +32,19 @@ const std::map<MenuActions, MenuState::BouttonsDesc>
 		            {50, 150, 750, 200},
 		            "load",
 		            [](MenuState *self) {
-			            StateMachine::getInstance().pop();
+			            //StateMachine::getInstance().pop();
+				    auto &sm = StateMachine::getInstance();
+				    auto &res = self->getSharedResources();
+				    sm.push(new PauseState(res), false);
 		            }
 	            }},
 	{SETTINGS,  {
 		            {50, 250, 750, 300},
 		            "settings",
 		            [](MenuState *self) {
-			            StateMachine::getInstance().push(new SettingsState(self->_share), false);
+				    auto &sm = StateMachine::getInstance();
+				    auto &res = self->getSharedResources();
+			            sm.push(new SettingsState(res), false);
 		            }
 	            }},
 	{EXIT_GAME, {
