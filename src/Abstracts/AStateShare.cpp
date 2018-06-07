@@ -9,7 +9,7 @@
 #include "../../include/Abstracts/AStateShare.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 
-AStateShare::AStateShare(): _sharedNodes(), _isKeyDown()
+AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _map()
 {
 	EventReceiver::getInstance().registerEvent(0, irr::EET_KEY_INPUT_EVENT,
         [this](const irr::SEvent &ev) {
@@ -53,5 +53,17 @@ bool AStateShare::isKeyDown(irr::EKEY_CODE keyCode) const
 	if (_isKeyDown.count(keyCode) > 0)
 		return _isKeyDown.at(keyCode);
 	return false;
+}
+
+EntitiesMap *AStateShare::getMap() const
+{
+	if (_map == nullptr)
+		throw std::runtime_error("Map isn't load");
+	return _map;
+}
+
+void AStateShare::setMap(EntitiesMap *map)
+{
+	AStateShare::_map = map;
 }
 
