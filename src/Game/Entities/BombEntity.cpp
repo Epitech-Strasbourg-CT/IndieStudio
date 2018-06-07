@@ -16,3 +16,8 @@ bool BombEntity::hasExploded() const
 {
 	return false;
 }
+
+void BombEntity::updateRender()
+{
+//	AEntity::updateRender();
+}
