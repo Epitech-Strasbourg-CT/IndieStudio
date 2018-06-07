@@ -11,6 +11,7 @@
 #include "../AMovable.hpp"
 #include "../Controllable.hpp"
 
+#define ANGLE_SUP 180
 #define BORDERX 10.0
 #define BORDERY 10.0
 
@@ -28,4 +29,5 @@ private:
 	struct serialize {
 	};
 	irr::core::vector2di _old;
+	irr::core::vector2di _look;
 };
