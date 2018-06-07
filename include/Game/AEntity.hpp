@@ -34,6 +34,11 @@ public:
 
 	const irr::core::vector3df &getOrigin() const;
 
+	const irr::core::vector3df &getNodePosition() const;
+	void setNodePosition(const irr::core::vector3df &vec);
+	const irr::core::vector3df &getNodeRotation() const;
+	void setNodeRotation(const irr::core::vector3df &vec);
+
 private:
 	struct serialize {
 		irr::s32 x;

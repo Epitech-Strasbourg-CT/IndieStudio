@@ -23,7 +23,7 @@ void AEntity::update(EntitiesMap *)
 
 void AEntity::updateRender()
 {
-	auto nodePos = _node->getPosition();
+	auto nodePos = getNodePosition();
 	auto pos = calculateConvertedPosition();
 	auto origin = getOrigin();
 
@@ -32,7 +32,7 @@ void AEntity::updateRender()
 		nodePos.Y = origin.Y;
 		nodePos.X = origin.X + pos.X - _correction.X;
 		nodePos.Z = origin.Z + pos.Y - _correction.Y;
-		_node->setPosition(nodePos);
+		setNodePosition(nodePos);
 	}
 }
 
@@ -87,9 +87,29 @@ bool AEntity::isStackable() const
 
 irr::core::vector2d<float> AEntity::calculateConvertedPosition() const
 {
-	auto pos = getPosition();
+	auto pos = ATrackable::getPosition();
 	irr::core::vector2d<float> converted {};
 	converted.X = static_cast<float>(pos.X * ENTITY_SIZE_X);
 	converted.Y = static_cast<float>(pos.Y * ENTITY_SIZE_Y);
 	return converted;
+}
+
+const irr::core::vector3df &AEntity::getNodePosition() const
+{
+	return _node->getPosition();
+}
+
+void AEntity::setNodePosition(const irr::core::vector3df &vec)
+{
+	_node->setPosition(vec);
+}
+
+const irr::core::vector3df &AEntity::getNodeRotation() const
+{
+	return _node->getRotation();
+}
+
+void AEntity::setNodeRotation(const irr::core::vector3df &vec)
+{
+	_node->setRotation(vec);
 }

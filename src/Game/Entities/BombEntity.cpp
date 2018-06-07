@@ -12,13 +12,12 @@
 BombEntity::BombEntity(): AEntity("Bomb")
 {
 	_stackable = false;
-	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X * 2.0);
+	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X * 6 / 4);
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
 	auto mesh = am.loadMesh("bomb/bomb.obj");
 	_node = im.getSmgr()->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	//_node->setMaterialTexture(0, am.loadTexture("bomb/bomb.mtl"));
 	_node->setScale({10, 10, 10});
 }
 
