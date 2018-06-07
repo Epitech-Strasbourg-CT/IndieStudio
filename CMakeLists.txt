@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_EXE_LINKER_FLAGS "-W -Wall -Wextra -g ")
 
-
+# region src
 add_executable(bomberman
         src/main.cpp
         src/Singletons/StateMachine.cpp
@@ -89,6 +89,8 @@ add_executable(bomberman
 
         src/Abstracts/ABombDropper.cpp
         include/Abstracts/ABombDropper.hpp)
+
+# endregion
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
