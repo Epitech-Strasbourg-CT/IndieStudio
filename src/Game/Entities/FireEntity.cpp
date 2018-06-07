@@ -5,7 +5,7 @@
 ** FireEntity.cpp
 */
 
-#include "FireEntity.hpp"
+#include "../../../include/Game/Entities/FireEntity.hpp"
 
 FireEntity::FireEntity(): AEntity("Fire")
 {

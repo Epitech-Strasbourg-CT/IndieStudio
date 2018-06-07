@@ -9,11 +9,13 @@
 #define BOMBERMAN_BOMBENTITY_HPP
 
 
-#include "../../../include/Game/AEntity.hpp"
+#include "../AEntity.hpp"
 
 class BombEntity : public AEntity {
 public:
-	BombEntity();
+	BombEntity(int x = 0, int y = 0);
+
+	bool hasExploded() const;
 };
 
 

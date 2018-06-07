@@ -24,6 +24,7 @@ EntitiesMap::_generationMap = {
 		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN);
 		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
 		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
+		controller->registerBind(irr::KEY_SPACE, DROP_BOMB);
 		PlayerEntity *player = new PlayerEntity();
 		AController::bindEntityToController(*controller, *player);
 		return player;
@@ -53,6 +54,23 @@ const std::vector<std::string> EntitiesMap::_mapTemplate = {
 	"X  0000000000000  X",
 	"XXXXXXXXXXXXXXXXXXX",
 };
+
+bool EntitiesMap::generate()
+{
+	for (size_t y = 0; y < HEIGHT; y++) {
+		for (size_t x = 0; x < WIDTH; x++) {
+			auto type = _mapTemplate[y][x];
+			AEntity *e = nullptr;
+			if (EntitiesMap::_generationMap.count(type) > 0)
+				e = EntitiesMap::_generationMap.at(type)();
+			if (e) {
+				insert(e, {static_cast<irr::s32>(x),
+				           static_cast<irr::s32>(y)});
+			}
+		}
+	}
+	return true;
+}
 
 // region List
 
@@ -111,17 +129,16 @@ void EntitiesMap::updateInsert()
 
 void EntitiesMap::updateErase()
 {
-	AEntity **e = nullptr;
-	auto finder = [e](const std::unique_ptr<AEntity> &p) {
-		return (*e == p.get());
-	};
 	for (auto &n : _toErase) {
-		e = &n.e;
+		auto e = n.e;
 		auto x = n.e->getPosition().X;
 		auto y = n.e->getPosition().Y;
 		if (x < 0 || x > WIDTH || y < 0 || y > HEIGHT)
 			continue;
 		auto &list = _map[y][x];
+		auto finder = [e](const std::unique_ptr<AEntity> &p) {
+			return (e == p.get());
+		};
 		auto elem = std::find_if(list.begin(), list.end(), finder);
 		if (elem != list.end())
 			list.erase(elem);
@@ -131,12 +148,8 @@ void EntitiesMap::updateErase()
 
 void EntitiesMap::updateMove()
 {
-	AEntity **e = nullptr;
-	auto finder = [e](const std::unique_ptr<AEntity> &p) {
-		return (*e == p.get());
-	};
 	for (auto &n : _toMove) {
-		e = &n.e;
+		auto e = n.e;
 		auto ox = n.e->getPosition().X;
 		auto oy = n.e->getPosition().Y;
 		if (ox < 0 || ox > WIDTH || oy < 0 || oy > HEIGHT)
@@ -146,10 +159,15 @@ void EntitiesMap::updateMove()
 		if (dx < 0 || dx > WIDTH || dy < 0 || dy > HEIGHT)
 			continue;
 		auto &list = _map[oy][ox];
+		auto finder = [e](const std::unique_ptr<AEntity> &p) {
+			return (e == p.get());
+		};
 		auto elem = std::find_if(list.begin(), list.end(), finder);
 		if (elem != list.end()) {
+			elem->release();
 			list.erase(elem);
 			_map[dy][dx].push_back(std::unique_ptr<AEntity>(n.e));
+			n.e->setPosition(n.v);
 		}
 	}
 	_toMove.clear();
@@ -173,23 +191,6 @@ EntitiesMap::EntitiesMap()
 	_map.resize(HEIGHT);
 	for (auto &n : _map)
 		n.resize(WIDTH);
-}
-
-bool EntitiesMap::generate()
-{
-	for (size_t y = 0; y < HEIGHT; y++) {
-		for (size_t x = 0; x < WIDTH; x++) {
-			auto type = _mapTemplate[y][x];
-			AEntity *e = nullptr;
-			if (EntitiesMap::_generationMap.count(type) > 0)
-				e = EntitiesMap::_generationMap.at(type)();
-			if (e) {
-				insert(e, {static_cast<irr::s32>(x),
-				           static_cast<irr::s32>(y)});
-			}
-		}
-	}
-	return true;
 }
 
 void EntitiesMap::updateRender()

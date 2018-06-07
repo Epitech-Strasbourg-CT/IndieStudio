@@ -14,6 +14,7 @@ BlockEntity::BlockEntity() : AEntity("Pot")
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
 	auto mesh = am.loadMesh("pot/Pot.dae");
+	_stackable = false;
 	_node = im.getSmgr()->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialTexture(0, am.loadTexture("pot/Pot.png"));
