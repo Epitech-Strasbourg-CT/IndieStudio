@@ -9,7 +9,7 @@
 #include "../../include/Game/Entities/PotEntity.hpp"
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/Game/Entities/PlayerEntity.hpp"
-#include "Entities/BlockEntity.hpp"
+#include "../../include/Game/Entities/BlockEntity.hpp"
 
 const std::unordered_map<char, std::function<AEntity *()>>
 EntitiesMap::_generationMap = {

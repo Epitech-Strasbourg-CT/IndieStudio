@@ -8,7 +8,7 @@
 #ifndef BOMBERMAN_BLOCKENTITY_HPP
 	#define BOMBERMAN_BLOCKENTITY_HPP
 
-	#include "../../../include/Game/AEntity.hpp"
+	#include "../AEntity.hpp"
 
 class BlockEntity: public AEntity {
 public:
