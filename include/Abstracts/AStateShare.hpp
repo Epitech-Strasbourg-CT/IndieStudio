@@ -8,6 +8,7 @@
 #include <string>
 #include <ISceneNode.h>
 #include <map>
+#include <vector>
 #include "../Game/EntitiesMap.hpp"
 
 #ifndef BOMBERMAN_ASTATESHARE_HPP
@@ -16,6 +17,8 @@
 class AStateShare {
 public:
 	AStateShare();
+	bool setIAState(std::vector<int> const &stateIA);
+	std::vector<int> getIAState();
 	bool addSharedNode(const std::string &, irr::scene::ISceneNode *);
 	bool delSharedNode(const std::string &);
 	irr::scene::ISceneNode &getSharedNode(const std::string &);
@@ -25,6 +28,7 @@ public:
 private:
 	std::map<std::string, irr::scene::ISceneNode *> _sharedNodes;
 	std::map<irr::EKEY_CODE, bool> _isKeyDown;
+	std::vector<int> _stateIA;
 	EntitiesMap *_map;
 };
 

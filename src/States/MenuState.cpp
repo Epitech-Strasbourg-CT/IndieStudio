@@ -25,7 +25,6 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 		            	auto &sm = StateMachine::getInstance();
 		            	auto &res = self->getSharedResources();
 		            	sm.push(new AIChooseState(res), false);
-			        sm.push(new GameState(res), false);
 		            }
 	            }},
 	{LOAD,      {
@@ -156,7 +155,7 @@ void MenuState::update()
 	irr::f32 max = 4.4;
 	static irr::f32 inc = 0;
 	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
-//
+
 	cam.setTarget({450, 0, 100});
 	inc += step;
 	_camRotate.setInc(static_cast<irr::f32>((sinf(inc) - -1.0) * (max - min) / (1.0 - -1.0) + min));
