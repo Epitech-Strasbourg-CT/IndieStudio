@@ -28,18 +28,23 @@ private:
 		{
 			{"entity",
 				[]() {
-					return std::unique_ptr<AEntity>(
-						new AEntity);
+//					return std::unique_ptr<AEntity>(
+//						new AEntity(<#initializer#>,
+//						            <#initializer#>));
+					return (nullptr);
 				}},
 			{"player",
 				[]() {
-					return std::unique_ptr<PlayerEntity>(
-						new PlayerEntity);
+					return (nullptr);
+//					return std::unique_ptr<PlayerEntity>(
+//						new PlayerEntity(
+//							<#initializer#>));
 				}},
 			{"block",
 				[]() {
-					return std::unique_ptr<BlockEntity>(
-						new BlockEntity);
+					return (nullptr);
+//					return std::unique_ptr<BlockEntity>(
+//						new BlockEntity(<#initializer#>));
 				}},
 	};
 };

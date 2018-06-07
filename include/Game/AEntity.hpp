@@ -19,7 +19,7 @@ class EntitiesMap;
 
 class AEntity : public ATrackable<int> {
 public:
-	explicit AEntity(const std::string & = "entity");
+	explicit AEntity(const std::string &);
 	virtual ~AEntity() = default;
 
 	virtual void collide(AEntity &);
@@ -41,8 +41,8 @@ private:
 	};
 	std::string _type;
 	irr::core::vector3df _origin;
-
 protected:
+	irr::core::vector2df _correction;
 	irr::scene::ISceneNode *_node;
 	bool _stackable;
 };
