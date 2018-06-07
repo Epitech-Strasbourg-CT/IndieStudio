@@ -7,9 +7,8 @@
 
 #include "../../../include/Game/Entities/BombEntity.hpp"
 
-BombEntity::BombEntity(int x, int y): AEntity("Bomb", x, y)
+BombEntity::BombEntity(): AEntity("Bomb")
 {
-	std::cout << "bombe posée!" << std::endl;
 }
 
 bool BombEntity::hasExploded() const
