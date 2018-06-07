@@ -69,7 +69,9 @@ add_executable(bomberman
         src/States/PauseState.cpp
         include/States/PauseState.hpp
         src/Game/Traveling.cpp
-        include/Game/Traveling.hpp)
+        include/Game/Traveling.hpp
+        src/Abstracts/ABombDropper.cpp
+        include/Abstracts/ABombDropper.hpp)
 
 file(
         COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"

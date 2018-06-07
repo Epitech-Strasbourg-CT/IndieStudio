@@ -9,11 +9,8 @@
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 
-PlayerEntity::PlayerEntity()
-: AEntity("player"),
-AMovable(),
-Controllable(),
-_old(AMovable::getPosition())
+PlayerEntity::PlayerEntity() : ABombDropper(), AEntity("player"), AMovable(),
+	Controllable(), _old(AMovable::getPosition())
 {
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
@@ -36,9 +33,11 @@ _old(AMovable::getPosition())
 	addEvent(MOVE_RIGHT, [this]() {
 		this->dirRight(1);
 	});
+	addEvent(DROP_BOMB, [this]() {
+		this->dropBomb(AMovable::getPosX(), AMovable::getPosY());
+	});
 	// endregion
 }
-
 
 void PlayerEntity::update(EntitiesMap *map)
 {
@@ -53,6 +52,7 @@ void PlayerEntity::update(EntitiesMap *map)
 		this->AEntity::setPosition(EntityPos);
 	}
 	Controllable::update();
+	ABombDropper::update(map);
 	AEntity::update(map);
 }
 
@@ -61,13 +61,15 @@ void PlayerEntity::updateRender()
 	auto nodePos = _node->getPosition();
 	auto pos = calculateConvertedPosition();
 	irr::core::vector2di Opos = AMovable::getPosition();
-	irr::core::vector2df Rpos {};
+	irr::core::vector2df Rpos{};
 	auto origin = getOrigin();
 
-	Rpos.X = static_cast<irr::f32>(ENTITY_SIZE_X / BORDERX * static_cast<float>(Opos.X));
-	Rpos.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / BORDERY * static_cast<float>(Opos.Y));
+	Rpos.X = static_cast<irr::f32>(ENTITY_SIZE_X / BORDERX *
+		static_cast<float>(Opos.X));
+	Rpos.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / BORDERY *
+		static_cast<float>(Opos.Y));
 	if (origin.X + pos.X + Rpos.X != nodePos.X ||
-	    origin.Z + pos.Y + Rpos.Y != nodePos.Z) {
+		origin.Z + pos.Y + Rpos.Y != nodePos.Z) {
 		nodePos.Y = origin.Y;
 		nodePos.X = origin.X + pos.X + Rpos.X - _correction.X;
 		nodePos.Z = origin.Z + pos.Y + Rpos.Y - _correction.Y;
