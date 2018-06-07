@@ -21,7 +21,10 @@ class PlayerEntity : public Controllable,
 public:
 	PlayerEntity();
 	void update(EntitiesMap *map) override;
+	void updatePosition(EntitiesMap *map);
 	void updateRender() override;
+	void updateRenderDir();
+	void updateRenderPosition();
 	void dump(std::ostream &s) const;
 	void load(std::istream &s);
 

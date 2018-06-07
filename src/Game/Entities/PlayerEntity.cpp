@@ -39,36 +39,7 @@ _look(1, 0)
 	});
 }
 
-void PlayerEntity::update(EntitiesMap *map)
-{
-	auto movablePos = AMovable::getPosition();
-	auto entityPos = AEntity::getPosition();
-	if (_old != movablePos) {
-		auto dirM = movablePos - _old;
-		auto newEntityPos = AEntity::getPosition();
-		newEntityPos.X -= (_old.X + dirM.X < 0);
-		newEntityPos.X += (_old.X + dirM.X > BORDERX);
-		newEntityPos.Y -= (_old.Y + dirM.Y < 0);
-		newEntityPos.Y += (_old.Y + dirM.Y > BORDERY);
-		_look = dirM;
-		if (entityPos != newEntityPos && map->canMoveTo(newEntityPos)) {
-			auto dirP = newEntityPos - entityPos;
-			if (dirP.X != 0)
-				movablePos.X = static_cast<int>(dirP.X > 0 ? 0: BORDERX);
-			if (dirP.Y != 0)
-				movablePos.Y = static_cast<int>(dirP.Y > 0 ? 0 : BORDERY);
-			this->AMovable::setPosition(movablePos);
-			map->moveTo(this, newEntityPos);
-		} else if (entityPos != newEntityPos && !map->canMoveTo(newEntityPos))
-			AMovable::setPosition(_old);
-		else
-			_old = movablePos;
-	}
-	Controllable::update();
-	AEntity::update(map);
-}
-
-void PlayerEntity::updateRender()
+void PlayerEntity::updateRenderPosition()
 {
 	auto nodePos = _node->getPosition();
 	auto pos = calculateConvertedPosition();
@@ -76,11 +47,10 @@ void PlayerEntity::updateRender()
 	irr::core::vector2df Rpos {};
 	auto origin = getOrigin();
 
-	auto dir = atan2(-_look.Y, _look.X) * 180.0 / 3.1415;
-	dir += ANGLE_SUP;
-	_node->setRotation({0, dir, 0});
-	Rpos.X = static_cast<irr::f32>(ENTITY_SIZE_X / BORDERX * static_cast<float>(Opos.X));
-	Rpos.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / BORDERY * static_cast<float>(Opos.Y));
+	Rpos.X = static_cast<irr::f32>
+	(ENTITY_SIZE_X / BORDERX * static_cast<float>(Opos.X));
+	Rpos.Y = static_cast<irr::f32>
+	(ENTITY_SIZE_Y / BORDERY * static_cast<float>(Opos.Y));
 	if (origin.X + pos.X + Rpos.X != nodePos.X ||
 	    origin.Z + pos.Y + Rpos.Y != nodePos.Z) {
 		nodePos.Y = origin.Y;
@@ -88,6 +58,53 @@ void PlayerEntity::updateRender()
 		nodePos.Z = origin.Z + pos.Y + Rpos.Y - _correction.Y;
 		_node->setPosition(nodePos);
 	}
+}
+
+void PlayerEntity::updateRenderDir()
+{
+	auto dir = atan2(-_look.Y, _look.X) * 180.0 / 3.1415;
+	dir += ANGLE_SUP;
+	_node->setRotation({0, dir, 0});
+}
+
+void PlayerEntity::updatePosition(EntitiesMap *map)
+{
+	auto mPos = AMovable::getPosition();
+	auto ePos = AEntity::getPosition();
+	if (_old != mPos) {
+		auto dirM = mPos - _old;
+		auto newEPos = AEntity::getPosition();
+		newEPos.X -= (_old.X + dirM.X < 0);
+		newEPos.X += (_old.X + dirM.X > BORDERX);
+		newEPos.Y -= (_old.Y + dirM.Y < 0);
+		newEPos.Y += (_old.Y + dirM.Y > BORDERY);
+		_look = dirM;
+		if (ePos != newEPos && map->canMoveTo(newEPos)) {
+			auto dirP = newEPos - ePos;
+			if (dirP.X != 0)
+				mPos.X = static_cast<int>(dirP.X > 0 ? 0: BORDERX);
+			if (dirP.Y != 0)
+				mPos.Y = static_cast<int>(dirP.Y > 0 ? 0 : BORDERY);
+			this->AMovable::setPosition(mPos);
+			map->moveTo(this, newEPos);
+		} else if (ePos != newEPos && !map->canMoveTo(newEPos))
+			AMovable::setPosition(_old);
+		else
+			_old = mPos;
+	}
+}
+
+void PlayerEntity::update(EntitiesMap *map)
+{
+	updatePosition(map);
+	Controllable::update();
+	AEntity::update(map);
+}
+
+void PlayerEntity::updateRender()
+{
+	updateRenderDir();
+	updateRenderPosition();
 }
 
 void PlayerEntity::dump(std::ostream &s) const
