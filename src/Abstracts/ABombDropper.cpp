@@ -41,9 +41,8 @@ void ABombDropper::_updateBomb(EntitiesMap *map, int x, int y)
 	if (_currentBomb < _maxBomb) {
 		EntityFactory fac;
 		auto bomb = fac.createEntity("bomb");
-		bomb->setPosition({x, y});
 		map->insert(bomb.get(), {x, y});
 		bomb.release();
-		_currentBomb += 1;
+//		_currentBomb += 1;
 	}
 }
