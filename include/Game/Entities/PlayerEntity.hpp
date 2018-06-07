@@ -16,10 +16,10 @@
 #define BORDERX 10.0
 #define BORDERY 10.0
 
-class PlayerEntity : public Controllable,
-		     public ABombDropper,
-		     public AEntity,
-		     public AMovable<int> {
+class PlayerEntity : public ABombDropper,
+                     public Controllable,
+                     public AEntity,
+                     public AMovable<int> {
 public:
 	PlayerEntity();
 	void update(EntitiesMap *map) override;

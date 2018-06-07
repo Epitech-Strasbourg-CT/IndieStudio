@@ -43,16 +43,7 @@ PlayerEntity::PlayerEntity()
 
 void PlayerEntity::update(EntitiesMap *map)
 {
-	if (_old != AMovable::getPosition()) {
-		auto EntityPos = this->AEntity::getPosition();
-		auto MovablePos = this->AMovable::getPosition();
-		if (MovablePos.X > BORDERX) {
-			EntityPos.X += 1;
-			MovablePos.X = 0;
-		}
-		this->AMovable::setPosition(MovablePos);
-		this->AEntity::setPosition(EntityPos);
-	}
+	updatePosition(map);
 	Controllable::update();
 	ABombDropper::update(map);
 	AEntity::update(map);

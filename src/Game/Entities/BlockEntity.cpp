@@ -5,7 +5,7 @@
 ** BlockEntity.cpp
 */
 
-#include "BlockEntity.hpp"
+#include "../../../include/Game/Entities/BlockEntity.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
 
