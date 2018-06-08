@@ -10,24 +10,34 @@
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/Game/Entities/PlayerEntity.hpp"
 #include "../../include/Game/Entities/BlockEntity.hpp"
+#include "../../include/Game/BIAController.hpp"
 
-const std::unordered_map<char, std::function<AEntity *()>>
-	EntitiesMap::_generationMap = {{'X', []() {
+const std::unordered_map<char, std::function<AEntity *(const std::vector<int> &)>>
+	EntitiesMap::_generationMap = {{'X', [](const std::vector<int> &) {
 	return new BlockEntity();
-}}, {'1', []() {
+}}, {'1', [](const std::vector<int> &IAState) {
 	static size_t id = 0;
 	id += 1;
-	auto *controller = new BKeyboardController(id);
+	if (IAState.size() >= id && IAState.at(id-1)) {
+		auto *controller = new BKeyboardController(id);
 
-	controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_DOWN);
-	controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_DOWN);
-	controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_DOWN);
-	controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT, KEY_DOWN);
-	controller->registerBind(irr::KEY_SPACE, DROP_BOMB, KEY_PRESSED);
-	PlayerEntity *player = new PlayerEntity();
-	AController::bindEntityToController(*controller, *player);
-	return player;
-}}, {'0', []() {
+		controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_DOWN);
+		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_DOWN);
+		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_DOWN);
+		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT, KEY_DOWN);
+		controller->registerBind(irr::KEY_SPACE, DROP_BOMB,
+			KEY_PRESSED);
+		PlayerEntity *player = new PlayerEntity();
+		AController::bindEntityToController(*controller, *player);
+		return player;
+	} else {
+		auto *controller = new BIAController(id);
+
+		PlayerEntity *player = new PlayerEntity();
+		AController::bindEntityToController(*controller, *player);
+		return player;
+	}
+}}, {'0', [](const std::vector<int> &) {
 	AEntity *e = nullptr;
 	if ((rand() % 6) < 4)
 		e = new PotEntity();
@@ -35,20 +45,20 @@ const std::unordered_map<char, std::function<AEntity *()>>
 }}};
 
 const std::vector<std::string> EntitiesMap::_mapTemplate = {
-	"XXXXXXXXXXXXXXXXXXX", "X1 0000000000000  X", "X X0X0X0X0X0X0X0X X",
+	"XXXXXXXXXXXXXXXXXXX", "X1 0000000000000 1X", "X X0X0X0X0X0X0X0X X",
 	"X00000000000000000X", "X0X0X0X0X0X0X0X0X0X", "X00000000000000000X",
 	"X0X0X0X0X0X0X0X0X0X", "X00000000000000000X", "X0X0X0X0X0X0X0X0X0X",
 	"X00000000000000000X", "X0X0X0X0X0X0X0X0X0X", "X00000000000000000X",
-	"X X0X0X0X0X0X0X0X X", "X  0000000000000  X", "XXXXXXXXXXXXXXXXXXX",};
+	"X X0X0X0X0X0X0X0X X", "X1 0000000000000 1X", "XXXXXXXXXXXXXXXXXXX",};
 
-bool EntitiesMap::generate()
+bool EntitiesMap::generate(const std::vector<int> &IAState)
 {
 	for (size_t y = 0; y < HEIGHT; y++) {
 		for (size_t x = 0; x < WIDTH; x++) {
 			auto type = _mapTemplate[y][x];
 			AEntity *e = nullptr;
 			if (EntitiesMap::_generationMap.count(type) > 0)
-				e = EntitiesMap::_generationMap.at(type)();
+				e = EntitiesMap::_generationMap.at(type)(IAState);
 			if (e) {
 				insert(e,
 					{static_cast<irr::s32>(WIDTH - (x + 1)),
@@ -114,7 +124,6 @@ void EntitiesMap::updateInsert()
 
 void EntitiesMap::updateErase()
 {
-	std::cout << "j'update erase" << std::endl;
 	for (auto &n : _toErase) {
 		auto e = n.e;
 		auto x = n.e->getPosition().X;
@@ -195,7 +204,6 @@ void EntitiesMap::update()
 	updateErase();
 	updateMove();
 	updateInsert();
-	std::cout << "Fin de cycle" << std::endl;
 }
 
 EntitiesMap::EMap &EntitiesMap::getMap()

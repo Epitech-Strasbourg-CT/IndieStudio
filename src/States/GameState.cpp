@@ -17,7 +17,7 @@
 GameState::GameState(AStateShare &_share) : AState(_share)
 {
 	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::GAME, true));
-	_emap.generate();
+	_emap.generate(_share.getIAState());
 }
 
 GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_share)

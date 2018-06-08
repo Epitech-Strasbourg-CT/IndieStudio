@@ -20,7 +20,7 @@ class AStateShare {
 public:
 	AStateShare();
 	bool setIAState(std::vector<int> const &stateIA);
-	std::vector<int> getIAState();
+	const std::vector<int> &getIAState() const;
 	bool addSharedNode(const std::string &, irr::scene::ISceneNode *);
 	bool delSharedNode(const std::string &);
 	irr::scene::ISceneNode &getSharedNode(const std::string &);
