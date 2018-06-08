@@ -126,8 +126,8 @@ void PauseState::applyEventButton(const irr::SEvent &ev, PauseState::Actions id)
 
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
-			PauseState::_descs.at(id).fct(this);
 			playSelect();
+			PauseState::_descs.at(id).fct(this);
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
 			b->setImage(ap.loadTexture(hover_name));
