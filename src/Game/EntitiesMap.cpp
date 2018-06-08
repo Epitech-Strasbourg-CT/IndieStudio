@@ -119,7 +119,7 @@ void EntitiesMap::updateInsert()
 		auto x = n.v.X;
 		auto y = n.v.Y;
 		if (!canInsertTo(n.v)) {
-			std::cout << "GO TRASH" << std::endl;
+			//std::cout << "GO TRASH : " << n.e->getType() << std::endl;
 			trash.push_back(std::unique_ptr<AEntity>(n.e));
 			continue;
 		}

@@ -42,6 +42,6 @@ void PotEntity::update(EntitiesMap *map)
 PotEntity::~PotEntity()
 {
 	//free((void *)1);
-	std::cout << "DELETE POT" << std::endl;
+	//std::cout << "DELETE POT" << std::endl;
 	_node->remove();
 }

@@ -17,13 +17,11 @@
 GameState::GameState(AStateShare &_share) : AState(_share), _inc(0)
 {
 	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::GAME, true));
-	_emap.generate(_share.getIAState());
 }
 
 GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_share)
 {
 	_share.popMusic(AssetsPool::GAME);
-//	SaveManager::save(_emap, filename);
 }
 
 void GameState::update()
@@ -32,7 +30,7 @@ void GameState::update()
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().push(new PauseState(getSharedResources()), false);
 	else
-		_emap.update();
+		_share.getMap()->update();
 }
 
 void GameState::load()
@@ -41,7 +39,7 @@ void GameState::load()
 
 void GameState::updateRender()
 {
-	_emap.updateRender();
+	_share.getMap()->updateRender();
 	AState::updateRender();
 }
 

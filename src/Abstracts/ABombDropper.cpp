@@ -42,7 +42,9 @@ void ABombDropper::update(EntitiesMap *map)
 			it++;
 	while (!_toDrop.empty()) {
 		auto front = _toDrop.front();
-		_updateBomb(map, std::get<0>(front), std::get<1>(front));
+		auto pos = irr::core::vector2di(front.first, front.second);
+		if (map->canMoveTo(pos))
+			_updateBomb(map, std::get<0>(front), std::get<1>(front));
 		_toDrop.pop();
 	}
 }

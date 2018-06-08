@@ -22,7 +22,6 @@ public:
 	void updateRender() override;
 	void animCam();
 private:
-	EntitiesMap _emap;
 	bool _canPause;
 	irr::f32 _inc;
 };

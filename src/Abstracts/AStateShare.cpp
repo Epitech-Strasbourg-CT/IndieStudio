@@ -81,7 +81,7 @@ bool AStateShare::isKeyPressed(irr::EKEY_CODE keyCode)
 bool AStateShare::setIAState(std::vector<int> const &stateIA)
 {
 	_stateIA = stateIA;
-	std::cout << "saved! " << std::endl;
+	//std::cout << "saved! " << std::endl;
 	std::cout << _stateIA[0] << std::endl;
 	std::cout << _stateIA[1] << std::endl;
 	std::cout << _stateIA[2] << std::endl;
