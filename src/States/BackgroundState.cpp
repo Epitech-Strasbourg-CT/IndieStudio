@@ -91,7 +91,8 @@ void BackgroundState::transitionPop()
 void BackgroundState::transitionPush(bool keep)
 {
 	AState::transitionPush(keep);
-	StateMachine::getInstance().push(new MenuState(_share), true);
+//	StateMachine::getInstance().push(new MenuState(_share), true);
+	StateMachine::getInstance().push(new GameState(_share), true);
 }
 
 void BackgroundState::loadMap()
@@ -107,6 +108,5 @@ void BackgroundState::loadMap()
 	_node->setScale({500, 500, 500});
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialType(irr::video::EMT_SOLID);
-
 	_share.addSharedNode("map", _node);
 }

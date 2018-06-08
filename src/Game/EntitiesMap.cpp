@@ -66,8 +66,7 @@ bool EntitiesMap::insert(AEntity *e, const irr::core::vector2di &v)
 	auto fct = [e](const InsertTrans &d) {
 		return (d.e == e);
 	};
-	if (std::find_if(_toInsert.begin(), _toInsert.end(), fct) !=
-		_toInsert.end())
+	if (std::find_if(_toInsert.begin(), _toInsert.end(), fct)  != _toInsert.end())
 		return false;
 	InsertTrans data = {e, v};
 	_toInsert.push_back(data);
