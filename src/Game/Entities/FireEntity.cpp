@@ -8,30 +8,22 @@
 #include "../../../include/Game/Entities/FireEntity.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Game/Entities/PotEntity.hpp"
-
-int FireEntity::insertion = 0;
+#include "../../../include/Time.hpp"
 
 FireEntity::FireEntity(const irr::core::vector2di &spread, size_t size)
-: AEntity("Fire"), _spreadDir(spread), _spreadSize(size), _spreaded(false)
+: AEntity("Fire"), _spreadDir(spread), _spreadSize(size), _spreaded(false), _duration(200)
 {
-	FireEntity::insertion += 1;
-	std::cout << "Fire : " << this << " " << FireEntity::insertion << std::endl;
+	_start = Time::timestamp();
 	_stackable = true;
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
-	auto mesh = am.loadMesh("bomb/bomb.obj");
+	auto mesh = am.loadMesh("explosion/explode.obj");
 	_node = im.getSmgr()->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	_node->setMaterialType(irr::video::EMT_SOLID);
-	_node->setScale({2, 2, 2});
-//	_stackable = true;
-//	auto &im = IrrManager::getInstance();
-//	auto &am = AssetsPool::getInstance();
-//	auto mesh = am.loadMesh("rupee/rupee.obj");
-//	_node = im.getSmgr()->addMeshSceneNode(mesh);
-//	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-//	_node->setScale({0.1, 0.1, 0.1});
-//	_node->setMaterialTexture(0, am.loadTexture("rupee/Rupee.0.png"));
+	auto texture =
+	AssetsPool::getInstance().loadTexture("explosion/explode.jpg");
+	_node->setMaterialTexture(0, texture);
+	_node->setScale(irr::core::vector3df(3, 2, 3));
 }
 
 void FireEntity::spread(EntitiesMap *map)
@@ -53,6 +45,8 @@ void FireEntity::update(EntitiesMap *map)
 {
 	this->spread(map);
 	AEntity::update(map);
+	if (_start + _duration < Time::timestamp())
+		map->erase(this);
 }
 
 void FireEntity::collide(AEntity &entity)
@@ -70,4 +64,9 @@ void FireEntity::collide(AEntity &entity)
 	if (collisions.count(entity.getType()) > 0)
 		collisions[entity.getType()](&entity);
 
+}
+
+FireEntity::~FireEntity()
+{
+	_node->remove();
 }

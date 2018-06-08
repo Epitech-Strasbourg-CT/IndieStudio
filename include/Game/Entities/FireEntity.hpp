@@ -16,11 +16,13 @@ public:
 	void update(EntitiesMap *map) override;
 	void spread(EntitiesMap *map);
 	void collide(AEntity &entity) override;
+	virtual ~FireEntity();
 private:
 	irr::core::vector2di _spreadDir;
 	size_t _spreadSize;
 	bool _spreaded;
-	static int insertion;
+	size_t _start;
+	size_t _duration;
 };
 
 
