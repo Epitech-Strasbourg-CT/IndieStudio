@@ -19,7 +19,6 @@ _endFollow(static_cast<irr::f32>(0.1)), _accelEndFollow(0)
 	_cube->setVisible(false);
 
 	auto targetPos = cam.getPosition();
-	std::cout << cam.getTarget().X << " " << cam.getTarget().Y << " " << cam.getTarget().Z << std::endl;
 	irr::core::vector3df vect({
 				  (cam.getTarget().X - cam.getPosition().X) * static_cast<irr::f32>(startPointRatio),
 				  (cam.getTarget().Y - cam.getPosition().Y) * static_cast<irr::f32>(startPointRatio),

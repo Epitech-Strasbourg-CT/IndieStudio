@@ -55,7 +55,6 @@ void ABombDropper::_updateBomb(EntitiesMap *map, int x, int y)
 		map->insert(bomb.get(), {x, y});
 		_watchingBombs.push_back(
 			dynamic_cast<BombEntity *>(bomb.get()));
-		std::cout << "je release " << bomb.get() << std::endl;
 		bomb.release();
 		_currentBomb += 1;
 	}

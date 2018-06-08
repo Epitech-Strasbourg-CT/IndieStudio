@@ -42,19 +42,20 @@ EntitiesMap::_generationMap = {
 
 const std::vector<std::string> EntitiesMap::_mapTemplate = {
 	"XXXXXXXXXXXXXXXXXXX",
-	"X1 0000000000000  X",
-	"X X0X0X0X0X0X0X0X X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X X0X0X0X0X0X0X0X X",
 	"X  0000000000000  X",
+	"X X0X0X0X0X0X0X0X X",
+	"X00000000000000000X",
+	"X0X0X0X0X0X0X0X0X0X",
+	"X00000000000000000X",
+	"X0X0X0X0X0X0X0X0X0X",
+	"X00000000000000000X",
+	"X0X0X0X0X0X0X0X0X0X",
+	"X00000000000000000X",
+	"X0X0X0X0X0X0X0X0X0X",
+	"X00000000000000000X",
+	"X X0X0X0X0X0X0X0X X",
+	//"X  0000000000000  X",
+	"X        1        X",
 	"XXXXXXXXXXXXXXXXXXX",
 };
 
@@ -92,7 +93,6 @@ bool EntitiesMap::insert(AEntity *e, const irr::core::vector2di &v)
 
 bool EntitiesMap::erase(AEntity *e)
 {
-	std::cout << "j'erase" << std::endl;
 	auto fct = [e](const EraseTrans &d) {
 		return (d.e == e);
 	};
@@ -133,7 +133,6 @@ void EntitiesMap::updateInsert()
 
 void EntitiesMap::updateErase()
 {
-	std::cout << "j'update erase" << std::endl;
 	for (auto &n : _toErase) {
 		auto e = n.e;
 		auto x = n.e->getPosition().X;
@@ -215,7 +214,6 @@ void EntitiesMap::update()
 	updateErase();
 	updateMove();
 	updateInsert();
-	std::cout << "Fin de cycle" << std::endl;
 }
 
 EntitiesMap::EMap &EntitiesMap::getMap()

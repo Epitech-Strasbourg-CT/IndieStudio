@@ -18,6 +18,7 @@ public:
 	void setAutonomous(bool _utonomous);
 	void explode(EntitiesMap *map);
 	void update(EntitiesMap *map) override;
+	virtual ~BombEntity();
 
 private:
 	size_t _start;
