@@ -28,7 +28,7 @@ public:
 	void updateRender() override;
 	void updateRenderDir();
 	void updateRenderPosition();
-	void dump(std::ostream &s) const;
+	void dump (std::ostream &s) const;
 	void load(std::istream &s);
 
 private:

@@ -24,10 +24,13 @@ public:
 
 	virtual void collide(AEntity &);
 	bool isStackable() const;
+	bool isInsertable() const;
 
 	virtual void update(EntitiesMap *);
 	virtual void updateRender();
 	irr::core::vector2d<float> calculateConvertedPosition() const;
+
+	const std::string &getType() const;
 
 	virtual void dump(std::ostream &s) const;
 	virtual void load(std::istream &s);
@@ -50,6 +53,7 @@ protected:
 	irr::core::vector2df _correction;
 	irr::scene::ISceneNode *_node;
 	bool _stackable;
+	bool _insertable;
 };
 
 std::ostream &operator<<(std::ostream &, const AEntity &);

@@ -21,13 +21,13 @@ EntitiesMap::_generationMap = {
 		id += 1;
 		auto *controller = new BKeyboardController(id);
 
-		controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_PRESSED);
-		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_PRESSED);
-		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_PRESSED);
+		controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_DOWN);
+		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_DOWN);
+		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_DOWN);
 		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT,
-			KEY_PRESSED);
+		                         KEY_DOWN);
 		controller->registerBind(irr::KEY_SPACE, DROP_BOMB,
-			KEY_RELEASED);
+			KEY_PRESSED);
 		PlayerEntity *player = new PlayerEntity();
 		AController::bindEntityToController(*controller, *player);
 		return player;
@@ -120,11 +120,16 @@ bool EntitiesMap::moveTo(AEntity *e, const irr::core::vector2di &v)
 
 void EntitiesMap::updateInsert()
 {
+	std::vector<std::unique_ptr<AEntity>> trash;
+
 	for (auto &n : _toInsert) {
 		auto x = n.v.X;
 		auto y = n.v.Y;
-		if (x < 0 || x > WIDTH || y < 0 || y > HEIGHT)
+		if (!canInsertTo(n.v)) {
+			std::cout << "GO TRASH" << std::endl;
+			trash.push_back(std::unique_ptr<AEntity>(n.e));
 			continue;
+		}
 		_map[y][x].push_back(std::unique_ptr<AEntity>(n.e));
 		n.e->setPosition(n.v);
 	}
@@ -137,7 +142,7 @@ void EntitiesMap::updateErase()
 		auto e = n.e;
 		auto x = n.e->getPosition().X;
 		auto y = n.e->getPosition().Y;
-		if (x < 0 || x > WIDTH || y < 0 || y > HEIGHT)
+		if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
 			continue;
 		auto &list = _map[y][x];
 		auto finder = [e](const std::unique_ptr<AEntity> &p) {
@@ -156,11 +161,11 @@ void EntitiesMap::updateMove()
 		auto e = n.e;
 		auto ox = n.e->getPosition().X;
 		auto oy = n.e->getPosition().Y;
-		if (ox < 0 || ox > WIDTH || oy < 0 || oy > HEIGHT)
+		if (ox < 0 || ox >= WIDTH || oy < 0 || oy >= HEIGHT)
 			continue;
 		auto dx = n.v.X;
 		auto dy = n.v.Y;
-		if (dx < 0 || dx > WIDTH || dy < 0 || dy > HEIGHT)
+		if (dx < 0 || dx >= WIDTH || dy < 0 || dy >= HEIGHT)
 			continue;
 		auto &list = _map[oy][ox];
 		auto finder = [e](const std::unique_ptr<AEntity> &p) {
@@ -177,9 +182,26 @@ void EntitiesMap::updateMove()
 	_toMove.clear();
 }
 
+bool EntitiesMap::canInsertTo(const irr::core::vector2di &v)
+{
+	std::cout << "INSERT START" << std::endl;
+	if (v.X < 0 || v.X >= WIDTH || v.Y < 0 || v.Y >= HEIGHT) {
+		std::cout << "INSERT FAIL" << std::endl;
+		return false;
+	}
+	std::cout << "INSERT OK" << std::endl;
+	for (auto &n : _map[v.Y][v.X])
+		if (!n->isInsertable()) {
+			std::cout << "INSERT FAIL : " << n->getType() << "NOT INSERTABLE " << std::endl;
+			return false;
+	}
+	std::cout << "INSERT OK" << std::endl;
+	return true;
+}
+
 bool EntitiesMap::canMoveTo(const irr::core::vector2di &v)
 {
-	if (v.X < 0 || v.X > WIDTH || v.Y < 0 || v.Y > HEIGHT)
+	if (v.X < 0 || v.X >= WIDTH || v.Y < 0 || v.Y >= HEIGHT)
 		return false;
 	for (auto &n : _map[v.Y][v.X])
 		if (!n->isStackable())

@@ -13,7 +13,8 @@ _type(type),
 _origin(660, 65, 675),
 _correction(),
 _node(),
-_stackable(true)
+_stackable(true),
+_insertable(true)
 {
 }
 
@@ -112,4 +113,14 @@ const irr::core::vector3df &AEntity::getNodeRotation() const
 void AEntity::setNodeRotation(const irr::core::vector3df &vec)
 {
 	_node->setRotation(vec);
+}
+
+bool AEntity::isInsertable() const
+{
+	return _insertable;
+}
+
+const std::string &AEntity::getType() const
+{
+	return _type;
 }

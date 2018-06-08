@@ -70,6 +70,7 @@ private:
 	_mapTemplate;
 	static const std::unordered_map<char, std::function<AEntity *()>>
 	_generationMap;
+	bool canInsertTo(const irr::core::vector2di &v);
 };
 
 

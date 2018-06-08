@@ -10,6 +10,7 @@
 #include "../../../include/Singletons/IrrManager.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Time.hpp"
+#include "../../../include/Game/Entities/FireEntity.hpp"
 
 BombEntity::BombEntity()
 : AEntity("Bomb"),
@@ -21,14 +22,11 @@ _autonomous(false)
 	_stackable = false;
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
-	//auto mesh = am.loadMesh("bomb/bomb.obj");
-	auto mesh = am.loadMesh("rupees/rupee.obj");
+	auto mesh = am.loadMesh("bomb/bomb.obj");
 	_node = im.getSmgr()->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	//_node->setMaterialType(irr::video::EMT_SOLID);
-	_node->setScale({0.1, 0.1, 0.1});
-	_node->setRotation({90, 0, 0});
-	_node->setMaterialTexture(0, AssetsPool::getInstance().loadTexture("rupees/Rupee.0.png"));
+	_node->setMaterialType(irr::video::EMT_SOLID);
+	_node->setScale({2, 2, 2});
 	_start = Time::timestamp();
 }
 
@@ -57,6 +55,8 @@ void BombEntity::explode(EntitiesMap *map)
 //		map->erase(this);
 //	} else {
 		_exploded = true;
+		//
+		map->insert(new FireEntity({0, 0}, 5), getPosition());
 //	}
 }
 

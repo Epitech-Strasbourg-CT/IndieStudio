@@ -15,6 +15,7 @@ BlockEntity::BlockEntity() : AEntity("block")
 	auto &am = AssetsPool::getInstance();
 	auto mesh = am.loadMesh("block/Block.obj");
 	_stackable = false;
+	_insertable = false;
 	_node = im.getSmgr()->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialTexture(0, am.loadTexture("block/Brick.png"));

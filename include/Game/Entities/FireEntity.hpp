@@ -12,7 +12,14 @@
 
 class FireEntity : public AEntity {
 public:
-	FireEntity();
+	FireEntity(const irr::core::vector2di &spread, size_t size);
+	void update(EntitiesMap *map) override;
+	void spread(EntitiesMap *map);
+private:
+	irr::core::vector2di _spreadDir;
+	size_t _spreadSize;
+	bool _spreaded;
+	static int insertion;
 };
 
 
