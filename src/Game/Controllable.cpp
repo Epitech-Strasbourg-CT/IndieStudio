@@ -72,5 +72,7 @@ Controllable::_getBinds(ControlType_e t)
 		return _bindsPressed;
 	case KEY_RELEASED:
 		return _bindsReleased;
+	default:
+		throw std::runtime_error("key mode not implemented");
 	}
 }

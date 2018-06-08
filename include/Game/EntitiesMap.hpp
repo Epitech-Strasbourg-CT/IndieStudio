@@ -8,6 +8,7 @@
 #ifndef BOMBERMAN_ENTITIESMAP_HPP
 #define BOMBERMAN_ENTITIESMAP_HPP
 
+#include <functional>
 #include <vector>
 #include <list>
 #include <map>

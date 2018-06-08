@@ -69,5 +69,7 @@ std::unordered_map<irr::EKEY_CODE, ControlName_e> &BKeyboardController::_getBind
 		return _bindsPressed;
 	case KEY_RELEASED:
 		return _bindsReleased;
+	default:
+		throw std::runtime_error("key mode not implemented");
 	}
 }
