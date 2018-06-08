@@ -4,7 +4,8 @@
 ** File description:
 **
 */
-
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include "../../include/States/SettingsState.hpp"
 #include <cmath>
 #include "../../include/States/MenuState.hpp"
@@ -57,7 +58,9 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 };
 
 MenuState::MenuState(AStateShare &_share) : AState(_share),
-_camRotate(2.3, static_cast<irr::f32>(3.14159265 / 3.0), 700, {450, 0, 100})
+_camRotate(
+static_cast<irr::f32>(2.3),
+static_cast<irr::f32>(3.14159265 / 3.0), 700, {450, 0, 100})
 {
 }
 
@@ -152,8 +155,8 @@ void MenuState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 void MenuState::update()
 {
 	auto step  = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
-	irr::f32 min = 2.7;
-	irr::f32 max = 4.4;
+	irr::f32 min = static_cast<irr::f32>(2.7);
+	irr::f32 max = static_cast<irr::f32>(4.4);
 	static irr::f32 inc = 0;
 	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
 

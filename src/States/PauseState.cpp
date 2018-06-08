@@ -36,7 +36,7 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 		{50, 250, 750, 300},
 		"save",
 		[](PauseState *self) {
-			SaveManager sm;
+			//SaveManager sm;
 			auto &res = self->getSharedResources();
 
 			//sm.save(res.getEntityMap(), std::to_string(Time::timestamp());
@@ -105,7 +105,7 @@ void PauseState::unload()
 
 void PauseState::update()
 {
-	if (getSharedResources().isKeyReleased(irr::KEY_ESCAPE))
+	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 	AState::update();
 }
