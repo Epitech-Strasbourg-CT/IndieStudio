@@ -89,7 +89,8 @@ add_executable(bomberman
 
         src/Abstracts/ABombDropper.cpp
         include/Abstracts/ABombDropper.hpp
-
+        src/States/LoadState.cpp
+        include/States/LoadState.hpp
         include/Game/Entities/AAnimatedEntity.cpp
         include/Game/Entities/AAnimatedEntity.hpp
 
