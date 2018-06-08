@@ -91,8 +91,7 @@ void BackgroundState::transitionPop()
 void BackgroundState::transitionPush(bool keep)
 {
 	AState::transitionPush(keep);
-//	StateMachine::getInstance().push(new MenuState(_share), true);
-	StateMachine::getInstance().push(new GameState(_share), true);
+	StateMachine::getInstance().push(new MenuState(_share), true);
 }
 
 void BackgroundState::loadMap()
