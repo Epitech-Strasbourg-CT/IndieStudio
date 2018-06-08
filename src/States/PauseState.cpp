@@ -13,6 +13,7 @@
 #include "../../include/States/SettingsState.hpp"
 #include "../../include/Game/SaveManager.hpp"
 #include "../../include/Time.hpp"
+#include "../../include/States/SaveState.hpp"
 
 const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 	PauseState::_descs{
@@ -36,11 +37,10 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 		{50, 250, 750, 300},
 		"save",
 		[](PauseState *self) {
-			SaveManager sm;
+			auto &sm = StateMachine::getInstance();
 			auto &res = self->getSharedResources();
-
-			//sm.save(res.getEntityMap(), std::to_string(Time::timestamp());
-		}
+			sm.push(new SaveState(res), false);
+			}
 	}},
 	{PauseState::EXIT_GAME, {
 		{50, 350, 750, 400},

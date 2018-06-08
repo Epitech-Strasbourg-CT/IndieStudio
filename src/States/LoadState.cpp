@@ -179,7 +179,7 @@ irr::gui::IGUIButton *LoadState::getButton(LoadState::Actions id) const
 void LoadState::setSaveButtons()
 {
 	size_t i = _idx * 4;
-	std::string empty = "";
+	std::string empty = "- Empty Slot -";
 
 	for (; i < _saves.size() && (i == _idx * 4 || i%4); ++i) {
 		_buttons[i%4]->setText(std::wstring(_saves[i].begin(),
