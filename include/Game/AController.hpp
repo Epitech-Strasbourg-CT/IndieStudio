@@ -21,6 +21,13 @@ enum ControlName_e {
 	DROP_BOMB,
 };
 
+enum ControlType_e {
+	KEY_PRESSED,
+	KEY_RELEASED,
+};
+
+using ControlPair_e = std::pair<ControlName_e, ControlType_e>;
+
 class AController {
 public:
 	virtual void updateInputs();

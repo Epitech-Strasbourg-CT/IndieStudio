@@ -23,19 +23,19 @@ _old(AMovable::getPosition()), _look(1, 0)
 	("run", "player/link-run.ms3d", "player/player1.png");
 	_node->setScale({15, 15, 15});
 	selectAnimation("idle");
-	addEvent(MOVE_UP, [this]() {
+	addEvent(MOVE_UP, KEY_PRESSED, [this]() {
 		this->dirTop(1);
 	});
-	addEvent(MOVE_DOWN, [this]() {
+	addEvent(MOVE_DOWN, KEY_PRESSED, [this]() {
 		this->dirBottom(1);
 	});
-	addEvent(MOVE_LEFT, [this]() {
+	addEvent(MOVE_LEFT, KEY_PRESSED, [this]() {
 		this->dirLeft(1);
 	});
-	addEvent(MOVE_RIGHT, [this]() {
+	addEvent(MOVE_RIGHT, KEY_PRESSED, [this]() {
 		this->dirRight(1);
 	});
-	addEvent(DROP_BOMB, [this]() {
+	addEvent(DROP_BOMB, KEY_RELEASED, [this]() {
 		this->dropBomb(AEntity::getPosX(), AEntity::getPosY());
 	});
 }
