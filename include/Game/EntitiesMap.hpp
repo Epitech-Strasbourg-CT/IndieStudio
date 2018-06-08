@@ -38,7 +38,7 @@ public:
 	void updateErase();
 	void updateMove();
 
-	bool generate();
+	bool generate(const std::vector<int> &IAState);
 
 	void update();
 	void updateRender();
@@ -68,8 +68,9 @@ private:
 
 	static const std::vector<std::string>
 	_mapTemplate;
-	static const std::unordered_map<char, std::function<AEntity *()>>
-	_generationMap;
+	static const std::unordered_map<char, std::function<AEntity *(
+		const std::vector<int> &
+	)>> _generationMap;
 };
 
 

@@ -14,7 +14,10 @@ BIAController::BIAController(size_t id) : _id(id)
 
 void BIAController::updateInputs()
 {
-	_controllable->callBind(MOVE_UP, KEY_DOWN);
+	if (rand() % _id)
+		_controllable->callBind(MOVE_DOWN, KEY_DOWN);
+	else
+		_controllable->callBind(MOVE_UP, KEY_DOWN);
 //	for (auto &n : _isKeyDown)
 //		if (n.second && _bindsDown.count(n.first) > 0)
 //			_controllable->callBind(_bindsDown[n.first],

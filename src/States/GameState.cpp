@@ -16,7 +16,7 @@
 
 GameState::GameState(AStateShare &_share) : AState(_share)
 {
-	_emap.generate();
+	_emap.generate(_share.getIAState());
 }
 
 GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_share)
