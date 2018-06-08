@@ -107,6 +107,5 @@ void BackgroundState::loadMap()
 	_node->setScale({500, 500, 500});
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialType(irr::video::EMT_SOLID);
-
 	_share.addSharedNode("map", _node);
 }

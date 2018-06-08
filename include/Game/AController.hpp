@@ -22,6 +22,7 @@ enum ControlName_e {
 };
 
 enum ControlType_e {
+	KEY_DOWN,
 	KEY_PRESSED,
 	KEY_RELEASED,
 };

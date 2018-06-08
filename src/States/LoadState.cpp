@@ -16,50 +16,43 @@
 const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	LoadState::_descs{
 	{LoadState::SAVE1,    {
-		{50, 50,  750, 100},
+		{610, 250, 1300, 300},
 		"save",
 		[](LoadState *self) {
 			StateMachine::getInstance().pop();
 		}
 	}},
 	{LoadState::SAVE2,    {
-		{50, 150, 750, 200},
+		{610, 350, 1300, 400},
 		"save",
 		[](LoadState *self) {
 			StateMachine::getInstance().pop();
 		}
 	}},
 	{LoadState::SAVE3,    {
-		{50, 250, 750, 300},
+		{610, 450, 1300, 500},
 		"save",
 		[](LoadState *self) {
 			StateMachine::getInstance().pop();
 		}
 	}},
 	{LoadState::SAVE4,    {
-		{50, 350, 750, 400},
+		{610, 550, 1300, 600},
 		"save",
 		[](LoadState *self) {
 			StateMachine::getInstance().pop();
 		}
 	}},
-	{LoadState::VALIDATE,    {
-		{525, 500,  625, 550},
-		"validate",
-		[](LoadState *self) {
-			StateMachine::getInstance().pop();
-		}
-	}},
 	{LoadState::CANCEL,  {
-		{650, 500,  750, 550},
+		{1570, 850,  1870, 900},
 		"cancel",
 		[](LoadState *self) {
 			StateMachine::getInstance().pop();
 		}
 	}},
 	{LoadState::PREV,    {
-		{125, 500,  225, 550},
-		"prev",
+		{835, 850,  935, 900},
+		"save",
 		[](LoadState *self) {
 			//TODO secure
 			self->_idx -= 1;
@@ -67,8 +60,8 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 		}
 	}},
 	{LoadState::NEXT,    {
-		{250, 500,  350, 550},
-		"next",
+		{985, 850,  1085, 900},
+		"save",
 		[](LoadState *self) {
 			//TODO secure
 			self->_idx += 1;
@@ -96,8 +89,8 @@ void LoadState::loadButtons()
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
 		auto name = n.second.name;
-		//b->setImage(ap.loadTexture("buttons/" + name + ".png"));
-		//b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
+		b->setImage(ap.loadTexture("buttons/" + name + ".png"));
+		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
 		_buttons.push_back(b);
 	}
 
@@ -153,20 +146,20 @@ void LoadState::draw()
 void LoadState::applyEventButton(const irr::SEvent &ev, LoadState::Actions id)
 {
 	auto b = getButton(id);
-	//auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
-	//auto name = "buttons/" + _descs.at(id).name + ".png";
+	auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
+	auto name = "buttons/" + _descs.at(id).name + ".png";
 	auto &ap = AssetsPool::getInstance();
 
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			LoadState::_descs.at(id).fct(this);
 			break;
-		/*case irr::gui::EGET_ELEMENT_HOVERED:
+		case irr::gui::EGET_ELEMENT_HOVERED:
 			b->setImage(ap.loadTexture(hover_name));
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			b->setImage(ap.loadTexture(name));
-			break;*/
+			break;
 		default:
 			break;
 	}
@@ -182,7 +175,7 @@ irr::gui::IGUIButton *LoadState::getButton(LoadState::Actions id) const
 void LoadState::setSaveButtons()
 {
 	size_t i = _idx * 4;
-	std::string empty = "";
+	std::string empty = "- Empty Slot -";
 
 	for (; i < _saves.size() && (i == _idx * 4 || i%4); ++i) {
 		_buttons[i%4]->setText(std::wstring(_saves[i].begin(),

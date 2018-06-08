@@ -35,6 +35,7 @@ private:
 	std::unordered_map<ControlName_e, std::function<void()>>
 		&_getBinds(ControlType_e t);
 	std::set<ControlPair_e> _actions;
+	std::unordered_map<ControlName_e, std::function<void()>> _bindsDown;
 	std::unordered_map<ControlName_e, std::function<void()>> _bindsPressed;
 	std::unordered_map<ControlName_e, std::function<void()>> _bindsReleased;
 	std::unique_ptr<AController> _controller;

@@ -95,7 +95,7 @@ add_executable(bomberman
         include/Game/Entities/AAnimatedEntity.hpp
 
         src/States/TransitionToGameState.cpp
-        include/States/TransitionToGameState.hpp)
+        include/States/TransitionToGameState.hpp src/States/SaveState.cpp include/States/SaveState.hpp)
 
 # endregion
 
