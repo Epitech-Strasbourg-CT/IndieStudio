@@ -22,6 +22,9 @@ public:
 
 	enum Assets {
 		MENU,
+		GAME,
+		SELECT,
+		CURSOR,
 		FINAL
 	};
 
@@ -38,8 +41,8 @@ public:
 
 	irr::scene::IMesh *loadMesh(const std::string &file);
 	irr::video::ITexture *loadTexture(const std::string &file);
-	irrklang::ISound *loadSound(AssetsPool::Assets, bool);
 
+	irrklang::ISound *loadSound(AssetsPool::Assets, bool);
 	void unloadSound(AssetsPool::Assets, irrklang::ISound *);
 	void setVolume(AssetsPool::Types, irrklang::ik_f32);
 private:

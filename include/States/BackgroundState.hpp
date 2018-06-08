@@ -24,11 +24,8 @@ public:
 
 private:
 	irr::scene::ISceneNode *_node;
-
 	void loadCharacter();
-
 	void loadSkyBox();
-
 	void loadMap();
 };
 

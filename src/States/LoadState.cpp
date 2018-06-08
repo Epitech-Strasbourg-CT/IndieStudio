@@ -70,7 +70,7 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	}}
 };
 
-LoadState::LoadState(AStateShare &_share) : AState(_share), _idx(0)
+LoadState::LoadState(AStateShare &_share) : AState(_share), AMenuSound(), _idx(0)
 {
 }
 
@@ -80,11 +80,9 @@ LoadState::~LoadState()
 
 void LoadState::loadButtons()
 {
-	#ifdef UNIX
 	auto gui = IrrManager::getInstance().getGuienv();
 	auto &er = EventReceiver::getInstance();
 	auto &ap = AssetsPool::getInstance();
-	glob_t glob_result;
 
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
@@ -93,10 +91,6 @@ void LoadState::loadButtons()
 		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
 		_buttons.push_back(b);
 	}
-
-	glob("../.save/*", GLOB_TILDE, NULL, &glob_result);
-	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i)
-		_saves.emplace_back(glob_result.gl_pathv[i]);
 	setSaveButtons();
 	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
 		[this](const irr::SEvent &ev) {
@@ -105,6 +99,11 @@ void LoadState::loadButtons()
 				this->applyEventButton(ev, id);
 			return true;
 		});
+	#ifdef UNIX
+		glob_t glob_result;
+		glob("../.save/*", GLOB_TILDE, NULL, &glob_result);
+		for (unsigned int i = 0; i < glob_result.gl_pathc; ++i)
+			_saves.emplace_back(glob_result.gl_pathv[i]);
 	#endif
 }
 
@@ -153,9 +152,11 @@ void LoadState::applyEventButton(const irr::SEvent &ev, LoadState::Actions id)
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			LoadState::_descs.at(id).fct(this);
+			playSelect();
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
 			b->setImage(ap.loadTexture(hover_name));
+			playCursor();
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			b->setImage(ap.loadTexture(name));

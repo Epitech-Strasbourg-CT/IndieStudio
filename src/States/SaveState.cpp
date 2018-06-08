@@ -30,7 +30,7 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 	}}
 };
 
-SaveState::SaveState(AStateShare &_share) : AState(_share)
+SaveState::SaveState(AStateShare &_share) : AState(_share), AMenuSound()
 {
 }
 
@@ -114,20 +114,22 @@ void SaveState::draw()
 void SaveState::applyEventButton(const irr::SEvent &ev, SaveState::Actions id)
 {
 	auto b = getButton(id);
-	//auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
-	//auto name = "buttons/" + _descs.at(id).name + ".png";
+	auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
+	auto name = "buttons/" + _descs.at(id).name + ".png";
 	auto &ap = AssetsPool::getInstance();
 
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			SaveState::_descs.at(id).fct(this);
+			playSelect();
 			break;
-		/*case irr::gui::EGET_ELEMENT_HOVERED:
+		case irr::gui::EGET_ELEMENT_HOVERED:
 			b->setImage(ap.loadTexture(hover_name));
+			playCursor();
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			b->setImage(ap.loadTexture(name));
-			break;*/
+			break;
 		default:
 			break;
 	}

@@ -51,7 +51,7 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 	}}
 };
 
-PauseState::PauseState(AStateShare &_share) : AState(_share)
+PauseState::PauseState(AStateShare &_share) : AState(_share), AMenuSound()
 {
 }
 
@@ -127,9 +127,11 @@ void PauseState::applyEventButton(const irr::SEvent &ev, PauseState::Actions id)
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			PauseState::_descs.at(id).fct(this);
+			playSelect();
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
 			b->setImage(ap.loadTexture(hover_name));
+			playCursor();
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			b->setImage(ap.loadTexture(name));

@@ -57,30 +57,28 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 	            }},
 };
 
-MenuState::MenuState(AStateShare &_share) : AState(_share),
+MenuState::MenuState(AStateShare &_share) : AState(_share), AMenuSound(),
 _camRotate(
 static_cast<irr::f32>(2.3),
 static_cast<irr::f32>(3.14159265 / 3.0), 700, {450, 0, 100})
 {
+	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::MENU, true));
 }
 
 MenuState::~MenuState()
 {
+	_share.popMusic(AssetsPool::MENU);
 }
 
 void MenuState::load()
 {
 	loadButtons();
-	_sound = AssetsPool::getInstance().loadSound(AssetsPool::MENU, true);
 	AState::load();
 }
 
 void MenuState::unload()
 {
 	unloadButtons();
-//	if (_sound)
-//		AssetsPool::getInstance().unloadSound(AssetsPool::MENU, _sound);
-//	_sound = nullptr;
 	AState::unload();
 }
 
@@ -140,9 +138,11 @@ void MenuState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			MenuState::_descs.at(id).fct(this);
+			playSelect();
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
 			b->setImage(ap.loadTexture(hover_name));
+			playCursor();
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			b->setImage(ap.loadTexture(name));

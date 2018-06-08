@@ -101,3 +101,19 @@ void AStateShare::setMap(EntitiesMap *map)
 	AStateShare::_map = map;
 }
 
+void AStateShare::pushMusic(irrklang::ISound *sound)
+{
+	if (!_music.empty())
+		_music.top()->setIsPaused(true);
+	_music.push(sound);
+	_music.top()->setIsPaused(false);
+}
+
+void AStateShare::popMusic(AssetsPool::Assets asset)
+{
+	AssetsPool::getInstance().unloadSound(asset, _music.top());
+	_music.pop();
+	if (!_music.empty())
+		_music.top()->setIsPaused(false);
+}
+

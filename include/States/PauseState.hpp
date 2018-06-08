@@ -11,10 +11,11 @@
 #include <IGUIButton.h>
 #include <vector>
 #include "../Abstracts/AState.hpp"
+#include "../Abstracts/AMenuSound.hpp"
 
 #define PAUSE_BUTTON_NUMBER 4
 
-class PauseState : public AState {
+class PauseState : public AState, public AMenuSound {
 public:
 	explicit PauseState(AStateShare &_share);
 	~PauseState();

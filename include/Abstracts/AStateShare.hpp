@@ -9,7 +9,9 @@
 #include <ISceneNode.h>
 #include <map>
 #include <vector>
+#include <ik_ISound.h>
 #include "../Game/EntitiesMap.hpp"
+#include "../Singletons/AssetsPool.hpp"
 
 #ifndef BOMBERMAN_ASTATESHARE_HPP
 #define BOMBERMAN_ASTATESHARE_HPP
@@ -25,6 +27,8 @@ public:
 	bool isKeyDown(irr::EKEY_CODE keyCode) const;
 	bool isKeyPressed(irr::EKEY_CODE keyCode);
 	bool isKeyReleased(irr::EKEY_CODE keyCode);
+	void pushMusic(irrklang::ISound *);
+	void popMusic(AssetsPool::Assets);
 	EntitiesMap *getMap() const;
 	void setMap(EntitiesMap *map);
 private:
@@ -33,6 +37,7 @@ private:
 	std::map<irr::EKEY_CODE, bool> _isKeyPressed;
 	std::map<irr::EKEY_CODE, bool> _isKeyReleased;
 	std::vector<int> _stateIA;
+	std::stack<irrklang::ISound *> _music;
 	EntitiesMap *_map;
 };
 

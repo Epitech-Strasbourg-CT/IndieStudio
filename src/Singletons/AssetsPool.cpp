@@ -12,7 +12,19 @@ const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds= {
 	{
 		AssetsPool::MUSIC,
 		"assets/sounds/MenuSong.mp3",
-		&IrrManager::getMusicVolume,
+		&IrrManager::getMusicVolume
+	},{
+		AssetsPool::MUSIC,
+		"assets/sounds/GameSong.mp3",
+		&IrrManager::getMusicVolume
+	},{
+		AssetsPool::SFX,
+		"assets/sounds/MenuSelect.mp3",
+		&IrrManager::getEffectsVolume
+	},{
+		AssetsPool::SFX,
+		"assets/sounds/MenuCursormove.mp3",
+		&IrrManager::getEffectsVolume
 	}
 };
 
@@ -67,25 +79,19 @@ irrklang::ISound *AssetsPool::loadSound(const AssetsPool::Assets asset,
 		false);
 
 	module->setVolume((instance.*(_sounds.at(asset).vol))());
-	module->setIsPaused(false);
+	module->setIsPaused(true);
 	_sModule[asset].push_back(module);
-	for (size_t i = 0; i < _sModule[asset].size(); ++i)
-		if (_sModule[asset][i]->isFinished()) {
-			_sModule[asset][i]->stop();
-			_sModule[asset][i]->drop();
-			_sModule[asset].erase(_sModule[asset].begin() + i);
-		}
 	return module;
 }
 
 void AssetsPool::unloadSound(AssetsPool::Assets asset, irrklang::ISound *module)
 {
 	for (size_t i = 0; i < _sModule[asset].size(); ++i)
-		if (_sModule[asset][i]->isFinished() ||
-			_sModule[asset][i] == module) {
+		if (_sModule[asset][i] == module) {
 			_sModule[asset][i]->stop();
 			_sModule[asset][i]->drop();
 			_sModule[asset].erase(_sModule[asset].begin() + i);
+			break;
 		}
 }
 

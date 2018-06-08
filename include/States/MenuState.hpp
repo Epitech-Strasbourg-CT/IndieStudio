@@ -13,6 +13,7 @@
 #include <vector>
 #include "../Abstracts/AState.hpp"
 #include "../Game/SphericalCoordinate.hpp"
+#include "../Abstracts/AMenuSound.hpp"
 
 #ifndef BOMBERMAN_MENUSTATE_HPP
 	#define BOMBERMAN_MENUSTATE_HPP
@@ -26,7 +27,7 @@ enum MenuActions {
 	EXIT_GAME
 };
 
-class MenuState : public AState {
+class MenuState : public AState, public AMenuSound {
 public:
 
 	explicit MenuState(AStateShare &_share);
@@ -54,13 +55,6 @@ public:
 private:
 	std::vector<irr::gui::IGUIButton *> _buttons;
 	static const std::map<MenuActions , ButtonsDesc> _descs;
-	irrklang::ISound *_sound;
-	irr::gui::IGUIButton *_launch;
-	irr::gui::IGUIButton *_load;
-	irr::gui::IGUIButton *_settings;
-	irr::gui::IGUIButton *_exit;
-	irrklang::ISoundEngine *_engine;
-
 	SphericalCoordinate _camRotate;
 
 //	static const std::unordered_map<int,//irr::s32,

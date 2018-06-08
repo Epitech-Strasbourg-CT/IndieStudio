@@ -9,10 +9,11 @@
 #define BOMBERMAN_LOADSTATE_HPP
 
 #include "../Abstracts/AState.hpp"
+#include "../Abstracts/AMenuSound.hpp"
 
 #define LOAD_BUTTON_NUMBER 7
 
-class LoadState : public AState {
+class LoadState : public AState, public AMenuSound{
 public:
 	explicit LoadState(AStateShare &_share);
 	~LoadState() override;
