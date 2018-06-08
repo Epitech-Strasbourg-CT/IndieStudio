@@ -14,7 +14,8 @@ AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _stateIA(4), _map()
 	EventReceiver::getInstance().registerEvent(0, irr::EET_KEY_INPUT_EVENT,
         [this](const irr::SEvent &ev) {
 		auto key = ev.KeyInput.Key;
-	        this->_isKeyDown[ev.KeyInput.Key] = ev.KeyInput.PressedDown;
+	        this->_isKeyDown[key] = ev.KeyInput.PressedDown;
+		this->_isKeyPressed[key] = ev.KeyInput.PressedDown;
 		this->_isKeyReleased[key] = !ev.KeyInput.PressedDown;
 		return true;
 	});
@@ -63,6 +64,16 @@ bool AStateShare::isKeyReleased(irr::EKEY_CODE keyCode)
 	if (_isKeyReleased.count(keyCode) > 0) {
 		res = _isKeyReleased.at(keyCode);
 		_isKeyReleased[keyCode] = false;
+	}
+	return res;
+}
+
+bool AStateShare::isKeyPressed(irr::EKEY_CODE keyCode)
+{
+	bool res = false;
+	if (_isKeyPressed.count(keyCode) > 0) {
+		res = _isKeyPressed.at(keyCode);
+		_isKeyPressed[keyCode] = false;
 	}
 	return res;
 }
