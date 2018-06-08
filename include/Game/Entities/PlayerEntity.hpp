@@ -22,7 +22,7 @@ class PlayerEntity : public ABombDropper,
                      public AAnimatedEntity,
                      public AMovable<int> {
 public:
-	PlayerEntity();
+	PlayerEntity(unsigned playerSkinId = 1);
 	void update(EntitiesMap *map) override;
 	bool updatePosition(EntitiesMap *map);
 	void updateRender() override;

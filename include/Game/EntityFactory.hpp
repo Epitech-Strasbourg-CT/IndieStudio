@@ -14,13 +14,15 @@
 #include <memory>
 
 class EntityFactory {
-public:
+	public:
 	EntityFactory();
 	~EntityFactory();
 
-	std::unique_ptr<AEntity> createEntity(const std::string &);
+	std::unique_ptr<AEntity> createEntity(const std::string &,
+		unsigned playerSkinId = 1
+	);
 
 	protected:
 	private:
-	std::map<std::string, std::function<std::unique_ptr<AEntity>()>> _fac;
+	std::map<std::string, std::function<std::unique_ptr<AEntity>(unsigned)>> _fac;
 };
