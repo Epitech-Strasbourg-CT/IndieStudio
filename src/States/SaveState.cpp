@@ -15,14 +15,14 @@
 const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 	SaveState::_descs{
 	{SaveState::CANCEL, {
-		{650, 500,  750, 550},
+		{985, 590,  1285, 640},
 		"cancel",
 		[](SaveState *self) {
 			StateMachine::getInstance().pop();
 		}
 	}},
 	{SaveState::SAVE,  {
-		{525, 500,  625, 550},
+		{635, 590,  935, 640},
 		"save",
 		[](SaveState *self) {
 			StateMachine::getInstance().pop();
@@ -56,8 +56,8 @@ void SaveState::loadButtons()
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
 		auto name = n.second.name;
-		//b->setImage(ap.loadTexture("buttons/" + name + ".png"));
-		//b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
+		b->setImage(ap.loadTexture("buttons/" + name + ".png"));
+		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
 		_buttons.push_back(b);
 	}
 
@@ -69,7 +69,7 @@ void SaveState::loadButtons()
 			return true;
 		});
 	_name = gui->addEditBox(std::wstring(sName.begin(),
-		sName.end()).c_str(), {525, 200, 750, 300},
+		sName.end()).c_str(), {835, 440, 1085, 540},
 		true, nullptr, 600 + SAVE_BUTTON_NUMBER);
 	_name->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
 }

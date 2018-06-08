@@ -17,7 +17,7 @@
 const std::map<AIChooseState::MenuActions, AIChooseState::BouttonsDesc>
 AIChooseState::_descs{
 {LAUNCH, {
-	 {50, 50,  750, 100},
+	 {610, 900,  1310, 950},
 	 "launch",
 	 [](AIChooseState *self) {
 	 	if(std::find(self->_state.begin(), self->_state.end(), 1) == self->_state.end())
@@ -28,28 +28,28 @@ AIChooseState::_descs{
 	 }
 	 }},
 {PLY1,   {
-	 {50, 200, 200, 250},
+	 {350, 400, 500, 450},
 	 "player",
 	 [](AIChooseState *self) {
 		 StateMachine::getInstance().pop();
 	 }
 	 }},
 {PLY2,   {
-	 {230, 200, 380, 250},
+	 {700, 400, 850, 450},
 	 "ia",
 	 [](AIChooseState *self) {
 //		    StateMachine::getInstance().push(new SettingsState(self->_share), false);
 	 }
 	 }},
 {PLY3,   {
-	 {400, 200, 550, 250},
+	 {1025, 400, 1175, 450},
 	 "ia",
 	 [](AIChooseState *self) {
 
 	 }
 	 }},
 {PLY4,   {
-	 {580, 200, 730, 250},
+	 {1350, 400, 1500, 450},
 	 "ia",
 	 [](AIChooseState *self) {
 

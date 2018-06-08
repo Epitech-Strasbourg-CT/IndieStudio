@@ -10,7 +10,7 @@
 
 #include "../Abstracts/AState.hpp"
 
-#define LOAD_BUTTON_NUMBER 8
+#define LOAD_BUTTON_NUMBER 7
 
 class LoadState : public AState {
 public:
@@ -22,7 +22,6 @@ public:
 		SAVE2,
 		SAVE3,
 		SAVE4,
-		VALIDATE,
 		CANCEL,
 		PREV,
 		NEXT
