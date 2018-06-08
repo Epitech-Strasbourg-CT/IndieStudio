@@ -10,13 +10,14 @@
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/States/GameState.hpp"
 
-TransitionToGameState::TransitionToGameState(AStateShare &_share) : AState(
-_share), _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {690, 60, 690}, 1.1)
+TransitionToGameState::TransitionToGameState(AStateShare &_share) : AState(_share),
+_trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")),
+{690, 60, 690}, static_cast<irr::f32>(1.1))
 {
-	_trav.setFolow(0.04);
-	_trav.setEndFollow(0.01);
-	_trav.setAccelEndFollow(0.002);
-	_trav.setEndExactitude(0.1);
+	_trav.setFolow(static_cast<irr::f32>(0.04));
+	_trav.setEndFollow(static_cast<irr::f32>(0.01));
+	_trav.setAccelEndFollow(static_cast<irr::f32>(0.002));
+	_trav.setEndExactitude(static_cast<irr::f32>(0.1));
 	_trav.push(30, {-100, 150, 0});
 	_trav.push(30, {100, 190, 500});
 	_trav.push(30, {300, 150, 650});

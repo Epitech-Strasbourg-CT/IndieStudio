@@ -65,7 +65,7 @@ IrrManager &IrrManager::getInstance()
 
 irr::core::vector2di IrrManager::getSize() const
 {
-	return {_width, _height};
+	return irr::core::vector2di(_width, _height);
 }
 
 irrklang::ik_f32 IrrManager::getMasterVolume() const

@@ -12,51 +12,34 @@
 #include "../../include/Game/Entities/BlockEntity.hpp"
 
 const std::unordered_map<char, std::function<AEntity *()>>
-EntitiesMap::_generationMap = {
-	{'X', []() {
-		return new BlockEntity();
-	}},
-	{'1', []() {
-		static size_t id = 0;
-		id += 1;
-		auto *controller = new BKeyboardController(id);
+	EntitiesMap::_generationMap = {{'X', []() {
+	return new BlockEntity();
+}}, {'1', []() {
+	static size_t id = 0;
+	id += 1;
+	auto *controller = new BKeyboardController(id);
 
-		controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_PRESSED);
-		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_PRESSED);
-		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_PRESSED);
-		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT,
-			KEY_PRESSED);
-		controller->registerBind(irr::KEY_SPACE, DROP_BOMB,
-			KEY_RELEASED);
-		PlayerEntity *player = new PlayerEntity();
-		AController::bindEntityToController(*controller, *player);
-		return player;
-	}},
-	{'0', [](){
-		AEntity *e = nullptr;
-		if ((rand() % 6) < 4)
-			e = new PotEntity();
-		return e;
-	}}
-};
+	controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_DOWN);
+	controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_DOWN);
+	controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_DOWN);
+	controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT, KEY_DOWN);
+	controller->registerBind(irr::KEY_SPACE, DROP_BOMB, KEY_PRESSED);
+	PlayerEntity *player = new PlayerEntity();
+	AController::bindEntityToController(*controller, *player);
+	return player;
+}}, {'0', []() {
+	AEntity *e = nullptr;
+	if ((rand() % 6) < 4)
+		e = new PotEntity();
+	return e;
+}}};
 
 const std::vector<std::string> EntitiesMap::_mapTemplate = {
-	"XXXXXXXXXXXXXXXXXXX",
-	"X1 0000000000000  X",
-	"X X0X0X0X0X0X0X0X X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X X0X0X0X0X0X0X0X X",
-	"X  0000000000000  X",
-	"XXXXXXXXXXXXXXXXXXX",
-};
+	"XXXXXXXXXXXXXXXXXXX", "X1 0000000000000  X", "X X0X0X0X0X0X0X0X X",
+	"X00000000000000000X", "X0X0X0X0X0X0X0X0X0X", "X00000000000000000X",
+	"X0X0X0X0X0X0X0X0X0X", "X00000000000000000X", "X0X0X0X0X0X0X0X0X0X",
+	"X00000000000000000X", "X0X0X0X0X0X0X0X0X0X", "X00000000000000000X",
+	"X X0X0X0X0X0X0X0X X", "X  0000000000000  X", "XXXXXXXXXXXXXXXXXXX",};
 
 bool EntitiesMap::generate()
 {
@@ -67,8 +50,9 @@ bool EntitiesMap::generate()
 			if (EntitiesMap::_generationMap.count(type) > 0)
 				e = EntitiesMap::_generationMap.at(type)();
 			if (e) {
-				insert(e, {static_cast<irr::s32>(WIDTH - (x + 1)),
-				           static_cast<irr::s32>(y)});
+				insert(e,
+					{static_cast<irr::s32>(WIDTH - (x + 1)),
+						static_cast<irr::s32>(y)});
 			}
 		}
 	}
@@ -82,8 +66,7 @@ bool EntitiesMap::insert(AEntity *e, const irr::core::vector2di &v)
 	auto fct = [e](const InsertTrans &d) {
 		return (d.e == e);
 	};
-	if (std::find_if(
-	_toInsert.begin(), _toInsert.end(), fct)  != _toInsert.end())
+	if (std::find_if(_toInsert.begin(), _toInsert.end(), fct)  != _toInsert.end())
 		return false;
 	InsertTrans data = {e, v};
 	_toInsert.push_back(data);
@@ -96,8 +79,8 @@ bool EntitiesMap::erase(AEntity *e)
 	auto fct = [e](const EraseTrans &d) {
 		return (d.e == e);
 	};
-	if (std::find_if(
-		_toErase.begin(), _toErase.end(), fct)  != _toErase.end())
+	if (std::find_if(_toErase.begin(), _toErase.end(), fct) !=
+		_toErase.end())
 		return false;
 	EraseTrans data = {e};
 	_toErase.push_back(data);
@@ -109,14 +92,12 @@ bool EntitiesMap::moveTo(AEntity *e, const irr::core::vector2di &v)
 	auto fct = [e](const MoveTrans &d) {
 		return (d.e == e);
 	};
-	if (std::find_if(
-		_toMove.begin(), _toMove.end(), fct)  != _toMove.end())
+	if (std::find_if(_toMove.begin(), _toMove.end(), fct) != _toMove.end())
 		return false;
 	MoveTrans data = {e, v};
 	_toMove.push_back(data);
 	return true;
 }
-
 
 void EntitiesMap::updateInsert()
 {
@@ -190,8 +171,7 @@ bool EntitiesMap::canMoveTo(const irr::core::vector2di &v)
 
 //endregion
 
-EntitiesMap::EntitiesMap()
-: _map()
+EntitiesMap::EntitiesMap() : _map()
 {
 	_map.resize(HEIGHT);
 	for (auto &n : _map)

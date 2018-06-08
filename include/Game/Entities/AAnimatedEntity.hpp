@@ -8,7 +8,7 @@
 #ifndef BOMBERMAN_AANIMATEDENTITY_HPP
 #define BOMBERMAN_AANIMATEDENTITY_HPP
 
-
+#include <map>
 #include "../AEntity.hpp"
 
 class AAnimatedEntity: public AEntity {

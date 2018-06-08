@@ -25,7 +25,8 @@ void BackgroundState::load()
 	_node = smgr->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialType(irr::video::EMT_SOLID);
-	_node->setPosition(irr::core::vector3df(0,-1, -47.38));
+	_node->setPosition(
+	irr::core::vector3df(0, -1, static_cast<irr::f32>(-47.38)));
 	_node->setScale({1000, 1000, 1000});
 	_share.addSharedNode("menu", _node);
 
@@ -90,7 +91,8 @@ void BackgroundState::transitionPop()
 void BackgroundState::transitionPush(bool keep)
 {
 	AState::transitionPush(keep);
-	StateMachine::getInstance().push(new MenuState(_share), true);
+//	StateMachine::getInstance().push(new MenuState(_share), true);
+	StateMachine::getInstance().push(new GameState(_share), true);
 }
 
 void BackgroundState::loadMap()
@@ -106,6 +108,5 @@ void BackgroundState::loadMap()
 	_node->setScale({500, 500, 500});
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialType(irr::video::EMT_SOLID);
-
 	_share.addSharedNode("map", _node);
 }

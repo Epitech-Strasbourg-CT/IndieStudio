@@ -6,8 +6,9 @@
 */
 
 #ifndef BOMBERMAN_ENTITIESMAP_HPP
-#define BOMBERMAN_ENTITIESMAP_HPP
+	#define BOMBERMAN_ENTITIESMAP_HPP
 
+#include <functional>
 #include <vector>
 #include <list>
 #include <map>
@@ -15,8 +16,8 @@
 #include <unordered_map>
 #include "AEntity.hpp"
 
-#define HEIGHT 15
-#define WIDTH 19
+	#define HEIGHT 15
+	#define WIDTH 19
 
 
 class EntitiesMap {

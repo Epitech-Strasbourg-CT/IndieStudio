@@ -4,8 +4,9 @@
 ** File description:
 ** LoadState.cpp
 */
-
+#ifdef  UNIX
 #include <glob.h>
+#endif
 #include "../../include/States/LoadState.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/IrrManager.hpp"
@@ -79,6 +80,7 @@ LoadState::~LoadState()
 
 void LoadState::loadButtons()
 {
+	#ifdef UNIX
 	auto gui = IrrManager::getInstance().getGuienv();
 	auto &er = EventReceiver::getInstance();
 	auto &ap = AssetsPool::getInstance();
@@ -103,6 +105,7 @@ void LoadState::loadButtons()
 				this->applyEventButton(ev, id);
 			return true;
 		});
+	#endif
 }
 
 void LoadState::unloadButtons()

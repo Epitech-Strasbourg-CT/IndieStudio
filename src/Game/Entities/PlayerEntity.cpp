@@ -16,7 +16,10 @@ _old(), _look(1, 0)
 {
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
-	AMovable::setPosition(irr::core::vector2di(BORDERX / 2, BORDERY / 2));
+	AMovable::setPosition(irr::core::vector2di(
+	static_cast<irr::s32>(BORDERX / 2),
+	static_cast<irr::s32>(BORDERY / 2)
+			      ));
 	_old = AMovable::getPosition();
 	_node = addAnimationNode
 	("idle", "player/link-idle.ms3d", "player/player1.png");
@@ -25,19 +28,19 @@ _old(), _look(1, 0)
 	("run", "player/link-run.ms3d", "player/player1.png");
 	_node->setScale({4, 4, 4});
 	selectAnimation("idle");
-	addEvent(MOVE_UP, KEY_PRESSED, [this]() {
+	addEvent(MOVE_UP, KEY_DOWN, [this]() {
 		this->dirTop(1);
 	});
-	addEvent(MOVE_DOWN, KEY_PRESSED, [this]() {
+	addEvent(MOVE_DOWN, KEY_DOWN, [this]() {
 		this->dirBottom(1);
 	});
-	addEvent(MOVE_LEFT, KEY_PRESSED, [this]() {
+	addEvent(MOVE_LEFT, KEY_DOWN, [this]() {
 		this->dirLeft(1);
 	});
-	addEvent(MOVE_RIGHT, KEY_PRESSED, [this]() {
+	addEvent(MOVE_RIGHT, KEY_DOWN, [this]() {
 		this->dirRight(1);
 	});
-	addEvent(DROP_BOMB, KEY_RELEASED, [this]() {
+	addEvent(DROP_BOMB, KEY_PRESSED, [this]() {
 		this->dropBomb(AEntity::getPosX(), AEntity::getPosY());
 	});
 }
@@ -75,7 +78,7 @@ void PlayerEntity::updateRenderDir()
 {
 	auto dir = atan2(-_look.Y, _look.X) * 180.0 / 3.1415;
 	dir += ANGLE_SUP;
-	_node->setRotation(irr::core::vector3df(0, dir, 0));
+	_node->setRotation(irr::core::vector3df(0, static_cast<irr::f32>(dir), 0));
 }
 
 irr::core::vector2di PlayerEntity::getNewPosition()
