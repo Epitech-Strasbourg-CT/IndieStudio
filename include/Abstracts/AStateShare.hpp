@@ -23,12 +23,14 @@ public:
 	bool delSharedNode(const std::string &);
 	irr::scene::ISceneNode &getSharedNode(const std::string &);
 	bool isKeyDown(irr::EKEY_CODE keyCode) const;
+	bool isKeyPressed(irr::EKEY_CODE keyCode);
 	bool isKeyReleased(irr::EKEY_CODE keyCode);
 	EntitiesMap *getMap() const;
 	void setMap(EntitiesMap *map);
 private:
 	std::map<std::string, irr::scene::ISceneNode *> _sharedNodes;
 	std::map<irr::EKEY_CODE, bool> _isKeyDown;
+	std::map<irr::EKEY_CODE, bool> _isKeyPressed;
 	std::map<irr::EKEY_CODE, bool> _isKeyReleased;
 	std::vector<int> _stateIA;
 	EntitiesMap *_map;
