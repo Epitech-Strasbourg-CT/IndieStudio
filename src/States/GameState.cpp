@@ -16,12 +16,6 @@
 
 GameState::GameState(AStateShare &_share) : AState(_share)
 {
-//	auto mycam = IrrManager::getInstance().getSmgr()->addCameraSceneNodeFPS();
-//	auto pos = mycam->getPosition();
-//	pos.Y = 300;
-//	pos.Z = -100;
-//	pos.X = -100;
-//	mycam->setPosition(pos);
 	_emap.generate();
 }
 
@@ -33,7 +27,7 @@ GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_sh
 void GameState::update()
 {
 
-	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
+	if (getSharedResources().isKeyReleased(irr::KEY_ESCAPE))
 		StateMachine::getInstance().push(new PauseState(getSharedResources()), false);
 	else
 		_emap.update();

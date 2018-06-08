@@ -7,6 +7,6 @@
 
 #include "../../../include/Game/Entities/BonusEntity.hpp"
 
-BonusEntity::BonusEntity(): AEntity("Fire")
+BonusEntity::BonusEntity(): AEntity("bonus")
 {
 }

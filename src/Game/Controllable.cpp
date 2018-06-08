@@ -7,32 +7,38 @@
 
 #include "../../include/Game/Controllable.hpp"
 
-void Controllable::addEvent(ControlName_e c, std::function<void()> fct)
+void Controllable::addEvent(ControlName_e c, ControlType_e t,
+	std::function<void()> fct
+)
 {
-	_binds[c] = fct;
+	_getBinds(t)[c] = fct;
 }
 
-void Controllable::delEvent(ControlName_e c)
+void Controllable::delEvent(ControlName_e c, ControlType_e t)
 {
-	_binds.erase(c);
+	_getBinds(t).erase(c);
 }
 
 void Controllable::update()
 {
 	_controller->updateInputs();
-	for (auto &n : _actions)
-		if (_binds.count(n) >= 0)
-			_binds[n]();
+	for (auto &n : _actions) {
+		auto c = std::get<0>(n);
+		auto t = std::get<1>(n);
+		if (_getBinds(t).count(c) >= 0)
+			_getBinds(t)[c]();
+	}
 	_actions.clear();
 }
 
-Controllable::Controllable() : _actions(), _binds(), _controller(nullptr)
+Controllable::Controllable()
+	: _actions(), _bindsPressed(), _bindsReleased(), _controller(nullptr)
 {
 }
 
-void Controllable::callBind(ControlName_e c)
+void Controllable::callBind(ControlName_e c, ControlType_e t)
 {
-	this->_actions.insert(c);
+	this->_actions.emplace(c, t);
 }
 
 void Controllable::saveController(AController *controller)
@@ -54,4 +60,13 @@ void Controllable::load(std::istream &s)
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
 	// s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
+}
+
+std::unordered_map<ControlName_e, std::function<void()>> &
+Controllable::_getBinds(ControlType_e t)
+{
+	if (t == KEY_PRESSED)
+		return _bindsPressed;
+	else if (t == KEY_RELEASED)
+		return _bindsReleased;
 }

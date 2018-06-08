@@ -29,6 +29,13 @@ public:
 		SFX,
 		MUSIC,
 	};
+
+	struct soundInfo {
+		AssetsPool::Types type;
+		std::string name;
+		irrklang::ik_f32 (IrrManager::*vol)(void) const;
+	};
+
 	irr::scene::IMesh *loadMesh(const std::string &file);
 	irr::video::ITexture *loadTexture(const std::string &file);
 	irrklang::ISound *loadSound(AssetsPool::Assets, bool);
@@ -39,11 +46,6 @@ private:
 	AssetsPool(const std::string &rootModelPath,
 	const std::string &rootTextures);
 
-	struct soundInfo {
-		AssetsPool::Types type;
-		std::string name;
-		irrklang::ik_f32 (IrrManager::*vol)(void) const;
-	};
 	std::string _rootModelPath;
 	std::string _rootTexturePath;
 	std::map<std::string, irr::scene::IMesh *> _meshs;
@@ -51,13 +53,7 @@ private:
 	std::vector<std::vector<irrklang::ISound *>> _sModule;
 
 	//FIXME CONST STATIC
-	const std::vector<soundInfo> _sounds = {
-			{
-				MUSIC,
-				"assets/sounds/MenuSong.mp3",
-				&IrrManager::getMusicVolume,
-			}
-	};
+	static const std::vector<soundInfo> _sounds;
 	static AssetsPool _meshPool;
 };
 

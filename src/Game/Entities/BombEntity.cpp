@@ -6,28 +6,53 @@
 */
 
 #include "../../../include/Game/Entities/BombEntity.hpp"
+#include "../../../include/Game/EntitiesMap.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
+#include "../../../include/Time.hpp"
 
-BombEntity::BombEntity(): AEntity("Bomb")
+BombEntity::BombEntity()
+: AEntity("Bomb"),
+_start(),
+_timeout(3000),
+_exploded(false),
+_autonomous(false)
 {
 	_stackable = false;
-	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X * 2.0);
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
 	auto mesh = am.loadMesh("bomb/bomb.obj");
 	_node = im.getSmgr()->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	//_node->setMaterialTexture(0, am.loadTexture("bomb/bomb.mtl"));
-	_node->setScale({10, 10, 10});
+	_node->setMaterialType(irr::video::EMT_SOLID);
+	_node->setScale({2, 2, 2});
+	_start = Time::timestamp();
 }
 
 bool BombEntity::hasExploded() const
 {
-	return false;
+	return _exploded;
 }
 
-void BombEntity::updateRender()
+void BombEntity::setAutonomous(bool _autonomous)
 {
-	AEntity::updateRender();
+	BombEntity::_autonomous = _autonomous;
+}
+
+
+
+void BombEntity::update(EntitiesMap *map)
+{
+	if (Time::timestamp() > _start + _timeout)
+		explode(map);
+	AEntity::update(map);
+}
+
+void BombEntity::explode(EntitiesMap *map)
+{
+//	if (_autonomous) {
+//		map->erase(this);
+//	} else {
+		_exploded = true;
+//	}
 }

@@ -12,8 +12,8 @@
 #include <irrlicht.h>
 #include <regex>
 
-#define ENTITY_SIZE_X 16.0
-#define ENTITY_SIZE_Y 16.0
+#define ENTITY_SIZE_X 3.0
+#define ENTITY_SIZE_Y 3.0
 
 class EntitiesMap;
 
@@ -33,6 +33,11 @@ public:
 	virtual void load(std::istream &s);
 
 	const irr::core::vector3df &getOrigin() const;
+
+	const irr::core::vector3df &getNodePosition() const;
+	void setNodePosition(const irr::core::vector3df &vec);
+	const irr::core::vector3df &getNodeRotation() const;
+	void setNodeRotation(const irr::core::vector3df &vec);
 
 private:
 	struct serialize {

@@ -21,11 +21,13 @@ EntitiesMap::_generationMap = {
 		id += 1;
 		auto *controller = new BKeyboardController(id);
 
-		controller->registerBind(irr::KEY_UP, MOVE_UP);
-		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN);
-		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
-		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
-		controller->registerBind(irr::KEY_SPACE, DROP_BOMB);
+		controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_PRESSED);
+		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_PRESSED);
+		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_PRESSED);
+		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT,
+			KEY_PRESSED);
+		controller->registerBind(irr::KEY_SPACE, DROP_BOMB,
+			KEY_RELEASED);
 		PlayerEntity *player = new PlayerEntity();
 		AController::bindEntityToController(*controller, *player);
 		return player;
@@ -65,7 +67,7 @@ bool EntitiesMap::generate()
 			if (EntitiesMap::_generationMap.count(type) > 0)
 				e = EntitiesMap::_generationMap.at(type)();
 			if (e) {
-				insert(e, {static_cast<irr::s32>(x),
+				insert(e, {static_cast<irr::s32>(WIDTH - (x + 1)),
 				           static_cast<irr::s32>(y)});
 			}
 		}
@@ -90,6 +92,7 @@ bool EntitiesMap::insert(AEntity *e, const irr::core::vector2di &v)
 
 bool EntitiesMap::erase(AEntity *e)
 {
+	std::cout << "j'erase" << std::endl;
 	auto fct = [e](const EraseTrans &d) {
 		return (d.e == e);
 	};
@@ -130,6 +133,7 @@ void EntitiesMap::updateInsert()
 
 void EntitiesMap::updateErase()
 {
+	std::cout << "j'update erase" << std::endl;
 	for (auto &n : _toErase) {
 		auto e = n.e;
 		auto x = n.e->getPosition().X;
@@ -211,6 +215,7 @@ void EntitiesMap::update()
 	updateErase();
 	updateMove();
 	updateInsert();
+	std::cout << "Fin de cycle" << std::endl;
 }
 
 EntitiesMap::EMap &EntitiesMap::getMap()

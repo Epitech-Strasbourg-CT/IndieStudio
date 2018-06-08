@@ -88,7 +88,14 @@ add_executable(bomberman
         include/Game/Traveling.hpp
 
         src/Abstracts/ABombDropper.cpp
-        include/Abstracts/ABombDropper.hpp src/States/LoadState.cpp include/States/LoadState.hpp)
+        include/Abstracts/ABombDropper.hpp
+        src/States/LoadState.cpp
+        include/States/LoadState.hpp
+        include/Game/Entities/AAnimatedEntity.cpp
+        include/Game/Entities/AAnimatedEntity.hpp
+
+        src/States/TransitionToGameState.cpp
+        include/States/TransitionToGameState.hpp)
 
 # endregion
 

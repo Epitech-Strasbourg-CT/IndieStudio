@@ -7,7 +7,7 @@
 
 #include "../../../include/Game/Entities/FireEntity.hpp"
 
-FireEntity::FireEntity(): AEntity("Fire")
+FireEntity::FireEntity(): AEntity("fire")
 {
 
 }

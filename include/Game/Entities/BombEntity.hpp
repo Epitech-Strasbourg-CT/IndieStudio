@@ -14,9 +14,16 @@
 class BombEntity : public AEntity {
 public:
 	BombEntity();
-
-	void updateRender() override;
 	bool hasExploded() const;
+	void setAutonomous(bool _utonomous);
+	void explode(EntitiesMap *map);
+	void update(EntitiesMap *map) override;
+
+private:
+	size_t _start;
+	size_t _timeout;
+	bool _exploded;
+	bool _autonomous;
 };
 
 

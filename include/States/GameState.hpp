@@ -20,10 +20,9 @@ public:
 	void load() override;
 	void update() override;
 	void updateRender() override;
-
 private:
 	EntitiesMap _emap;
-	PlayerEntity *_entity;
+	bool _canPause;
 };
 
 

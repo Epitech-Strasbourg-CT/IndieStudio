@@ -9,11 +9,13 @@
 #include "../../include/Abstracts/AStateShare.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 
-AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _map()
+AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _stateIA(4), _map()
 {
 	EventReceiver::getInstance().registerEvent(0, irr::EET_KEY_INPUT_EVENT,
         [this](const irr::SEvent &ev) {
+		auto key = ev.KeyInput.Key;
 	        this->_isKeyDown[ev.KeyInput.Key] = ev.KeyInput.PressedDown;
+		this->_isKeyReleased[key] = !ev.KeyInput.PressedDown;
 		return true;
 	});
 }
@@ -55,12 +57,33 @@ bool AStateShare::isKeyDown(irr::EKEY_CODE keyCode) const
 	return false;
 }
 
+bool AStateShare::isKeyReleased(irr::EKEY_CODE keyCode)
+{
+	bool res = false;
+	if (_isKeyReleased.count(keyCode) > 0) {
+		res = _isKeyReleased.at(keyCode);
+		_isKeyReleased[keyCode] = false;
+	}
+	return res;
+}
+
+bool AStateShare::setIAState(std::vector<int> const &stateIA)
+{
+	_stateIA = stateIA;
+	return true;
+}
 EntitiesMap *AStateShare::getMap() const
 {
 	if (_map == nullptr)
 		throw std::runtime_error("Map isn't load");
 	return _map;
 }
+
+std::vector<int> AStateShare::getIAState()
+{
+	return _stateIA;
+}
+
 
 void AStateShare::setMap(EntitiesMap *map)
 {

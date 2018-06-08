@@ -11,34 +11,35 @@
 #include "../../../include/Singletons/IrrManager.hpp"
 
 PlayerEntity::PlayerEntity()
-	: ABombDropper(), AEntity("player"), AMovable(), Controllable(),
-	_old(AMovable::getPosition()), _look(1, 0)
+: ABombDropper(), AAnimatedEntity("player"), AMovable(), Controllable(),
+_old(), _look(1, 0)
 {
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
-	auto &im = IrrManager::getInstance();
-	auto &am = AssetsPool::getInstance();
-	auto mesh = am.loadMesh("player/link-idle.ms3d");
-	_node = im.getSmgr()->addMeshSceneNode(mesh);
-	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	_node->setMaterialTexture(0, am.loadTexture("player/player1.png"));
-	_node->setScale({15, 15, 15});
-	addEvent(MOVE_UP, [this]() {
+	AMovable::setPosition(irr::core::vector2di(BORDERX / 2, BORDERY / 2));
+	_old = AMovable::getPosition();
+	_node = addAnimationNode
+	("idle", "player/link-idle.ms3d", "player/player1.png");
+	_node->setScale({4, 4, 4});
+	_node = addAnimationNode
+	("run", "player/link-run.ms3d", "player/player1.png");
+	_node->setScale({4, 4, 4});
+	selectAnimation("idle");
+	addEvent(MOVE_UP, KEY_PRESSED, [this]() {
 		this->dirTop(1);
 	});
-	addEvent(MOVE_DOWN, [this]() {
+	addEvent(MOVE_DOWN, KEY_PRESSED, [this]() {
 		this->dirBottom(1);
 	});
-	addEvent(MOVE_LEFT, [this]() {
+	addEvent(MOVE_LEFT, KEY_PRESSED, [this]() {
 		this->dirLeft(1);
 	});
-	addEvent(MOVE_RIGHT, [this]() {
+	addEvent(MOVE_RIGHT, KEY_PRESSED, [this]() {
 		this->dirRight(1);
 	});
-	addEvent(DROP_BOMB, [this]() {
+	addEvent(DROP_BOMB, KEY_RELEASED, [this]() {
 		this->dropBomb(AEntity::getPosX(), AEntity::getPosY());
 	});
-	// endregion
 }
 
 void PlayerEntity::update(EntitiesMap *map)
@@ -74,36 +75,48 @@ void PlayerEntity::updateRenderDir()
 {
 	auto dir = atan2(-_look.Y, _look.X) * 180.0 / 3.1415;
 	dir += ANGLE_SUP;
-	_node->setRotation({0, dir, 0});
+	_node->setRotation(irr::core::vector3df(0, dir, 0));
 }
 
-void PlayerEntity::updatePosition(EntitiesMap *map)
+irr::core::vector2di PlayerEntity::getNewPosition()
+{
+	auto dirM = AMovable::getPosition() - _old;
+	auto newEPos = AEntity::getPosition();
+	newEPos.X -= (_old.X + dirM.X < 0);
+	newEPos.X += (_old.X + dirM.X > BORDERX);
+	newEPos.Y -= (_old.Y + dirM.Y < 0);
+	newEPos.Y += (_old.Y + dirM.Y > BORDERY);
+	return newEPos;
+
+}
+
+bool PlayerEntity::updatePosition(EntitiesMap *map)
 {
 	auto mPos = AMovable::getPosition();
-	auto ePos = AEntity::getPosition();
-	if (_old != mPos) {
-		auto dirM = mPos - _old;
-		auto newEPos = AEntity::getPosition();
-		newEPos.X -= (_old.X + dirM.X < 0);
-		newEPos.X += (_old.X + dirM.X > BORDERX);
-		newEPos.Y -= (_old.Y + dirM.Y < 0);
-		newEPos.Y += (_old.Y + dirM.Y > BORDERY);
-		_look = dirM;
-		if (ePos != newEPos && map->canMoveTo(newEPos)) {
-			auto dirP = newEPos - ePos;
-			if (dirP.X != 0)
-				mPos.X = static_cast<int>(dirP.X > 0 ? 0 :
-					BORDERX);
-			if (dirP.Y != 0)
-				mPos.Y = static_cast<int>(dirP.Y > 0 ? 0 :
-					BORDERY);
-			this->AMovable::setPosition(mPos);
-			map->moveTo(this, newEPos);
-		} else if (ePos != newEPos && !map->canMoveTo(newEPos))
-			AMovable::setPosition(_old);
-		else
-			_old = mPos;
+	if (_old == mPos) {
+		selectAnimation("idle");
+		return false;
 	}
+	selectAnimation("run");
+	auto ePos = AEntity::getPosition();
+	auto mDir = mPos - _old;
+	auto ePosNew = getNewPosition();
+	auto dirP = ePosNew - ePos;
+	auto diag = abs(dirP.X) + abs(dirP.Y) == 1;
+	_look = mDir;
+	if (ePos != ePosNew && diag && map->canMoveTo(ePosNew)) {
+		if (dirP.X != 0)
+			mPos.X = static_cast<int>(dirP.X > 0 ? 0 : BORDERX);
+		if (dirP.Y != 0)
+			mPos.Y = static_cast<int>(dirP.Y > 0 ? 0 : BORDERY);
+		this->AMovable::setPosition(mPos);
+		map->moveTo(this, ePosNew);
+		_old = mPos - mDir;
+	} else if (ePos != ePosNew && (!map->canMoveTo(ePosNew) || !diag))
+		AMovable::setPosition(_old);
+	else
+		_old = mPos;
+	return true;
 }
 
 void PlayerEntity::updateRender()

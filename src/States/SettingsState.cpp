@@ -109,7 +109,7 @@ void SettingsState::unload()
 
 void SettingsState::update()
 {
-	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
+	if (getSharedResources().isKeyReleased(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 }
 

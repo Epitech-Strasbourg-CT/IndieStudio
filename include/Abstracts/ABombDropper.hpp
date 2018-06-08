@@ -29,6 +29,7 @@ class ABombDropper {
 	std::queue<std::pair<int, int>> _toDrop;
 	unsigned _maxBomb;
 	unsigned _currentBomb;
+	std::vector<BombEntity *> _watchingBombs;
 };
 
 
