@@ -46,7 +46,7 @@ public:
 
 private:
 	std::vector<irr::gui::IGUIButton *> _buttons;
-	static const std::map<Actions , ButtonsDesc> _descs;
+	static const std::map<PauseState::Actions , ButtonsDesc> _descs;
 };
 
 #endif /* !BOMBERMAN_PAUSESTATE_HPP */

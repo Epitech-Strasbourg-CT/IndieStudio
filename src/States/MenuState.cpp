@@ -15,6 +15,7 @@
 #include "../../include/States/GameState.hpp"
 #include "../../include/States/AIChooseState.hpp"
 #include "../../include/States/PauseState.hpp"
+#include "../../include/States/LoadState.hpp"
 
 const std::map<MenuActions, MenuState::ButtonsDesc>
 	MenuState::_descs{
@@ -35,7 +36,7 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 			            //StateMachine::getInstance().pop();
 				    auto &sm = StateMachine::getInstance();
 				    auto &res = self->getSharedResources();
-				    sm.push(new PauseState(res), false);
+				    sm.push(new LoadState(res), false);
 		            }
 	            }},
 	{SETTINGS,  {
