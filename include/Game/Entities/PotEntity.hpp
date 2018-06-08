@@ -15,8 +15,11 @@ class PotEntity : public AEntity {
 public:
 	PotEntity();
 	void updateRender() override;
-
+	void breakMe();
+	void update(EntitiesMap *map) override;
+	virtual ~PotEntity();
 private:
 	struct serialize {
 	};
+	bool _broken;
 };

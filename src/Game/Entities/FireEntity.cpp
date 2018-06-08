@@ -7,6 +7,7 @@
 #include "../../../include/Game/EntitiesMap.hpp"
 #include "../../../include/Game/Entities/FireEntity.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
+#include "../../../include/Game/Entities/PotEntity.hpp"
 
 int FireEntity::insertion = 0;
 
@@ -52,4 +53,21 @@ void FireEntity::update(EntitiesMap *map)
 {
 	this->spread(map);
 	AEntity::update(map);
+}
+
+void FireEntity::collide(AEntity &entity)
+{
+	std::map<std::string, std::function<void(AEntity *aEntity)>>
+	collisions = {
+		{"pot",
+			[this](AEntity *aEntity) {
+				auto pot = dynamic_cast<PotEntity *>(aEntity);
+				pot->breakMe();
+				this->_spreaded = true;
+			}
+		}
+	};
+	if (collisions.count(entity.getType()) > 0)
+		collisions[entity.getType()](&entity);
+
 }

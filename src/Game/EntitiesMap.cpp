@@ -123,6 +123,10 @@ void EntitiesMap::updateInsert()
 			trash.push_back(std::unique_ptr<AEntity>(n.e));
 			continue;
 		}
+		for (auto &s : _map[y][x]) {
+			s->collide(*(n.e));
+			n.e->collide(*(s.get()));
+		}
 		_map[y][x].push_back(std::unique_ptr<AEntity>(n.e));
 		n.e->setPosition(n.v);
 	}

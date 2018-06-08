@@ -5,8 +5,8 @@
 ** AAnimatedEntity.cpp
 */
 
-#include "AAnimatedEntity.hpp"
-#include "../../Singletons/AssetsPool.hpp"
+#include "../../../include/Game/Entities/AAnimatedEntity.hpp"
+#include "../../../include/Singletons/AssetsPool.hpp"
 
 AAnimatedEntity::AAnimatedEntity(const std::string &str, int x, int y)
 : AEntity(str, x, y)

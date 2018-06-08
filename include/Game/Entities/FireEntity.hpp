@@ -15,6 +15,7 @@ public:
 	FireEntity(const irr::core::vector2di &spread, size_t size);
 	void update(EntitiesMap *map) override;
 	void spread(EntitiesMap *map);
+	void collide(AEntity &entity) override;
 private:
 	irr::core::vector2di _spreadDir;
 	size_t _spreadSize;
