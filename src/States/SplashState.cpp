@@ -48,7 +48,7 @@ void SplashState::draw()
 	im.getDriver()->draw2DImage(
 	AssetsPool::getInstance().loadTexture("logo.png"),
 	irr::core::position2d<irr::s32>(0, 0),
-	irr::core::rect<irr::s32>(0, 0, 800, 600),//im.getSize().X, im.getSize().Y),
+	irr::core::rect<irr::s32>(0, 0, im.getSize().X, im.getSize().Y),
 	0,
 	irr::video::SColor(255, 255, 255, 255),
 	false);
