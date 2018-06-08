@@ -26,6 +26,7 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 		            [](MenuState *self) {
 		            	auto &sm = StateMachine::getInstance();
 		            	auto &res = self->getSharedResources();
+		            	self->getSharedResources().addCoor("menu", self->_camRotate.calc());
 		            	sm.push(new AIChooseState(res), false);
 		            }
 	            }},
@@ -154,7 +155,7 @@ void MenuState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 
 void MenuState::update()
 {
-	auto step  = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
+	auto step = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
 	irr::f32 min = static_cast<irr::f32>(2.7);
 	irr::f32 max = static_cast<irr::f32>(4.4);
 	static irr::f32 inc = 0;

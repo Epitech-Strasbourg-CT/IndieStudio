@@ -30,6 +30,8 @@ void BackgroundState::load()
 	_node->setScale({1000, 1000, 1000});
 	_share.addSharedNode("menu", _node);
 
+	AssetsPool::getInstance().loadSound(AssetsPool::MENU, true); //TODO see this line with the group
+
 	loadCharacter();
 	loadSkyBox();
 	loadMap();

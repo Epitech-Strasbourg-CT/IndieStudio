@@ -33,6 +33,7 @@ public:
 		std::string name;
 		std::function<void(AIChooseState *)> fct;
 	};
+	void unload() override;
 
 private:
 	void switchBtnState(irr::gui::IGUIButton *btn, int id);
@@ -40,18 +41,17 @@ private:
 	std::vector<irr::gui::IGUIButton *> _bouttons;
 	static const std::map<MenuActions, BouttonsDesc> _descs;
 	Traveling _trav;
+	Traveling _quitAnim;
 	void loadBouttons();
 	irr::gui::IGUIButton *getBoutton(MenuActions id) const;
-
-public:
-	void unload() override;
-
-private:
 	std::vector<int> _state;
 
+	bool _isInQuitAnim;
 	bool _guiDisp;
 
 	void unloadBouttons();
+
+	void moveCamToStartPoint(irr::scene::ICameraSceneNode &node);
 };
 
 

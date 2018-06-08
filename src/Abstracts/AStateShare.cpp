@@ -115,11 +115,33 @@ void AStateShare::pushMusic(irrklang::ISound *sound)
 	_music.top()->setIsPaused(false);
 }
 
+void
+AStateShare::addCoor(std::string const &name, irr::core::vector3df const &coor)
+{
+	if (_coor.count(name) == 0)
+		_coor[name] = coor;
+}
+
 void AStateShare::popMusic(AssetsPool::Assets asset)
 {
 	AssetsPool::getInstance().unloadSound(asset, _music.top());
 	_music.pop();
 	if (!_music.empty())
 		_music.top()->setIsPaused(false);
+}
+
+void AStateShare::delCoor(std::string const &name)
+{
+	if (_coor.count(name) > 0)
+		_coor.erase(name);
+}
+
+irr::core::vector3df AStateShare::getCoor(std::string const &name)
+{
+	irr::core::vector3df coor;
+
+	if (_coor.count(name) != 0)
+		coor = _coor[name];
+	return coor;
 }
 

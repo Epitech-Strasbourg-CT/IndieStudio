@@ -31,6 +31,10 @@ public:
 	void popMusic(AssetsPool::Assets);
 	EntitiesMap *getMap() const;
 	void setMap(EntitiesMap *map);
+	void addCoor(std::string const &name, irr::core::vector3df const &coor);
+	void delCoor(std::string const &name);
+	irr::core::vector3df getCoor(std::string const &name);
+
 private:
 	std::map<std::string, irr::scene::ISceneNode *> _sharedNodes;
 	std::map<irr::EKEY_CODE, bool> _isKeyDown;
@@ -38,6 +42,7 @@ private:
 	std::map<irr::EKEY_CODE, bool> _isKeyReleased;
 	std::vector<int> _stateIA;
 	std::stack<irrklang::ISound *> _music;
+	std::map<std::string, irr::core::vector3df> _coor;
 	EntitiesMap *_map;
 };
 

@@ -23,6 +23,8 @@ public:
 	void setEndExactitude(irr::f32 endExac);
 	void setEndFollow(irr::f32 len);
 	void setAccelEndFollow(irr::f32 accel);
+	void resetStartPoint(irr::scene::ICameraSceneNode &cam, irr::f32 startPointRatio);
+	void setFixedLookPoint(irr::core::vector3df const &look);
 
 private:
 	void movePoint(irr::scene::ICameraSceneNode &cam);
@@ -43,6 +45,8 @@ private:
 	irr::f32 _endFollow;
 	irr::f32 _accelEndFollow;
 	irr::f32 _startPointRatio;
+	bool _isFixedLook;
+	irr::core::vector3df _fixedLook;
 
 	irr::scene::ISceneNode *_cube;
 

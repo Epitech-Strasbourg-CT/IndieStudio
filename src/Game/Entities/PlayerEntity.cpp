@@ -14,7 +14,6 @@ PlayerEntity::PlayerEntity(unsigned playerSkinId)
 : ABombDropper(), AAnimatedEntity("player"), AMovable(), Controllable(),
 _old(), _look(1, 0)
 {
-
 	std::cout << _insertable << std::endl;
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
@@ -22,12 +21,11 @@ _old(), _look(1, 0)
 		irr::core::vector2di(static_cast<irr::s32>(BORDERX / 2),
 			static_cast<irr::s32>(BORDERY / 2)));
 	_old = AMovable::getPosition();
-	std::stringstream ss;
-	ss << "player/player" << playerSkinId << ".png";
-	std::string skinPath = ss.str();
-	_node = addAnimationNode("idle", "player/link-idle.ms3d", skinPath);
+	_node = addAnimationNode
+	("idle", "player/link-idle.ms3d", "player/player" + std::to_string(playerSkinId) + ".png");
 	_node->setScale({4, 4, 4});
-	_node = addAnimationNode("run", "player/link-run.ms3d", skinPath);
+	_node = addAnimationNode
+	("run", "player/link-run.ms3d", "player/player" + std::to_string(playerSkinId) + ".png");
 	_node->setScale({4, 4, 4});
 	selectAnimation("idle");
 	addEvent(MOVE_UP, KEY_DOWN, [this]() {

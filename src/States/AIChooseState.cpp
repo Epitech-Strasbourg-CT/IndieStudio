@@ -13,6 +13,7 @@
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/TransitionToGameState.hpp"
+#include "../../include/States/MenuState.hpp"
 
 const std::map<AIChooseState::MenuActions, AIChooseState::BouttonsDesc>
 AIChooseState::_descs {
@@ -60,7 +61,9 @@ AIChooseState::_descs {
 AIChooseState::AIChooseState(AStateShare &_share) : AState(_share), AMenuSound(),
 _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode
 ("cam")), irr::core::vector3df(170, 52, -300), static_cast<irr::f32>(0.1)),
-_state({1, 0, 0, 0}), _guiDisp(false)
+_quitAnim(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode
+("cam")), {450, 0, 100}, 0.5),
+_state({1, 0, 0, 0}), _isInQuitAnim(false), _guiDisp(false)
 {
 	_trav.setFinalTime(60);
 	_trav.setFolow(static_cast<irr::f32>(0.04));
@@ -81,9 +84,16 @@ void AIChooseState::load()
 
 void AIChooseState::update()
 {
-	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode(
-	"cam"));
+	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
 
+	if (_isInQuitAnim) {
+		_quitAnim.update(cam);
+		if (_quitAnim.isFinished() == 2)
+			StateMachine::getInstance().push(new MenuState(_share), false);
+		return;
+	}
+	if (_share.isKeyReleased(irr::KEY_ESCAPE))
+		moveCamToStartPoint(cam);
 	_trav.update(cam);
 	if (_trav.isFinished() >= 1 && !_guiDisp) {
 		loadBouttons();
@@ -134,10 +144,14 @@ void AIChooseState::applyEventBoutton(const irr::SEvent &ev,
 AIChooseState::MenuActions id) //TODO Coding Style
 {
 	auto b = getBoutton(id);
-	auto hover_name = "buttons/" + std::string(((_state[id - 401] == 0) ? "ia" : "player")) + "_hover.png";
-	auto name = "buttons/" + std::string(((_state[id - 401] == 0) ? "ia" : "player")) + ".png";
+	std::string hover_name;
+	std::string name;
 	auto &ap = AssetsPool::getInstance();
 
+	if (id > 400) {
+		hover_name = "buttons/" + std::string(((_state[id - 401] == 0) ? "ia" : "player")) + "_hover.png";
+		name = "buttons/" + std::string(((_state[id - 401] == 0) ? "ia" : "player")) + ".png";
+	}
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			if (id == 400)
@@ -190,4 +204,16 @@ void AIChooseState::unload()
 {
 	unloadBouttons();
 	AState::unload();
+}
+
+void AIChooseState::moveCamToStartPoint(irr::scene::ICameraSceneNode &cam)
+{
+	_quitAnim.resetStartPoint(cam, 1);
+	_quitAnim.setAccelEndFollow(0.01);
+	_quitAnim.setEndExactitude(0.1);
+	_quitAnim.setFixedLookPoint({450, 0, 100});
+	_quitAnim.push(70, _share.getCoor("menu"));
+	_share.delCoor("menu");
+	_isInQuitAnim = true;
+	unloadBouttons();
 }
