@@ -65,8 +65,12 @@ void Controllable::load(std::istream &s)
 std::unordered_map<ControlName_e, std::function<void()>> &
 Controllable::_getBinds(ControlType_e t)
 {
-	if (t == KEY_PRESSED)
+	switch (t) {
+	case KEY_DOWN:
+		return _bindsDown;
+	case KEY_PRESSED:
 		return _bindsPressed;
-	else if (t == KEY_RELEASED)
+	case KEY_RELEASED:
 		return _bindsReleased;
+	}
 }

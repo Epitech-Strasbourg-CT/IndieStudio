@@ -22,9 +22,11 @@ private:
 	&_getBinds(ControlType_e t);
 
 	size_t _id;
+	std::unordered_map<irr::EKEY_CODE, ControlName_e> _bindsDown;
 	std::unordered_map<irr::EKEY_CODE, ControlName_e> _bindsPressed;
 	std::unordered_map<irr::EKEY_CODE, ControlName_e> _bindsReleased;
 	std::unordered_map<irr::EKEY_CODE, bool> _isKeyDown;
+	std::unordered_map<irr::EKEY_CODE, bool> _isKeyPressed;
 	std::unordered_map<irr::EKEY_CODE, bool> _isKeyRelease;
 };
 
