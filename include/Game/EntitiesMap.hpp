@@ -38,7 +38,7 @@ public:
 	void updateErase();
 	void updateMove();
 
-	bool generate();
+	bool generate(const std::vector<int> &IAState);
 
 	void update();
 	void updateRender();
@@ -71,6 +71,9 @@ private:
 	static const std::unordered_map<char, std::function<AEntity *()>>
 	_generationMap;
 	bool canInsertTo(const irr::core::vector2di &v);
+	static const std::unordered_map<char, std::function<AEntity *(
+		const std::vector<int> &
+	)>> _generationMap;
 };
 
 

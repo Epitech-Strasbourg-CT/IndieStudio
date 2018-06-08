@@ -10,66 +10,59 @@
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/Game/Entities/PlayerEntity.hpp"
 #include "../../include/Game/Entities/BlockEntity.hpp"
+#include "../../include/Game/BIAController.hpp"
 
-const std::unordered_map<char, std::function<AEntity *()>>
-EntitiesMap::_generationMap = {
-	{'X', []() {
-		return new BlockEntity();
-	}},
-	{'1', []() {
-		static size_t id = 0;
-		id += 1;
+const std::unordered_map<char, std::function<AEntity *(const std::vector<int> &)>>
+	EntitiesMap::_generationMap = {{'X', [](const std::vector<int> &) {
+	return new BlockEntity();
+}}, {'1', [](const std::vector<int> &IAState) {
+	static size_t id = 0;
+	id += 1;
+	if (IAState.size() >= id && IAState.at(id-1)) {
 		auto *controller = new BKeyboardController(id);
 
 		controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_DOWN);
 		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_DOWN);
 		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_DOWN);
-		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT,
-		                         KEY_DOWN);
+		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT, KEY_DOWN);
 		controller->registerBind(irr::KEY_SPACE, DROP_BOMB,
 			KEY_PRESSED);
 		PlayerEntity *player = new PlayerEntity();
 		AController::bindEntityToController(*controller, *player);
 		return player;
-	}},
-	{'0', [](){
-		AEntity *e = nullptr;
-		if ((rand() % 6) < 4)
-			e = new PotEntity();
-		return e;
-	}}
-};
+	} else {
+		auto *controller = new BIAController(id);
+
+		PlayerEntity *player = new PlayerEntity();
+		AController::bindEntityToController(*controller, *player);
+		return player;
+	}
+}}, {'0', [](const std::vector<int> &) {
+	AEntity *e = nullptr;
+	if ((rand() % 6) < 4)
+		e = new PotEntity();
+	return e;
+}}};
 
 const std::vector<std::string> EntitiesMap::_mapTemplate = {
-	"XXXXXXXXXXXXXXXXXXX",
-	"X  0000000000000  X",
-	"X X0X0X0X0X0X0X0X X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X0X0X0X0X0X0X0X0X0X",
-	"X00000000000000000X",
-	"X X0X0X0X0X0X0X0X X",
-	//"X  0000000000000  X",
-	"X        1        X",
-	"XXXXXXXXXXXXXXXXXXX",
-};
+	"XXXXXXXXXXXXXXXXXXX", "X1 0000000000000 1X", "X X0X0X0X0X0X0X0X X",
+	"X00000000000000000X", "X0X0X0X0X0X0X0X0X0X", "X00000000000000000X",
+	"X0X0X0X0X0X0X0X0X0X", "X00000000000000000X", "X0X0X0X0X0X0X0X0X0X",
+	"X00000000000000000X", "X0X0X0X0X0X0X0X0X0X", "X00000000000000000X",
+	"X X0X0X0X0X0X0X0X X", "X1 0000000000000 1X", "XXXXXXXXXXXXXXXXXXX",};
 
-bool EntitiesMap::generate()
+bool EntitiesMap::generate(const std::vector<int> &IAState)
 {
 	for (size_t y = 0; y < HEIGHT; y++) {
 		for (size_t x = 0; x < WIDTH; x++) {
 			auto type = _mapTemplate[y][x];
 			AEntity *e = nullptr;
 			if (EntitiesMap::_generationMap.count(type) > 0)
-				e = EntitiesMap::_generationMap.at(type)();
+				e = EntitiesMap::_generationMap.at(type)(IAState);
 			if (e) {
-				insert(e, {static_cast<irr::s32>(WIDTH - (x + 1)),
-				           static_cast<irr::s32>(y)});
+				insert(e,
+					{static_cast<irr::s32>(WIDTH - (x + 1)),
+						static_cast<irr::s32>(y)});
 			}
 		}
 	}
@@ -83,8 +76,7 @@ bool EntitiesMap::insert(AEntity *e, const irr::core::vector2di &v)
 	auto fct = [e](const InsertTrans &d) {
 		return (d.e == e);
 	};
-	if (std::find_if(
-	_toInsert.begin(), _toInsert.end(), fct)  != _toInsert.end())
+	if (std::find_if(_toInsert.begin(), _toInsert.end(), fct)  != _toInsert.end())
 		return false;
 	InsertTrans data = {e, v};
 	_toInsert.push_back(data);
@@ -184,18 +176,11 @@ void EntitiesMap::updateMove()
 
 bool EntitiesMap::canInsertTo(const irr::core::vector2di &v)
 {
-	std::cout << "INSERT START" << std::endl;
-	if (v.X < 0 || v.X >= WIDTH || v.Y < 0 || v.Y >= HEIGHT) {
-		std::cout << "INSERT FAIL" << std::endl;
+	if (v.X < 0 || v.X >= WIDTH || v.Y < 0 || v.Y >= HEIGHT)
 		return false;
-	}
-	std::cout << "INSERT OK" << std::endl;
 	for (auto &n : _map[v.Y][v.X])
-		if (!n->isInsertable()) {
-			std::cout << "INSERT FAIL : " << n->getType() << "NOT INSERTABLE " << std::endl;
+		if (!n->isInsertable())
 			return false;
-	}
-	std::cout << "INSERT OK" << std::endl;
 	return true;
 }
 
