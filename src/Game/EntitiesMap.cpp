@@ -21,11 +21,13 @@ EntitiesMap::_generationMap = {
 		id += 1;
 		auto *controller = new BKeyboardController(id);
 
-		controller->registerBind(irr::KEY_UP, MOVE_UP);
-		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN);
-		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT);
-		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT);
-		controller->registerBind(irr::KEY_SPACE, DROP_BOMB);
+		controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_PRESSED);
+		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_PRESSED);
+		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_PRESSED);
+		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT,
+			KEY_PRESSED);
+		controller->registerBind(irr::KEY_SPACE, DROP_BOMB,
+			KEY_RELEASED);
 		PlayerEntity *player = new PlayerEntity();
 		AController::bindEntityToController(*controller, *player);
 		return player;

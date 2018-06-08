@@ -9,7 +9,7 @@
 #include "../../../include/Singletons/IrrManager.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
 
-BombEntity::BombEntity(): AEntity("Bomb")
+BombEntity::BombEntity(): AEntity("bomb")
 {
 	_stackable = false;
 	auto &im = IrrManager::getInstance();
