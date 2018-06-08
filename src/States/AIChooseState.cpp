@@ -15,7 +15,7 @@
 #include "../../include/States/TransitionToGameState.hpp"
 
 const std::map<AIChooseState::MenuActions, AIChooseState::BouttonsDesc>
-AIChooseState::_descs{
+AIChooseState::_descs {
 {LAUNCH, {
 	 {610, 900,  1310, 950},
 	 "launch",
@@ -57,7 +57,7 @@ AIChooseState::_descs{
 	 }},
 };
 
-AIChooseState::AIChooseState(AStateShare &_share) : AState(_share),
+AIChooseState::AIChooseState(AStateShare &_share) : AState(_share), AMenuSound(),
 _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode
 ("cam")), irr::core::vector3df(170, 52, -300), static_cast<irr::f32>(0.1)),
 _state({1, 0, 0, 0}), _guiDisp(false)
@@ -144,12 +144,14 @@ AIChooseState::MenuActions id) //TODO Coding Style
 				AIChooseState::_descs.at(id).fct(this);
 			else
 				switchBtnState(b, id - 401);
+			playSelect();
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
 			if (id == 400)
 				b->setImage(ap.loadTexture("buttons/launch_hover.png"));
 			else
 				b->setImage(ap.loadTexture(hover_name));
+			playCursor();
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			if (id == 400)

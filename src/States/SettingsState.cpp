@@ -82,7 +82,7 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 	}},
 };
 
-SettingsState::SettingsState(AStateShare &_share) : AState(_share)
+SettingsState::SettingsState(AStateShare &_share) : AState(_share), AMenuSound()
 {
 	auto &manager = IrrManager::getInstance();
 
@@ -168,6 +168,7 @@ void SettingsState::applyEventButton(const irr::SEvent &ev, SettingsActions id)
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			SettingsState::_descs.at(id).fct(this);
+			playSelect();
 			break;
 		default:
 			break;

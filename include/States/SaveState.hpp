@@ -9,10 +9,11 @@
 #define BOMBERMAN_SAVESTATE_HPP
 
 #include "../Abstracts/AState.hpp"
+#include "../Abstracts/AMenuSound.hpp"
 
 #define SAVE_BUTTON_NUMBER 2
 
-class SaveState : public AState {
+class SaveState : public AState, public AMenuSound {
 public:
 	explicit SaveState(AStateShare &_share);
 	~SaveState();

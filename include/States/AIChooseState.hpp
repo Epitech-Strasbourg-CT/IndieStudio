@@ -11,8 +11,9 @@
 	#include <irrlicht.h>
 	#include "../Abstracts/AState.hpp"
 	#include "../Game/Traveling.hpp"
+#include "../Abstracts/AMenuSound.hpp"
 
-class AIChooseState : public AState {
+class AIChooseState : public AState, public AMenuSound {
 public:
 	AIChooseState(AStateShare &_share);
 	void update();

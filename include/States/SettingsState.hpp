@@ -11,6 +11,7 @@
 #include <IGUIButton.h>
 #include <vector>
 #include "../Abstracts/AState.hpp"
+#include "../Abstracts/AMenuSound.hpp"
 
 #ifndef BOMBERMAN_SETTINGSSTATE_HPP
 	#define BOMBERMAN_SETTINGSSTATE_HPP
@@ -28,7 +29,7 @@ enum SettingsActions {
 	VOL_CANCEL
 };
 
-class SettingsState : public AState {
+class SettingsState : public AState, public AMenuSound {
 public:
 
 	explicit SettingsState(AStateShare &_share);
