@@ -151,12 +151,12 @@ void LoadState::applyEventButton(const irr::SEvent &ev, LoadState::Actions id)
 
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
-			LoadState::_descs.at(id).fct(this);
 			playSelect();
+			LoadState::_descs.at(id).fct(this);
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
-			b->setImage(ap.loadTexture(hover_name));
 			playCursor();
+			b->setImage(ap.loadTexture(hover_name));
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			b->setImage(ap.loadTexture(name));

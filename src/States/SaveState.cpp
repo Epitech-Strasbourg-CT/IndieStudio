@@ -120,12 +120,12 @@ void SaveState::applyEventButton(const irr::SEvent &ev, SaveState::Actions id)
 
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
-			SaveState::_descs.at(id).fct(this);
 			playSelect();
+			SaveState::_descs.at(id).fct(this);
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
-			b->setImage(ap.loadTexture(hover_name));
 			playCursor();
+			b->setImage(ap.loadTexture(hover_name));
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			b->setImage(ap.loadTexture(name));

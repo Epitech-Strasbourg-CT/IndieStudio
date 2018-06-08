@@ -167,8 +167,8 @@ void SettingsState::applyEventButton(const irr::SEvent &ev, SettingsActions id)
 
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
-			SettingsState::_descs.at(id).fct(this);
 			playSelect();
+			SettingsState::_descs.at(id).fct(this);
 			break;
 		default:
 			break;

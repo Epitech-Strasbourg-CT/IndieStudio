@@ -154,18 +154,18 @@ AIChooseState::MenuActions id) //TODO Coding Style
 	}
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
+			playSelect();
 			if (id == 400)
 				AIChooseState::_descs.at(id).fct(this);
 			else
 				switchBtnState(b, id - 401);
-			playSelect();
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
+			playCursor();
 			if (id == 400)
 				b->setImage(ap.loadTexture("buttons/launch_hover.png"));
 			else
 				b->setImage(ap.loadTexture(hover_name));
-			playCursor();
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			if (id == 400)

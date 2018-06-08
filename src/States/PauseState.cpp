@@ -130,8 +130,8 @@ void PauseState::applyEventButton(const irr::SEvent &ev, PauseState::Actions id)
 			PauseState::_descs.at(id).fct(this);
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
-			b->setImage(ap.loadTexture(hover_name));
 			playCursor();
+			b->setImage(ap.loadTexture(hover_name));
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			b->setImage(ap.loadTexture(name));
