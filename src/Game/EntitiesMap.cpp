@@ -16,7 +16,7 @@ const std::unordered_map<char, std::function<AEntity *(const std::vector<int> &)
 	EntitiesMap::_generationMap = {{'X', [](const std::vector<int> &) {
 	return new BlockEntity();
 }}, {'1', [](const std::vector<int> &IAState) {
-	static size_t id = 0;
+	static unsigned id = 0;
 	id += 1;
 	if (IAState.size() >= id && IAState.at(id-1)) {
 		auto *controller = new BKeyboardController(id);
@@ -27,13 +27,14 @@ const std::unordered_map<char, std::function<AEntity *(const std::vector<int> &)
 		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT, KEY_DOWN);
 		controller->registerBind(irr::KEY_SPACE, DROP_BOMB,
 			KEY_PRESSED);
-		PlayerEntity *player = new PlayerEntity();
+		EntityFactory fac;
+		PlayerEntity *player = new PlayerEntity((id < 5 ? id : 1));
 		AController::bindEntityToController(*controller, *player);
 		return player;
 	} else {
 		auto *controller = new BIAController(id);
 
-		PlayerEntity *player = new PlayerEntity();
+		PlayerEntity *player = new PlayerEntity((id < 5 ? id : 1));
 		AController::bindEntityToController(*controller, *player);
 		return player;
 	}
