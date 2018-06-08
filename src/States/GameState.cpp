@@ -33,7 +33,7 @@ GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_sh
 void GameState::update()
 {
 
-	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
+	if (getSharedResources().isKeyReleased(irr::KEY_ESCAPE))
 		StateMachine::getInstance().push(new PauseState(getSharedResources()), false);
 	else
 		_emap.update();
