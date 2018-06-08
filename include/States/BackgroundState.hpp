@@ -27,6 +27,10 @@ private:
 	void loadCharacter();
 	void loadSkyBox();
 	void loadMap();
+	void loadCamRotate();
+
+	SphericalCoordinate _camRotate;
+	irr::f32 _inc;
 };
 
 #endif /* !BOMBERMAN_BACKGROUNDSTATE_HPP */

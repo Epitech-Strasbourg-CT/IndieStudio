@@ -73,9 +73,8 @@ void AState::pushing(bool keep)
 
 void AState::popping()
 {
-	for (auto &n : _alteredNodes) {
+	for (auto &n : _alteredNodes)
 		n.second(n.first);
-	}
 }
 
 void AState::draw()

@@ -21,7 +21,7 @@ irr::f32 rayon, irr::core::vector3df origin) : _inc(inc), _azimuth(azimuth), _ra
 {
 }
 
-irr::core::vector3df SphericalCoordinate::calc()
+irr::core::vector3df SphericalCoordinate::calc() const
 {
 	irr::core::vector3df ret = {
 		_rayon * sinf(_azimuth) * sinf(_inc),

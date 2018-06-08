@@ -13,7 +13,8 @@
 #include "../../include/States/MenuState.hpp"
 #include "../../include/States/GameState.hpp"
 
-BackgroundState::BackgroundState(AStateShare &_share) : AState(_share)
+BackgroundState::BackgroundState(AStateShare &_share) : AState(_share),
+_camRotate(static_cast<irr::f32>(2.3), static_cast<irr::f32>(3.14159265 / 3.0), 700, {450, 0, 100}), _inc(0)
 {
 }
 
@@ -35,6 +36,7 @@ void BackgroundState::load()
 	loadCharacter();
 	loadSkyBox();
 	loadMap();
+	loadCamRotate();
 	auto er = EventReceiver::getInstance();
 	AState::load();
 }
@@ -110,4 +112,20 @@ void BackgroundState::loadMap()
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialType(irr::video::EMT_SOLID);
 	_share.addSharedNode("map", _node);
+}
+
+void BackgroundState::loadCamRotate()
+{
+	_share.addSphereCoor("camRotateMenu", &_camRotate);
+	_share.addFunc("rotateMenu", [this] {
+		auto step = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
+		irr::f32 min = static_cast<irr::f32>(2.7);
+		irr::f32 max = static_cast<irr::f32>(4.4);
+		auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
+
+		cam.setTarget({450, 0, 100});
+		_inc += step;
+		_camRotate.setInc(static_cast<irr::f32>((sinf(_inc) - -1.0) * (max - min) / (1.0 - -1.0) + min));
+		cam.setPosition(_camRotate.calc());
+	});
 }

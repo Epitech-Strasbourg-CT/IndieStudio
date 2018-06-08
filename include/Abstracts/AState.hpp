@@ -11,7 +11,7 @@
 #include "AStateShare.hpp"
 
 #ifndef BOMBERMAN_ASTATE_HPP
-#define BOMBERMAN_ASTATE_HPP
+	#define BOMBERMAN_ASTATE_HPP
 
 class AState {
 public:
@@ -35,10 +35,7 @@ public:
 	virtual void pushing(bool keep);
 
 	AStateShare &getSharedResources() const;
-	void addAlteredNode(
-	irr::scene::ISceneNode *n,
-	std::function<void(irr::scene::ISceneNode *)>
-	fct);
+	void addAlteredNode(irr::scene::ISceneNode *n, std::function<void(irr::scene::ISceneNode *)> fct);
 
 private:
 	bool _enable;
@@ -46,6 +43,7 @@ private:
 	std::map<irr::scene::ISceneNode *,
 	std::function<void(irr::scene::ISceneNode *)>>
 	_alteredNodes;
+
 protected:
 	AStateShare &_share;
 };
