@@ -10,6 +10,7 @@
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/Game/Entities/PlayerEntity.hpp"
 #include "../../include/Game/Entities/BlockEntity.hpp"
+#include "../../include/Game/BIAController.hpp"
 
 const std::unordered_map<char, std::function<AEntity *()>>
 	EntitiesMap::_generationMap = {{'X', []() {
@@ -17,16 +18,25 @@ const std::unordered_map<char, std::function<AEntity *()>>
 }}, {'1', []() {
 	static size_t id = 0;
 	id += 1;
-	auto *controller = new BKeyboardController(id);
+	if (id == 1) {
+		auto *controller = new BKeyboardController(id);
 
-	controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_DOWN);
-	controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_DOWN);
-	controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_DOWN);
-	controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT, KEY_DOWN);
-	controller->registerBind(irr::KEY_SPACE, DROP_BOMB, KEY_PRESSED);
-	PlayerEntity *player = new PlayerEntity();
-	AController::bindEntityToController(*controller, *player);
-	return player;
+		controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_DOWN);
+		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_DOWN);
+		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_DOWN);
+		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT, KEY_DOWN);
+		controller->registerBind(irr::KEY_SPACE, DROP_BOMB,
+			KEY_PRESSED);
+		PlayerEntity *player = new PlayerEntity();
+		AController::bindEntityToController(*controller, *player);
+		return player;
+	} else if (id == 2) {
+		auto *controller = new BIAController(id);
+
+		PlayerEntity *player = new PlayerEntity();
+		AController::bindEntityToController(*controller, *player);
+		return player;
+	}
 }}, {'0', []() {
 	AEntity *e = nullptr;
 	if ((rand() % 6) < 4)
