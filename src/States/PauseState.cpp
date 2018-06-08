@@ -13,18 +13,19 @@
 #include "../../include/States/SettingsState.hpp"
 #include "../../include/Game/SaveManager.hpp"
 #include "../../include/Time.hpp"
+#include "../../include/States/SaveState.hpp"
 
 const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 	PauseState::_descs{
 	{PauseState::RESUME,    {
-		{50, 50,  750, 100},
+		{610, 340,  1310, 390},
 		"resume",
 		[](PauseState *self) {
 			StateMachine::getInstance().pop();
 		}
 	}},
 	{PauseState::SETTINGS,  {
-		{50, 150, 750, 200},
+		{610, 440, 1310, 490},
 		"settings",
 		[](PauseState *self) {
 			auto &sm = StateMachine::getInstance();
@@ -33,17 +34,16 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 		}
 	}},
 	{PauseState::SAVE, {
-		{50, 250, 750, 300},
+		{610, 540, 1310, 590},
 		"save",
 		[](PauseState *self) {
-			//SaveManager sm;
+			auto &sm = StateMachine::getInstance();
 			auto &res = self->getSharedResources();
-
-			//sm.save(res.getEntityMap(), std::to_string(Time::timestamp());
-		}
+			sm.push(new SaveState(res), false);
+			}
 	}},
 	{PauseState::EXIT_GAME, {
-		{50, 350, 750, 400},
+		{610, 640, 1310, 690},
 		"exit",
 		[](PauseState *self) {
 			StateMachine::getInstance().popAll();
