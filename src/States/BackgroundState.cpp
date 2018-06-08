@@ -25,7 +25,8 @@ void BackgroundState::load()
 	_node = smgr->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialType(irr::video::EMT_SOLID);
-	_node->setPosition(irr::core::vector3df(0,-1, -47.38));
+	_node->setPosition(
+	irr::core::vector3df(0, -1, static_cast<irr::f32>(-47.38)));
 	_node->setScale({1000, 1000, 1000});
 	_share.addSharedNode("menu", _node);
 

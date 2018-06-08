@@ -11,8 +11,9 @@
 
 Traveling::Traveling(irr::scene::ICameraSceneNode &cam, irr::core::vector3df const &finalLook, irr::f32 startPointRatio) : _coor(),
 _startPoint(), _point(), _finalLook(finalLook), _needMoveCamToPoint(true),
-_needMovePoint(true), _cur(0), _finalTime(60), _follow(0.1), _endExac(5),
-_endFollow(0.1), _accelEndFollow(0)
+_needMovePoint(true), _cur(0), _finalTime(60),
+_follow(static_cast<irr::f32>(0.1)), _endExac(5),
+_endFollow(static_cast<irr::f32>(0.1)), _accelEndFollow(0)
 {
 	_cube = IrrManager::getInstance().getSmgr()->addCubeSceneNode();
 	_cube->setVisible(false);

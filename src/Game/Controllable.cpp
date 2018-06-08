@@ -69,4 +69,5 @@ Controllable::_getBinds(ControlType_e t)
 		return _bindsPressed;
 	else if (t == KEY_RELEASED)
 		return _bindsReleased;
+	return _bindsPressed;
 }
