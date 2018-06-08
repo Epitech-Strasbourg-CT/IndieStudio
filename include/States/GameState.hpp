@@ -20,7 +20,6 @@ public:
 	void load() override;
 	void update() override;
 	void updateRender() override;
-	void transitionPop() override;
 private:
 	EntitiesMap _emap;
 	bool _canPause;
