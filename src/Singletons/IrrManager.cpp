@@ -17,8 +17,8 @@ IrrManager::~IrrManager()
 }
 
 IrrManager::IrrManager()
-	: _width(800),
-	  _height(600),
+	: _width(1920),
+	  _height(1080),
 	  _master(1),
 	  _effects(0.5),
 	  _musics(1)
