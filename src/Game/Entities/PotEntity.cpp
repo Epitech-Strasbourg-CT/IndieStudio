@@ -9,7 +9,7 @@
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 
-PotEntity::PotEntity() : AEntity("Pot")
+PotEntity::PotEntity() : AEntity("pot")
 {
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();

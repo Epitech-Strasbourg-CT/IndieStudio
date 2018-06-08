@@ -9,7 +9,7 @@
 #include "../../../include/Singletons/IrrManager.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
 
-BlockEntity::BlockEntity() : AEntity("Block")
+BlockEntity::BlockEntity() : AEntity("block")
 {
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
