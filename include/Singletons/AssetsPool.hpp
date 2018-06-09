@@ -45,6 +45,7 @@ public:
 	irrklang::ISound *loadSound(AssetsPool::Assets, bool);
 	void unloadSound(AssetsPool::Assets, irrklang::ISound *);
 	void setVolume(AssetsPool::Types, irrklang::ik_f32);
+	void cleanSound();
 private:
 	AssetsPool(const std::string &rootModelPath,
 	const std::string &rootTextures);

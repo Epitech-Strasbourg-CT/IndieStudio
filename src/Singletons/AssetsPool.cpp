@@ -117,3 +117,16 @@ void AssetsPool::setVolume(AssetsPool::Types type, irrklang::ik_f32 vol)
 			for (size_t j = 0; j < _sModule[i].size(); ++j)
 				_sModule[i][j]->setVolume(vol);
 }
+
+void AssetsPool::cleanSound()
+{
+	for (int asset = MENU; asset < FINAL; ++asset) {
+		for (size_t i = 0; i < _sModule[asset].size(); ++i) {
+			if (_sModule[asset][i]->isFinished()) {
+				_sModule[asset][i]->stop();
+				_sModule[asset][i]->drop();
+				_sModule[asset].erase(_sModule[asset].begin() + i);
+			}
+		}
+	}
+}
