@@ -75,8 +75,8 @@ add_executable(bomberman
         src/Game/Entities/FireEntity.cpp
         include/Game/Entities/FireEntity.hpp
 
-        src/Game/Entities/BonusEntity.cpp
-        include/Game/Entities/BonusEntity.hpp
+        src/Game/Entities/ABonusEntity.cpp
+        include/Game/Entities/ABonusEntity.hpp
 
         src/Game/SphericalCoordinate.cpp
         include/Game/SphericalCoordinate.hpp
@@ -110,7 +110,19 @@ add_executable(bomberman
         include/Abstracts/AMenuSound.hpp
 
         src/States/TransitionEndGameState.cpp
-        include/States/TransitionEndGameState.hpp)
+        include/States/TransitionEndGameState.hpp
+
+        src/Game/Entities/Bonus/InvertBonus.cpp
+        include/Game/Entities/Bonus/InvertBonus.hpp
+
+        src/Game/Entities/Bonus/ResetFireRangeBonus.cpp
+        include/Game/Entities/Bonus/ResetFireRangeBonus.hpp
+
+        src/Game/Entities/Bonus/UpBombBonus.cpp
+        include/Game/Entities/Bonus/UpBombBonus.hpp
+
+        src/Game/Entities/Bonus/UpFireBonus.cpp
+        include/Game/Entities/Bonus/UpFireBonus.hpp)
 
 # endregion
 
