@@ -14,6 +14,7 @@
 class BombEntity : public AEntity {
 public:
 	BombEntity();
+
 	bool hasExploded() const;
 	void setAutonomous(bool _utonomous);
 	void explode(EntitiesMap *map);

@@ -25,6 +25,11 @@ public:
 		GAME,
 		SELECT,
 		CURSOR,
+		BBLOW,
+		BDROP,
+		RUPEE,
+		DEATH,
+		POT,
 		FINAL
 	};
 
