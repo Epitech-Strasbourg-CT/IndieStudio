@@ -22,4 +22,6 @@ private:
 	struct serialize {
 	};
 	bool _broken;
+	static const std::map<int, std::function<AEntity *()>> _gemGen;
+	void genRandomGem(EntitiesMap *map);
 };

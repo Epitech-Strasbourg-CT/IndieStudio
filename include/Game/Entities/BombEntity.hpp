@@ -19,10 +19,12 @@ public:
 	void explode(EntitiesMap *map);
 	void update(EntitiesMap *map) override;
 	virtual ~BombEntity();
-
+	void detonate();
+	void setRange(size_t _range);
 private:
 	size_t _start;
 	size_t _timeout;
+	size_t _range;
 	bool _exploded;
 	bool _autonomous;
 };

@@ -30,7 +30,7 @@ public:
 	void updateRenderPosition();
 	void dump (std::ostream &s) const;
 	void load(std::istream &s);
-
+	void kill();
 private:
 	struct serialize {
 	};
@@ -38,5 +38,5 @@ private:
 	irr::core::vector2di _old;
 	irr::core::vector2di _look;
 	irr::core::vector2di getNewPosition();
-
+	bool _alive;
 };

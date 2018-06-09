@@ -13,21 +13,23 @@
 #include "../Game/Entities/BombEntity.hpp"
 
 class ABombDropper {
-	public:
+public:
 	ABombDropper();
 	virtual ~ABombDropper() = default;
 	virtual void update(EntitiesMap *);
-
-	protected:
+	void upMaxBomb();
+	void upFireRange();
+protected:
 	void dropBomb(int x, int y);
 	unsigned getMaxBomb() const;
 	void setMaxBomb(unsigned maxBomb);
 
-	private:
+private:
 	void _updateBomb(EntitiesMap *map, int x, int y);
 
 	std::queue<std::pair<int, int>> _toDrop;
 	unsigned _maxBomb;
+	unsigned _range;
 	unsigned _currentBomb;
 	std::vector<BombEntity *> _watchingBombs;
 };

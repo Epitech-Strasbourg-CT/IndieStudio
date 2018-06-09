@@ -13,9 +13,10 @@
 #include "../../../include/Game/Entities/FireEntity.hpp"
 
 BombEntity::BombEntity()
-: AEntity("Bomb"),
+: AEntity("bomb"),
 _start(),
 _timeout(3000),
+_range(1),
 _exploded(false),
 _autonomous(false)
 {
@@ -26,7 +27,7 @@ _autonomous(false)
 	_node = im.getSmgr()->addMeshSceneNode(mesh);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialType(irr::video::EMT_SOLID);
-	_node->setScale({2, 2, 2});
+	_node->setScale({2.5, 2.5, 2.5});
 	_start = Time::timestamp();
 }
 
@@ -40,8 +41,6 @@ void BombEntity::setAutonomous(bool _autonomous)
 	BombEntity::_autonomous = _autonomous;
 }
 
-
-
 void BombEntity::update(EntitiesMap *map)
 {
 	if (Time::timestamp() > _start + _timeout)
@@ -49,18 +48,30 @@ void BombEntity::update(EntitiesMap *map)
 	AEntity::update(map);
 }
 
+void  BombEntity::detonate()
+{
+	_timeout = 0;
+}
+
 void BombEntity::explode(EntitiesMap *map)
 {
-//	if (_autonomous) {
-//		map->erase(this);
-//	} else {
-		_exploded = true;
-		//
-		map->insert(new FireEntity({0, 0}, 5), getPosition());
-//	}
+	if (_exploded)
+		return;
+	if (_autonomous) {
+		map->insert(new FireEntity({0, 0}, 2), getPosition());
+		map->erase(this);
+	} else {
+		map->insert(new FireEntity({0, 0}, 2), getPosition());
+	}
+	_exploded = true;
 }
 
 BombEntity::~BombEntity()
 {
 	_node->remove();
+}
+
+void BombEntity::setRange(size_t _range)
+{
+	BombEntity::_range = _range;
 }

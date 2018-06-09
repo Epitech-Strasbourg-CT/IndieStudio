@@ -9,6 +9,7 @@
 ABombDropper::ABombDropper()
 : _toDrop(),
 _maxBomb(3),
+_range(1),
 _currentBomb(0),
 _watchingBombs()
 {
@@ -54,10 +55,20 @@ void ABombDropper::_updateBomb(EntitiesMap *map, int x, int y)
 	if (_currentBomb < _maxBomb) {
 		EntityFactory fac;
 		auto bomb = fac.createEntity("bomb");
+		dynamic_cast<BombEntity *>(bomb.get())->setRange(_range);
 		map->insert(bomb.get(), {x, y});
-		_watchingBombs.push_back(
-			dynamic_cast<BombEntity *>(bomb.get()));
+		_watchingBombs.push_back(dynamic_cast<BombEntity *>(bomb.get()));
 		bomb.release();
 		_currentBomb += 1;
 	}
+}
+
+void ABombDropper::upFireRange()
+{
+	_range += 1;
+}
+
+void ABombDropper::upMaxBomb()
+{
+	_maxBomb += 1;
 }

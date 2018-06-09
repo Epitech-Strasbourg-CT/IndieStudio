@@ -9,10 +9,27 @@
 #define BOMBERMAN_BONUSENTITY_HPP
 
 #include "../AEntity.hpp"
+#include "PlayerEntity.hpp"
+
+enum RupeeColor{
+	GREEN = 0,
+	BLUE,
+	RED,
+	GRAY,
+	YELLOW,
+	PURPLE
+};
 
 class BonusEntity: public AEntity {
 public:
-	BonusEntity();
+	explicit BonusEntity(RupeeColor color);
+	void collide(AEntity &entity) override;
+	virtual void playerChanging(PlayerEntity *entity);
+	void update(EntitiesMap *map) override;
+	virtual ~BonusEntity();
+	void destroy();
+private:
+	bool _destroyed;
 };
 
 

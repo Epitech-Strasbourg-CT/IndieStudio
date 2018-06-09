@@ -46,8 +46,8 @@ void GameState::updateRender()
 void GameState::animCam()
 {
 	auto step = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
-	irr::f32 min = static_cast<irr::f32>(100);
-	irr::f32 max = static_cast<irr::f32>(105);
+	auto min = static_cast<irr::f32>(115);
+	auto max = static_cast<irr::f32>(120);
 	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
 	auto camPos = cam.getPosition();
 
