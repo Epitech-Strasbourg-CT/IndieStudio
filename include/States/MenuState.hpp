@@ -46,6 +46,8 @@ public:
 	void applyEventButton(const irr::SEvent &ev, MenuActions id);
 	irr::gui::IGUIButton *getButton(MenuActions) const;
 
+	const std::string getName() const override;
+
 	struct ButtonsDesc {
 		irr::core::rect<irr::s32> pos;
 		std::string name;

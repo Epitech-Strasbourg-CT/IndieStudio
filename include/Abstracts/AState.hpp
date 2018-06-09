@@ -28,6 +28,8 @@ public:
 	virtual void load();
 	virtual void unload();
 
+	virtual std::string const getName() const = 0;
+
 	virtual bool isLoaded() const;
 	virtual void transitionPop();
 	virtual void transitionPush(bool keep);

@@ -109,7 +109,7 @@ void SettingsState::unload()
 
 void SettingsState::update()
 {
-	_share.getFunc("rotateMenu")();
+//	_share.getFunc("rotateMenu")();
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 }
@@ -174,4 +174,9 @@ void SettingsState::applyEventButton(const irr::SEvent &ev, SettingsActions id)
 		default:
 			break;
 	}
+}
+
+const std::string SettingsState::getName() const
+{
+	return "settings";
 }

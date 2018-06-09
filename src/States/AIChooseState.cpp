@@ -217,3 +217,8 @@ void AIChooseState::moveCamToStartPoint(irr::scene::ICameraSceneNode &cam)
 	_isInQuitAnim = true;
 	unloadBouttons();
 }
+
+const std::string AIChooseState::getName() const
+{
+	return "AIChoose";
+}

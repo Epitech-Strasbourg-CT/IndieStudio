@@ -153,3 +153,8 @@ void MenuState::update()
 {
 	_share.getFunc("rotateMenu")();
 }
+
+const std::string MenuState::getName() const
+{
+	return "menu";
+}

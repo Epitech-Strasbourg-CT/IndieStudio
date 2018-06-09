@@ -54,7 +54,6 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 		{835, 850,  935, 900},
 		"save",
 		[](LoadState *self) {
-			//TODO secure
 			self->_idx -= 1;
 			self->setSaveButtons();
 		}
@@ -63,7 +62,6 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 		{985, 850,  1085, 900},
 		"save",
 		[](LoadState *self) {
-			//TODO secure
 			self->_idx += 1;
 			self->setSaveButtons();
 		}
@@ -193,4 +191,9 @@ void LoadState::setSaveButtons()
 	}
 	_buttons[PREV - SAVE1]->setEnabled(_idx > 0);
 	_buttons[NEXT - SAVE1]->setEnabled((_idx + 1) * 4 < _saves.size());
+}
+
+const std::string LoadState::getName() const
+{
+	return "load";
 }

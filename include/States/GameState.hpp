@@ -16,6 +16,9 @@
 class GameState : public AState {
 public:
 	GameState(AStateShare &_share);
+
+	const std::string getName() const override;
+
 	GameState(AStateShare &_share, std::string &);
 	void load() override;
 	void update() override;

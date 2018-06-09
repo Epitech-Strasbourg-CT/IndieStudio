@@ -137,3 +137,8 @@ void BackgroundState::loadCamRotate()
 		cam.setPosition(_camRotate.calc());
 	});
 }
+
+const std::string BackgroundState::getName() const
+{
+	return "background";
+}
