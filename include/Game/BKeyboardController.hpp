@@ -19,7 +19,8 @@ public:
 	virtual ~BKeyboardController();
 	void registerBind(irr::EKEY_CODE code, ControlName c, ControlType t);
 	void unregisterBind(irr::EKEY_CODE code, ControlType t);
-	void updateInputs() override;
+	void updateInputs(EntitiesMap *) override;
+	ControllerType getType() const override;
 
 	struct KeyMap {
 		irr::EKEY_CODE key;

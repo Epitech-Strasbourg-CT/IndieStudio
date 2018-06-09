@@ -19,9 +19,10 @@ void Controllable::delEvent(ControlName c, ControlType t)
 	_getBinds(t).erase(c);
 }
 
-void Controllable::update()
+void Controllable::update(EntitiesMap *map)
 {
-	_controller->updateInputs();
+	if (_controller)
+		_controller->updateInputs(map);
 	for (auto &n : _actions) {
 		auto c = std::get<0>(n);
 		auto t = std::get<1>(n);
@@ -51,14 +52,14 @@ void Controllable::dump(std::ostream &s) const
 	struct Controllable::serialize ser = {};
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
 	memcpy(se.get(), &ser, sizeof(ser));
-	// s.write(se.get(), sizeof(ser));
+	s.write(se.get(), sizeof(ser));
 }
 
 void Controllable::load(std::istream &s)
 {
 	struct Controllable::serialize ser;
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
-	// s.read(se.get(), sizeof(ser));
+	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
 }
 

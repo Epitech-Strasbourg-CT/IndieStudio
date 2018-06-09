@@ -13,59 +13,51 @@
 
 template <typename T> class AMovable : public virtual ATrackable<T> {
 public:
-	AMovable() : _reverse(1)
+	AMovable()
 	{
 	}
 
 	~AMovable() = default;
 	void dirLeft(T val)
 	{
-		ATrackable<T>::_position.X -= val * _reverse;
+		ATrackable<T>::_position.X -= val;
 	}
 
 	void dirRight(T val)
 	{
-		ATrackable<T>::_position.X += val * _reverse;
+		ATrackable<T>::_position.X += val;
 	}
 
 	void dirTop(T val)
 	{
-		ATrackable<T>::_position.Y += val * _reverse;
+		ATrackable<T>::_position.Y += val;
 	}
 
 	void dirBottom(T val)
 	{
-		ATrackable<T>::_position.Y -= val * _reverse;
-	}
-
-	void setReverse()
-	{
-		_reverse *= -1;
+		ATrackable<T>::_position.Y -= val;
 	}
 
 	AMovable &operator=(irr::core::vector2d<T> &other)
 	{
-		ATrackable<T>::_position.X = other.X * _reverse;
-		ATrackable<T>::_position.Y = other.Y * _reverse;
+		ATrackable<T>::_position.X = other.X;
+		ATrackable<T>::_position.Y = other.Y;
 		return *this;
 	}
 
 	irr::core::vector2d<T> operator+=(irr::core::vector2d<T> &other)
 	{
-		ATrackable<T>::_position.X += other.X * _reverse;
-		ATrackable<T>::_position.Y += other.Y * _reverse;
+		ATrackable<T>::_position.X += other.X;
+		ATrackable<T>::_position.Y += other.Y;
 		return ATrackable<T>::_position;
 	}
 
 	irr::core::vector2d<T> operator-=(irr::core::vector2d<T> &other)
 	{
-		ATrackable<T>::_position.X += other.X * _reverse;
-		ATrackable<T>::_position.Y += other.Y * _reverse;
+		ATrackable<T>::_position.X += other.X;
+		ATrackable<T>::_position.Y += other.Y;
 		return ATrackable<T>::_position;
 	}
-
-private:
-	int _reverse;
 };
 
 #endif /* !BOMBERMAN_AMOVABLE_HPP */

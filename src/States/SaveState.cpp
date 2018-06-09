@@ -20,7 +20,6 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 		"cancel",
 		[](SaveState *self) {
 			self->externalEventsClean();
-			std::cout << "POP A" << std::endl;
 			StateMachine::getInstance().pop();
 			return false;
 		}
