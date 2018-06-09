@@ -21,9 +21,11 @@ void SaveManager::save(EntitiesMap &map, const std::string &filename)
 
 void SaveManager::load(EntitiesMap &pool, const std::string &filename)
 {
-	std::ifstream file(filename, std::ifstream::in);
+	std::ifstream file(".save/" + filename, std::ifstream::in);
+	std::cout << "OKMEC " << filename << std::endl;
 	if (!file.good())
 		throw std::runtime_error("Can't load the Entities");
+	std::cout << "OKMEC" << std::endl;
 	std::string name;
 	EntityFactory fact;
 	while (std::getline(file, name, '\0')) {
