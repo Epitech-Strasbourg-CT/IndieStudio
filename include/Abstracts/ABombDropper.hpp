@@ -26,6 +26,7 @@ protected:
 
 private:
 	void _updateBomb(EntitiesMap *map, int x, int y);
+	void cleanExplosedBomb();
 
 	std::queue<std::pair<int, int>> _toDrop;
 	unsigned _maxBomb;

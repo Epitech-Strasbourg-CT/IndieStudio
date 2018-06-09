@@ -38,6 +38,7 @@ bool BombEntity::hasExploded() const
 
 void BombEntity::setAutonomous(bool _autonomous)
 {
+	_exploded = false;
 	BombEntity::_autonomous = _autonomous;
 }
 
