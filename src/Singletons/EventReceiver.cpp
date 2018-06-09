@@ -45,7 +45,6 @@ void EventReceiver::unregisterEvent(size_t id, irr::EEVENT_TYPE type)
 void EventReceiver::registerEvent(size_t id, irr::EEVENT_TYPE type,
 std::function<bool(const irr::SEvent &)> fct)
 {
-	std::cout << "REGISTER " << id << std::endl;
 	if (_binds.count(type) == 0) {
 		std::unordered_map
 		<size_t, std::function<bool(const irr::SEvent &)>> map;

@@ -83,10 +83,10 @@ void BombEntity::explode(EntitiesMap *map)
 	if (_exploded)
 		return;
 	if (_autonomous) {
-		map->insert(new FireEntity({0, 0}, 2), getPosition());
+		map->insert(new FireEntity({0, 0}, _range), getPosition());
 		map->erase(this);
 	} else {
-		map->insert(new FireEntity({0, 0}, 2), getPosition());
+		map->insert(new FireEntity({0, 0}, _range), getPosition());
 	}
 	_exploded = true;
 }

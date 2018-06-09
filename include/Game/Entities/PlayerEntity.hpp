@@ -24,6 +24,7 @@ class PlayerEntity : public ABombDropper,
 public:
 	PlayerEntity(unsigned playerSkinId = 1);
 	void reloadSkin();
+	void reverseDir();
 	void update(EntitiesMap *map) override;
 	bool updatePosition(EntitiesMap *map);
 	void updateRender() override;
@@ -48,4 +49,6 @@ private:
 	irr::core::vector2di _look;
 	irr::core::vector2di getNewPosition();
 	bool _alive;
+	int _reverse;
+	int _reverseCycles;
 };
