@@ -113,16 +113,16 @@ add_executable(bomberman
         include/States/TransitionEndGameState.hpp
 
         src/Game/Entities/Bonus/InvertBonus.cpp
-        include/Game/Entities/Bonus/InvertBonus.hpp
+        include/Game/Bonus/InvertBonus.hpp
 
         src/Game/Entities/Bonus/ResetFireRangeBonus.cpp
-        include/Game/Entities/Bonus/ResetFireRangeBonus.hpp
+        include/Game/Bonus/ResetFireRangeBonus.hpp
 
         src/Game/Entities/Bonus/UpBombBonus.cpp
-        include/Game/Entities/Bonus/UpBombBonus.hpp
+        include/Game/Bonus/UpBombBonus.hpp
 
         src/Game/Entities/Bonus/UpFireBonus.cpp
-        include/Game/Entities/Bonus/UpFireBonus.hpp)
+        include/Game/Bonus/UpFireBonus.hpp)
 
 # endregion
 

@@ -9,9 +9,9 @@
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Game/Entities/FireEntity.hpp"
 
-ABonusEntity::ABonusEntity(RupeeColor color): AEntity("Bonus"), _destroyed(false)
+ABonusEntity::ABonusEntity(const std::string &name, RupeeColor color)
+: AEntity(name),  _destroyed(false)
 {
-	std::cout << "Construct" << std::endl;
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
 	auto mesh = am.loadMesh("rupee/rupee.obj");
@@ -27,11 +27,6 @@ ABonusEntity::ABonusEntity(RupeeColor color): AEntity("Bonus"), _destroyed(false
 		static_cast<irr::f32 >(0.033)));
 }
 
-//void ABonusEntity::playerChanging(PlayerEntity *entity)
-//{
-//	entity->upMaxBomb();
-//}
-
 void ABonusEntity::update(EntitiesMap *map)
 {
 	AEntity::update(map);
@@ -45,7 +40,6 @@ void ABonusEntity::collide(AEntity &entity)
 		collisions = {
 		{"player",
 			[this](AEntity *aEntity) {
-				std::cout << "PLAYER COLLIDE" << std::endl;
 				auto p = dynamic_cast<PlayerEntity *>(aEntity);
 				this->playerChanging(p);
 				this->destroy();
@@ -60,7 +54,6 @@ void ABonusEntity::collide(AEntity &entity)
 
 ABonusEntity::~ABonusEntity()
 {
-	std::cout << "Destroy" << std::endl;
 	AssetsPool::getInstance().loadSound(AssetsPool::RUPEE, false)->setIsPaused(false);
 	_node->remove();
 }

@@ -8,4 +8,5 @@ cmake-build-*
 bomberman
 build/
 .vscode
+Makefile
 bin/

@@ -8,11 +8,11 @@
 #ifndef BOMBERMAN_UPFIREBONUS_HPP
 	#define BOMBERMAN_UPFIREBONUS_HPP
 
-	#include "../ABonusEntity.hpp"
+	#include "../Entities/ABonusEntity.hpp"
 
 class UpFireBonus : public ABonusEntity {
 public:
-	UpFireBonus(RupeeColor color);
+	UpFireBonus();
 
 	void playerChanging(PlayerEntity *entity) override;
 };

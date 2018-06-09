@@ -10,26 +10,26 @@
 #include "../../../include/Singletons/IrrManager.hpp"
 #include "../../../include/Game/EntitiesMap.hpp"
 #include "../../../include/Game/Entities/ABonusEntity.hpp"
-#include "../../../include/Game/Entities/Bonus/UpBombBonus.hpp"
-#include "../../../include/Game/Entities/Bonus/UpFireBonus.hpp"
-#include "../../../include/Game/Entities/Bonus/InvertBonus.hpp"
-#include "../../../include/Game/Entities/Bonus/ResetFireRangeBonus.hpp"
+#include "../../../include/Game/Bonus/UpBombBonus.hpp"
+#include "../../../include/Game/Bonus/UpFireBonus.hpp"
+#include "../../../include/Game/Bonus/InvertBonus.hpp"
+#include "../../../include/Game/Bonus/ResetFireRangeBonus.hpp"
 
 const std::map<int, std::function<AEntity *()>> PotEntity::_gemGen = {
 	{55, []() {
 		return nullptr;
 	}},
 	{20, []() {
-		return new UpBombBonus(GREEN);
+		return new UpBombBonus();
 	}},
 	{10, []() {
-		return new UpFireBonus(RED);
+		return new UpFireBonus();
 	}},
 	{10, []() {
-		return new ResetFireRangeBonus(BLUE);
+		return new ResetFireRangeBonus();
 	}},
 	{5, []() {
-		return new InvertBonus(YELLOW);
+		return new InvertBonus();
 	}}
 };
 

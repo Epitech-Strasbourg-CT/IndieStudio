@@ -57,8 +57,8 @@ void SaveState::loadButtons()
 	auto &ap = AssetsPool::getInstance();
 
 	std::time_t t = std::time(0);
-	struct tm *tm;
-	tm = localtime(&t);
+	auto tm = localtime(&t);
+
 	std::string sName = std::to_string(tm->tm_year + 1900)
 		+ std::to_string(tm->tm_mon)
 		+ std::to_string(tm->tm_mday)
