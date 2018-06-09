@@ -12,7 +12,7 @@
 
 class UpFireBonus : public ABonusEntity {
 public:
-	UpFireBonus(RupeeColor color);
+	UpFireBonus();
 
 	void playerChanging(PlayerEntity *entity) override;
 };

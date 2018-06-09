@@ -12,7 +12,8 @@
 
 class UpBombBonus : public ABonusEntity {
 public:
-	UpBombBonus(RupeeColor color);
+	UpBombBonus();
+
 	void playerChanging(PlayerEntity *entity);
 
 };

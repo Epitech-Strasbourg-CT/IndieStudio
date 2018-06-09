@@ -7,7 +7,7 @@
 
 #include "../../../../include/Game/Bonus/UpFireBonus.hpp"
 
-UpFireBonus::UpFireBonus(RupeeColor color) : ABonusEntity(color)
+UpFireBonus::UpFireBonus() : ABonusEntity("fire_bonus", RED)
 {
 }
 
