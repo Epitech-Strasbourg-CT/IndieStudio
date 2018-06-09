@@ -5,6 +5,7 @@
 ** AssetsPool.cpp
 */
 
+#include <iostream>
 #include "../../include/Singletons/AssetsPool.hpp"
 
 
@@ -27,6 +28,31 @@ const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds = {
 	{
 		AssetsPool::SFX,
 		"assets/sounds/MenuCursormove.mp3",
+		&IrrManager::getEffectsVolume
+	},
+	{
+		AssetsPool::SFX,
+		"assets/sfx/BombBlow.mp3",
+		&IrrManager::getEffectsVolume
+	},
+	{
+		AssetsPool::SFX,
+		"assets/sfx/BombDrop.mp3",
+		&IrrManager::getEffectsVolume
+	},
+	{
+		AssetsPool::SFX,
+		"assets/sfx/GetRupee.mp3",
+		&IrrManager::getEffectsVolume
+	},
+	{
+		AssetsPool::SFX,
+		"assets/sfx/LinkDeath.mp3",
+		&IrrManager::getEffectsVolume
+	},
+	{
+		AssetsPool::SFX,
+		"assets/sfx/PotShatter.mp3",
 		&IrrManager::getEffectsVolume
 	}
 };

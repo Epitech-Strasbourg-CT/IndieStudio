@@ -54,6 +54,7 @@ void ABonusEntity::collide(AEntity &entity)
 
 ABonusEntity::~ABonusEntity()
 {
+	AssetsPool::getInstance().loadSound(AssetsPool::RUPEE, false)->setIsPaused(false);
 	_node->remove();
 }
 

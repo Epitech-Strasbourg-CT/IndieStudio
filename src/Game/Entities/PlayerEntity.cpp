@@ -167,6 +167,7 @@ void PlayerEntity::kill()
 
 PlayerEntity::~PlayerEntity()
 {
+	AssetsPool::getInstance().loadSound(AssetsPool::DEATH, false)->setIsPaused(false);
 	cleanAnimationNodes();
 }
 
