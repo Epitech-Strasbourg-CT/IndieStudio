@@ -81,7 +81,7 @@ void SaveState::unloadButtons()
 	for (auto &n : _buttons)
 		n->remove();
 	_buttons.clear();
-	std::cout << "Name :" << _name->getText() << std::endl;
+	//std::cout << "Name :" << _name->getText() << std::endl;
 	_name->remove();
 }
 

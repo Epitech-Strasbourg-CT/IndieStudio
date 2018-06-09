@@ -13,17 +13,16 @@
 #include "../../include/Game/SaveManager.hpp"
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/States/PauseState.hpp"
+#include "../../include/States/TransitionEndGameState.hpp"
 
 GameState::GameState(AStateShare &_share) : AState(_share), _inc(0)
 {
 	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::GAME, true));
-	_emap.generate(_share.getIAState());
 }
 
 GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_share)
 {
 	_share.popMusic(AssetsPool::GAME);
-//	SaveManager::save(_emap, filename);
 }
 
 void GameState::update()
@@ -32,7 +31,10 @@ void GameState::update()
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().push(new PauseState(getSharedResources()), false);
 	else
-		_emap.update();
+		_share.getMap()->update();
+
+	//TODO Call this when the game is finished
+//	StateMachine::getInstance().push(new TransitionEndGameState(_share), false);
 }
 
 void GameState::load()
@@ -41,7 +43,7 @@ void GameState::load()
 
 void GameState::updateRender()
 {
-	_emap.updateRender();
+	_share.getMap()->updateRender();
 	AState::updateRender();
 }
 

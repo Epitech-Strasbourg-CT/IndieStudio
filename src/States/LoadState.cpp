@@ -70,7 +70,8 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	}}
 };
 
-LoadState::LoadState(AStateShare &_share) : AState(_share), AMenuSound(), _idx(0)
+LoadState::LoadState(AStateShare &_share) : AState(_share),
+AMenuSound(), _idx(0)
 {
 }
 
@@ -130,9 +131,11 @@ void LoadState::unload()
 
 void LoadState::update()
 {
+	_share.getFunc("rotateMenu")();
+	AState::update();
+
 	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
-	AState::update();
 }
 
 void LoadState::draw()

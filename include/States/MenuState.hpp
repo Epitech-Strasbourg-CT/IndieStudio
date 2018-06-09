@@ -55,7 +55,6 @@ public:
 private:
 	std::vector<irr::gui::IGUIButton *> _buttons;
 	static const std::map<MenuActions , ButtonsDesc> _descs;
-	SphericalCoordinate _camRotate;
 
 //	static const std::unordered_map<int,//irr::s32,
 //	std::function<void(irr::s32, MenuState *)>> _assets;

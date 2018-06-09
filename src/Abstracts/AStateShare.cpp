@@ -9,7 +9,8 @@
 #include "../../include/Abstracts/AStateShare.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 
-AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _stateIA(4), _map()
+AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _stateIA(4), _map(),
+_sphereCoor(), _func()
 {
 	EventReceiver::getInstance().registerEvent(0, irr::EET_KEY_INPUT_EVENT,
         [this](const irr::SEvent &ev) {
@@ -140,3 +141,60 @@ irr::core::vector3df AStateShare::getCoor(std::string const &name)
 	return coor;
 }
 
+bool AStateShare::addSphereCoor(std::string const &name, SphericalCoordinate const *coor)
+{
+	bool ret = true;
+
+	if (_sphereCoor.count(name) != 0)
+		ret = false;
+	else
+		_sphereCoor[name] = coor;
+	return ret;
+}
+
+bool AStateShare::delSphereCoor(std::string const &name)
+{
+	bool ret = true;
+
+	if (_sphereCoor.count(name) <= 0)
+		ret = false;
+	else
+		_sphereCoor.erase(name);
+	return ret;
+}
+
+SphericalCoordinate const *AStateShare::getSphereCoor(std::string const &name)
+{
+	if (_sphereCoor.count(name) <= 0)
+		throw std::runtime_error("Invalid get sphere coordinate request");
+	return _sphereCoor[name];
+}
+
+bool AStateShare::addFunc(std::string const &name, std::function<void()> func)
+{
+	bool ret = true;
+
+	if (_func.count(name) != 0)
+		ret = false;
+	else
+		_func[name] = func;
+	return ret;
+}
+
+bool AStateShare::delFunc(std::string const &name)
+{
+	bool ret = true;
+
+	if (_func.count(name) <= 0)
+		ret = false;
+	else
+		_func.erase(name);
+	return ret;
+}
+
+std::function<void()> AStateShare::getFunc(std::string const &name)
+{
+	if (_func.count(name) <= 0)
+		throw std::runtime_error("Invalid get func request");
+	return _func[name];
+}

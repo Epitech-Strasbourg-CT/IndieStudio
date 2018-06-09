@@ -26,7 +26,7 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 		            [](MenuState *self) {
 		            	auto &sm = StateMachine::getInstance();
 		            	auto &res = self->getSharedResources();
-		            	self->getSharedResources().addCoor("menu", self->_camRotate.calc());
+		            	self->getSharedResources().addCoor("menu", self->_share.getSphereCoor("camRotateMenu")->calc());
 		            	sm.push(new AIChooseState(res), false);
 		            }
 	            }},
@@ -34,7 +34,6 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 		            {610, 440, 1310, 490},
 		            "load",
 		            [](MenuState *self) {
-			            //StateMachine::getInstance().pop();
 				    auto &sm = StateMachine::getInstance();
 				    auto &res = self->getSharedResources();
 				    sm.push(new LoadState(res), false);
@@ -58,10 +57,7 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 	            }},
 };
 
-MenuState::MenuState(AStateShare &_share) : AState(_share), AMenuSound(),
-_camRotate(
-static_cast<irr::f32>(2.3),
-static_cast<irr::f32>(3.14159265 / 3.0), 700, {450, 0, 100})
+MenuState::MenuState(AStateShare &_share) : AState(_share), AMenuSound()
 {
 	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::MENU, true));
 }
@@ -155,14 +151,5 @@ void MenuState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 
 void MenuState::update()
 {
-	auto step = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
-	irr::f32 min = static_cast<irr::f32>(2.7);
-	irr::f32 max = static_cast<irr::f32>(4.4);
-	static irr::f32 inc = 0;
-	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
-
-	cam.setTarget({450, 0, 100});
-	inc += step;
-	_camRotate.setInc(static_cast<irr::f32>((sinf(inc) - -1.0) * (max - min) / (1.0 - -1.0) + min));
-	cam.setPosition(_camRotate.calc());
+	_share.getFunc("rotateMenu")();
 }

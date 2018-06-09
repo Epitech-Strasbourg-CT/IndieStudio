@@ -14,11 +14,15 @@
 
 class TransitionToGameState : public AState {
 public:
-	TransitionToGameState(AStateShare &_share);
+	TransitionToGameState(AStateShare &_share, const std::string &str = "");
 	void update() override;
+	void transitionPop() override;
+	void transitionPush(bool keep) override;
+	void updateRender() override;
 
 private:
 	Traveling _trav;
+	EntitiesMap _emap;
 };
 
 #endif /* !BOMBERMAN_TRANSITIONTOGAMESTATE_HPP */

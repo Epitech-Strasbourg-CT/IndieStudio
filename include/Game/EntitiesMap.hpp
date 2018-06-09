@@ -31,6 +31,7 @@ public:
 	bool erase(AEntity *e);
 	bool moveTo(AEntity *e, const irr::core::vector2di &v);
 	bool canMoveTo(const irr::core::vector2di &v);
+	bool canInsertTo(const irr::core::vector2di &v);
 
 	EMap &getMap();
 
@@ -68,7 +69,6 @@ private:
 
 	static const std::vector<std::string>
 	_mapTemplate;
-	bool canInsertTo(const irr::core::vector2di &v);
 	static const std::unordered_map<char, std::function<AEntity *(
 		EntitiesMap &, const std::vector<int> &
 	)>> _generationMap;

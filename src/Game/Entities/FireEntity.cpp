@@ -30,6 +30,7 @@ void FireEntity::spread(EntitiesMap *map)
 {
 	if (_spreadSize == 0 || _spreaded)
 		return;
+	//std::cout << "SPREAD " << " " << this->_spreadDir.X << " "<< this->_spreadDir.Y<< std::endl;
 	auto pos = getPosition();
 	if (_spreadDir.X == 0 && _spreadDir.Y == 0) {
 		map->insert(new FireEntity({0, 1}, _spreadSize - 1), pos + irr::core::vector2di(0, 1));
@@ -57,6 +58,7 @@ void FireEntity::collide(AEntity &entity)
 			[this](AEntity *aEntity) {
 				auto pot = dynamic_cast<PotEntity *>(aEntity);
 				pot->breakMe();
+				//std::cout << "COLLIDE " << this << " " << this->_spreadDir.X << " "<< this->_spreadDir.Y << std::endl;
 				this->_spreaded = true;
 			}
 		}
