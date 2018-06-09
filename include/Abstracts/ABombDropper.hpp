@@ -15,7 +15,7 @@
 class ABombDropper {
 public:
 	ABombDropper();
-	virtual ~ABombDropper() = default;
+	virtual ~ABombDropper();
 	virtual void update(EntitiesMap *);
 	void upMaxBomb();
 	void upFireRange();

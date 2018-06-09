@@ -31,6 +31,7 @@ public:
 	void dump (std::ostream &s) const;
 	void load(std::istream &s);
 	void kill();
+	virtual ~PlayerEntity();
 private:
 	struct serialize {
 	};

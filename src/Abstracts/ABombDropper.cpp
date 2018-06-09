@@ -72,3 +72,9 @@ void ABombDropper::upMaxBomb()
 {
 	_maxBomb += 1;
 }
+
+ABombDropper::~ABombDropper()
+{
+	for (auto &n : _watchingBombs)
+		n->setAutonomous(true);
+}

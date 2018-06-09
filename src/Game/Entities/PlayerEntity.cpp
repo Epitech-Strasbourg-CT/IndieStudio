@@ -50,8 +50,8 @@ void PlayerEntity::update(EntitiesMap *map)
 	Controllable::update();
 	ABombDropper::update(map);
 	AEntity::update(map);
-//	if (!_alive)
-//		map->erase(this);
+	if (!_alive)
+		map->erase(this);
 }
 
 void PlayerEntity::updateRenderPosition()
@@ -152,4 +152,9 @@ void PlayerEntity::load(std::istream &s)
 void PlayerEntity::kill()
 {
 	_alive = false;
+}
+
+PlayerEntity::~PlayerEntity()
+{
+	cleanAnimationNodes();
 }
