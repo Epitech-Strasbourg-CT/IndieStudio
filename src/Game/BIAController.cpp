@@ -114,7 +114,6 @@ std::vector<ControlName> BIAController::_genBestEscapeMoves()
 	std::vector<ControlName> allMoves = {MOVE_UP, NONE, MOVE_LEFT, MOVE_RIGHT,
 		MOVE_DOWN};
 	std::vector<ControlName> res;
-
 	while (!allMoves.empty()) {
 		auto i = rand() % allMoves.size();
 		if (_map.canMoveTo(_getFuturePos(allMoves[i])) &&
