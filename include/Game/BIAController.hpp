@@ -21,7 +21,8 @@ private:
 	void _fillTargetQueue();
 	void _goToTarget();
 	bool _onTarget();
-	bool _isDanger(int x, int y);
+	bool _isInBombRadius(irr::core::vector2di pos, irr::core::vector2di dir, int r);
+	bool _isSafe(irr::core::vector2di pos);
 	bool _move(ControlName_e c);
 	ControlName_e _bestEscape();
 

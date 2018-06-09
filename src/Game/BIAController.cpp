@@ -51,7 +51,7 @@ bool BIAController::_move(ControlName_e c)
 		{MOVE_UP, {0, -1}}, {MOVE_LEFT, {1, 0}}, {MOVE_RIGHT, {-1, 0}}};
 	auto realX = _p->AEntity::getPosX() + a[c][0];
 	auto realY = _p->AEntity::getPosY() + a[c][1];
-	if (!_map.canMoveTo({realX, realY}))
+	if (!_map.canMoveTo({realX, realY}) || !_isSafe({realX, realY}))
 		return false;
 	_targetPos[0] = realX;
 	_targetPos[1] = realY;
@@ -69,13 +69,36 @@ void BIAController::_goToTarget()
 	}
 }
 
-bool BIAController::_isDanger(int x, int y)
+bool BIAController::_isInBombRadius(irr::core::vector2di pos, irr::core::vector2di dir, int r)
 {
-	for (auto &e : _map.getMap()[y][x]) {
-		if (e->getType() == "bomb")
-			return true;
+	if (r < 0)
+		return false;
+	if (dir.X == 0 && dir.Y == 0) {
+		return (_isInBombRadius(pos, {1, 0}, 5) ||
+			_isInBombRadius(pos, {-1, 0}, 5) ||
+			_isInBombRadius(pos, {0, 1}, 5) ||
+			_isInBombRadius(pos, {0, -1}, 5));
 	}
-	return false;
+	if (pos.Y >= 0 && pos.X >= 0 && _map.getMap().size() > pos.Y &&
+		_map.getMap()[pos.Y].size() > pos.X)
+		for (auto &e : _map.getMap()[pos.Y][pos.X]) {
+			if (e->getType() == "bomb")
+				return true;
+		}
+	pos.X += dir.X;
+	pos.Y += dir.Y;
+	return _isInBombRadius(pos, dir, r - 1);
+}
+
+bool BIAController::_isSafe(irr::core::vector2di pos)
+{
+	if (pos.Y >= 0 && pos.X >= 0 && _map.getMap().size() > pos.Y &&
+		_map.getMap()[pos.Y].size() > pos.X)
+		for (auto &e : _map.getMap()[pos.Y][pos.X]) {
+			if (e->getType() == "fire")
+				return false;
+		}
+	return true;
 }
 
 ControlName_e BIAController::_bestEscape()
@@ -87,7 +110,7 @@ void BIAController::_fillTargetQueue()
 {
 	int x = _p->AEntity::getPosX();
 	int y = _p->AEntity::getPosY();
-	if (_isDanger(x, y)) {
+	if (_isInBombRadius({x, y}, {0, 0}, 5)) {
 		std::cout << "in danger" << std::endl;
 		_targetQueue.push(_bestEscape());
 	}
