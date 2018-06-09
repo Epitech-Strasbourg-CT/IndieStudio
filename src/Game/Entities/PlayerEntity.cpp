@@ -156,7 +156,7 @@ void PlayerEntity::dump(std::ostream &s) const
 		_alive, _controller->getType()};
 	if (_controller)
 		ser.ctType = _controller->getType();
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	memcpy(se.get(), &ser, sizeof(ser));
 	s.write(se.get(), sizeof(ser));
 }
@@ -166,7 +166,7 @@ void PlayerEntity::load(std::istream &s)
 	AEntity::load(s);
 	Controllable::load(s);
 	struct PlayerEntity::serialize ser;
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
 	_playerSkinId = ser.playerSkinId;
