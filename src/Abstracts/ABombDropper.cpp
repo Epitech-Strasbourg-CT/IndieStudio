@@ -9,7 +9,7 @@
 ABombDropper::ABombDropper()
 : _toDrop(),
 _maxBomb(3),
-_range(0),
+_range(1),
 _currentBomb(0),
 _watchingBombs()
 {
