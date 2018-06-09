@@ -10,6 +10,7 @@
 
 #include <irrlicht.h>
 #include <unordered_map>
+#include "EntitiesMap.hpp"
 
 class Controllable;
 
@@ -28,13 +29,19 @@ enum ControlType {
 	KEY_RELEASED,
 };
 
+enum ControllerType {
+	IA = 0,
+	PLAYER = 1,
+};
+
 using ControlPair = std::pair<ControlName, ControlType>;
 
 class AController {
 public:
-	virtual void updateInputs();
+	virtual void updateInputs(EntitiesMap *map);
 	virtual ~AController();
 	static void bindEntityToController(AController &, Controllable &);
+	virtual ControllerType getType() const = 0;
 private:
 	void registerControllable(Controllable *controllable);
 protected:

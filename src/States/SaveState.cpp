@@ -20,7 +20,6 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 		"cancel",
 		[](SaveState *self) {
 			self->externalEventsClean();
-			std::cout << "POP A" << std::endl;
 			StateMachine::getInstance().pop();
 			return false;
 		}
@@ -33,7 +32,8 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 			SaveManager sm;
 			std::wstring wstr(self->_name->getText());
 			std::string str(wstr.begin(), wstr.end());
-			sm.save(*self->_share.getMap(), ".save/" + str + ".dat");
+			std::string final(".save/" + str + ".dat");
+			sm.save(*self->_share.getMap(), final);
 			StateMachine::getInstance().pop();
 			return false;
 		}
@@ -75,7 +75,6 @@ void SaveState::loadButtons()
 	}
 
 	std::wstring wname(sName.begin(), sName.end());
-	std::cout << sName.c_str() << std::endl;
 	_name = gui->addButton({610, 465, 1310, 515}, nullptr,
 		600 + SAVE_BUTTON_NUMBER, wname.c_str());
 	_name->setOverrideFont(_share.getFont());
@@ -109,6 +108,7 @@ void SaveState::update()
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 	AState::update();
+	AssetsPool::getInstance().cleanSound();
 }
 
 void SaveState::draw()

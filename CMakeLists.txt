@@ -42,6 +42,8 @@ add_executable(bomberman
         include/Game/EntitiesMap.hpp
         src/Game/EntityFactory.cpp
         include/Game/EntityFactory.hpp
+        src/Game/ControllerFactory.cpp
+        include/Game/ControllerFactory.hpp
         src/Game/SaveManager.cpp
         include/Game/SaveManager.hpp
 
@@ -145,7 +147,10 @@ endif(WIN32)
 
 set(IRRKLANG_DIR ./libs/irrklang)
 if(UNIX)
-        add_custom_command(TARGET bomberman PRE_BUILD
+    install(FILES bin/bomberman bin/ikpMP3.so bin/ikpFlac.so DESTINATION /usr/local/bin)
+    install(DIRECTORY bin/assets DESTINATION /usr/local/)
+
+    add_custom_command(TARGET bomberman PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
                 ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/ikpFlac.so
                 ${PROJECT_SOURCE_DIR}/bin/ikpFlac.so)

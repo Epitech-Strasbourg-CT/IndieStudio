@@ -19,7 +19,10 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		"more",
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
-			manager.setMasterVolume(manager.getMasterVolume() + (irrklang::ik_f32 )0.1);
+			manager.setMasterVolume(manager.getMasterVolume() +
+				                        static_cast<irrklang::ik_f32 >(0.1));
+			self->_masterT->setText(std::wstring(L"Master: " + std::to_wstring(
+				static_cast<int>(manager.getMasterVolume() * 100.0))).c_str());
 			return true;
 		}
 	}},
@@ -28,7 +31,9 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		"less",
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
-			manager.setMasterVolume(manager.getMasterVolume() - (irrklang::ik_f32 )0.1);
+			manager.setMasterVolume(manager.getMasterVolume() - static_cast<irrklang::ik_f32 >(0.1));
+			self->_masterT->setText(std::wstring(L"Master: " + std::to_wstring(
+				static_cast<int>(manager.getMasterVolume() * 100.0))).c_str());
 			return true;
 		}
 	}},
@@ -37,7 +42,9 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		"more",
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
-			manager.setMusicVolume(manager.getMusicVolume() + (irrklang::ik_f32 )0.1);
+			manager.setMusicVolume(manager.getMusicVolume() + static_cast<irrklang::ik_f32 >(0.1));
+			self->_musicT->setText(std::wstring(L"Music: " + std::to_wstring(
+				static_cast<int>(manager.getMusicVolume() * 100.0))).c_str());
 			return true;
 		}
 	}},
@@ -46,7 +53,9 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		"less",
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
-			manager.setMusicVolume(manager.getMusicVolume() - (irrklang::ik_f32 )0.1);
+			manager.setMusicVolume(manager.getMusicVolume() - static_cast<irrklang::ik_f32 >(0.1));
+			self->_musicT->setText(std::wstring(L"Music: " + std::to_wstring(
+				static_cast<int>(manager.getMusicVolume() * 100.0))).c_str());
 			return true;
 		}
 	}},
@@ -55,7 +64,9 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		"more",
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
-			manager.setEffectsVolume(manager.getEffectsVolume() + (irrklang::ik_f32 )0.1);
+			manager.setEffectsVolume(manager.getEffectsVolume() + static_cast<irrklang::ik_f32 >(0.1));
+			self->_sfxT->setText(std::wstring(L"SFX: " + std::to_wstring(
+				static_cast<int>(manager.getEffectsVolume() * 100.0))).c_str());
 			return true;
 		}
 	}},
@@ -64,13 +75,15 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		"less",
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
-			manager.setEffectsVolume(manager.getEffectsVolume() - (irrklang::ik_f32 )0.1);
+			manager.setEffectsVolume(manager.getEffectsVolume() - static_cast<irrklang::ik_f32 >(0.1));
+			self->_sfxT->setText(std::wstring(L"SFX: " + std::to_wstring(
+				static_cast<int>(manager.getEffectsVolume() * 100.0))).c_str());
 			return true;
 		}
 	}},
 	{VOL_APPLY,    {
-		{1220, 850,  1520, 900},
-		"save",
+		{1370, 850,  1520, 900},
+		"validate",
 		[](SettingsState *self) {
 			self->externalEventsClean();
 			StateMachine::getInstance().pop();
@@ -123,6 +136,7 @@ void SettingsState::unload()
 void SettingsState::update()
 {
 	_share.getFunc("rotateMenu")();
+	AssetsPool::getInstance().cleanSound();
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 }
@@ -145,11 +159,15 @@ void SettingsState::unloadButtons()
 {
 	for (auto &n : _buttons)
 		n->remove();
+	_masterT->remove();
+	_musicT->remove();
+	_sfxT->remove();
 }
 
 void SettingsState::loadButtons()
 {
 	auto gui = IrrManager::getInstance().getGuienv();
+	auto &manager = IrrManager::getInstance();
 	auto &er = EventReceiver::getInstance();
 	auto &ap = AssetsPool::getInstance();
 
@@ -160,7 +178,25 @@ void SettingsState::loadButtons()
 		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
 		_buttons.push_back(b);
 	}
+	_masterT = manager.getGuienv()->addStaticText(std::wstring(L"Master: " + std::to_wstring(
+		static_cast<int>(manager.getMasterVolume() * 100.0))).c_str(), {860, 250, 1160, 300}, false,true,
+	                                              nullptr, -1, true);
+	_musicT = manager.getGuienv()->addStaticText(std::wstring(L"Music: " + std::to_wstring(
+		static_cast<int>(manager.getMusicVolume() * 100.0))).c_str(), {860, 350, 1160, 400}, false,true,
+	                                             nullptr, -1, true);
+	_sfxT = manager.getGuienv()->addStaticText(std::wstring(L"SFX: " + std::to_wstring(
+		static_cast<int>(manager.getEffectsVolume() * 100.0))).c_str(), {860, 450, 1160, 500}, false,true,
+	                                           nullptr, -1, true);
 
+	_masterT->setBackgroundColor({190, 127, 127, 127});
+	_musicT->setBackgroundColor({190, 127, 127, 127});
+	_sfxT->setBackgroundColor({190, 127, 127, 127});
+	_masterT->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
+	_musicT->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
+	_sfxT->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
+	_masterT->setOverrideFont(_share.getFont());
+	_musicT->setOverrideFont(_share.getFont());
+	_sfxT->setOverrideFont(_share.getFont());
 }
 
 bool SettingsState::applyEventButton(const irr::SEvent &ev, SettingsActions id)
@@ -174,6 +210,13 @@ bool SettingsState::applyEventButton(const irr::SEvent &ev, SettingsActions id)
 		case irr::gui::EGET_BUTTON_CLICKED:
 			playSelect();
 			return SettingsState::_descs.at(id).fct(this);
+		case irr::gui::EGET_ELEMENT_HOVERED:
+			playCursor();
+			b->setImage(ap.loadTexture(hover_name));
+			break;
+		case irr::gui::EGET_ELEMENT_LEFT:
+			b->setImage(ap.loadTexture(name));
+			break;
 		default:
 			break;
 	}

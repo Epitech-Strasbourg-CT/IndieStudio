@@ -13,5 +13,5 @@ InvertBonus::InvertBonus() : ABonusEntity("invert_bonus", YELLOW)
 
 void InvertBonus::playerChanging(PlayerEntity *entity)
 {
-	entity->setReverse();
+	entity->reverseDir();
 }

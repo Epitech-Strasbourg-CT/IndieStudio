@@ -13,15 +13,16 @@
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Game/Entities/PlayerEntity.hpp"
 
-BIAController::BIAController(EntitiesMap &map, size_t id) : _alreadyMove(false),
-	_id(id), _targetPos(0, 0), _spawnPos(0, 0), _map(map)
+BIAController::BIAController(size_t id) : _alreadyMove(false),
+	_id(id), _targetPos(0, 0), _spawnPos(0, 0)
 {
 }
 
-void BIAController::updateInputs()
+void BIAController::updateInputs(EntitiesMap *map)
 {
+	_map = map;
 	_p = dynamic_cast<PlayerEntity *>(_controllable);
-	if (!_p)
+	if (!_p || !_map)
 		return;
 	if (!_alreadyMove && _targetPos.X == 0 && _targetPos.Y == 0) {
 		_alreadyMove = true;
@@ -85,9 +86,9 @@ int BIAController::_getDangerLevel(irr::core::vector2di pos,
 			_getDangerLevel(pos, {0, 1}, 6) +
 			_getDangerLevel(pos, {0, -1}, 6));
 	}
-	if (pos.Y >= 0 && pos.X >= 0 && _map.getMap().size() > pos.Y &&
-		_map.getMap()[pos.Y].size() > pos.X)
-		for (auto &e : _map.getMap()[pos.Y][pos.X]) {
+	if (pos.Y >= 0 && pos.X >= 0 && _map->getMap().size() > pos.Y &&
+		_map->getMap()[pos.Y].size() > pos.X)
+		for (auto &e : _map->getMap()[pos.Y][pos.X]) {
 			if (e->getType() == "bomb")
 				return r;
 			else if (e->getType() == "block" ||
@@ -101,9 +102,9 @@ int BIAController::_getDangerLevel(irr::core::vector2di pos,
 
 bool BIAController::_isSafe(irr::core::vector2di pos)
 {
-	if (pos.Y >= 0 && pos.X >= 0 && _map.getMap().size() > pos.Y &&
-		_map.getMap()[pos.Y].size() > pos.X)
-		for (auto &e : _map.getMap()[pos.Y][pos.X]) {
+	if (pos.Y >= 0 && pos.X >= 0 && _map->getMap().size() > pos.Y &&
+		_map->getMap()[pos.Y].size() > pos.X)
+		for (auto &e : _map->getMap()[pos.Y][pos.X]) {
 			if (e->getType() == "fire")
 				return false;
 		}
@@ -117,7 +118,7 @@ std::vector<ControlName> BIAController::_genBestEscapeMoves()
 	std::vector<ControlName> res;
 	while (!allMoves.empty()) {
 		auto i = rand() % allMoves.size();
-		if (_map.canMoveTo(_getFuturePos(allMoves[i])) &&
+		if (_map->canMoveTo(_getFuturePos(allMoves[i])) &&
 			_isSafe(_getFuturePos(allMoves[i]))) {
 			res.push_back(allMoves[i]);
 		}
@@ -129,17 +130,17 @@ std::vector<ControlName> BIAController::_genBestEscapeMoves()
 ControlName BIAController::_bestEscape()
 {
 	std::vector<ControlName> moves = _genBestEscapeMoves();
-	std::cout << "[";
-	for (auto &e : moves)
-		std::cout << e << ",";
-	std::cout << "]" << std::endl;
+//	std::cout << "[";
+//	for (auto &e : moves)
+//		std::cout << e << ",";
+//	std::cout << "]" << std::endl;
 	if (moves.empty())
 		return NONE;
-	std::cout << "[";
-	for (auto &e : moves)
-		std::cout << _getDangerLevel(_getFuturePos(e), {0, 0}, 0)
-			<< ",";
-	std::cout << "]" << std::endl;
+//	std::cout << "[";
+//	for (auto &e : moves)
+//		std::cout << _getDangerLevel(_getFuturePos(e), {0, 0}, 0)
+//			<< ",";
+//	std::cout << "]" << std::endl;
 	int bestMov = 0;
 	int bestSafety = _getDangerLevel(_getFuturePos(moves[0]), {0, 0}, 0);
 
@@ -154,13 +155,13 @@ ControlName BIAController::_bestEscape()
 	}
 	auto x = _p->AEntity::getPosX();
 	auto y = _p->AEntity::getPosY();
-	std::cout << "Pending: " << _targetQueue.size() << std::endl;
-	std::cout << "Spawn pos: " << _spawnPos.X << "," << _spawnPos.Y << std::endl;
-	std::cout << "On pos: " << x << "," << y << std::endl;
-	std::cout << "Current danger level: "
-		<< _getDangerLevel(_getFuturePos(NONE), {0, 0}, 0) << std::endl;
-	std::cout << "Forecast danger level: " << bestSafety << std::endl;
-	std::cout << "Forecast move: " << moves[bestMov] << std::endl;
+//	std::cout << "Pending: " << _targetQueue.size() << std::endl;
+//	std::cout << "Spawn pos: " << _spawnPos.X << "," << _spawnPos.Y << std::endl;
+//	std::cout << "On pos: " << x << "," << y << std::endl;
+//	std::cout << "Current danger level: "
+//		<< _getDangerLevel(_getFuturePos(NONE), {0, 0}, 0) << std::endl;
+//	std::cout << "Forecast danger level: " << bestSafety << std::endl;
+//	std::cout << "Forecast move: " << moves[bestMov] << std::endl;
 	return moves[bestMov];
 }
 
@@ -170,7 +171,7 @@ void BIAController::_fillTargetQueue()
 	while (!_targetQueue.empty())
 		_targetQueue.pop();
 	_targetQueue.push(c);
-	std::cout << std::endl;
+//	std::cout << std::endl;
 }
 
 bool BIAController::_bomb()
@@ -183,4 +184,9 @@ bool BIAController::_bomb()
 		return false;
 	_controllable->callBind(DROP_BOMB, KEY_PRESSED);
 	return true;
+}
+
+ControllerType BIAController::getType() const
+{
+	return IA;
 }

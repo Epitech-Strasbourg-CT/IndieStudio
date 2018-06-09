@@ -32,6 +32,7 @@ void GameState::update()
 		StateMachine::getInstance().push(new PauseState(getSharedResources()), false);
 	else
 		_share.getMap()->update();
+	AssetsPool::getInstance().cleanSound();
 
 	//TODO Call this when the game is finished
 //	StateMachine::getInstance().push(new TransitionEndGameState(_share), false);
