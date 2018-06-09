@@ -18,13 +18,21 @@ public:
 	void setAutonomous(bool _utonomous);
 	void explode(EntitiesMap *map);
 	void update(EntitiesMap *map) override;
+	void dump (std::ostream &s) const;
+	void load(std::istream &s);
 	virtual ~BombEntity();
 	void detonate();
 	void setRange(size_t _range);
 private:
-	size_t _start;
-	size_t _timeout;
+	struct serialize {
+		size_t range;
+		size_t updateCycle;
+		bool exploded;
+		bool autonomous;
+	};
+
 	size_t _range;
+	size_t _updateCycle;
 	bool _exploded;
 	bool _autonomous;
 };

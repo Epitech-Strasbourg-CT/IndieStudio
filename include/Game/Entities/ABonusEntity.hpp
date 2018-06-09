@@ -22,7 +22,7 @@ enum RupeeColor{
 
 class ABonusEntity : public AEntity {
 public:
-	ABonusEntity(RupeeColor color);
+	ABonusEntity(RupeeColor color = GREEN);
 	virtual ~ABonusEntity();
 
 	void collide(AEntity &entity) override;

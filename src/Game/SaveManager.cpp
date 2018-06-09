@@ -26,7 +26,7 @@ void SaveManager::load(EntitiesMap &pool, const std::string &filename)
 		throw std::runtime_error("Can't load the Entities");
 	std::string name;
 	EntityFactory fact;
-	std::cout << std::endl;
+	std::cout << "LOADING" << std::endl;
 	while (std::getline(file, name, '\0')) {
 		std::cout << name << std::endl;
 		auto e = fact.createEntity(name);

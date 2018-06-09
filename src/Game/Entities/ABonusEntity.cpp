@@ -9,7 +9,7 @@
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Game/Entities/FireEntity.hpp"
 
-ABonusEntity::ABonusEntity(RupeeColor color): AEntity("Bonus"), _destroyed(false)
+ABonusEntity::ABonusEntity(RupeeColor color): AEntity("bonus"), _destroyed(false)
 {
 	std::cout << "Construct" << std::endl;
 	auto &im = IrrManager::getInstance();

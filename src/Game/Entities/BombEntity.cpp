@@ -14,9 +14,8 @@
 
 BombEntity::BombEntity()
 : AEntity("bomb"),
-_start(),
-_timeout(3000),
 _range(1),
+_updateCycle(180),
 _exploded(false),
 _autonomous(false)
 {
@@ -28,7 +27,6 @@ _autonomous(false)
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialType(irr::video::EMT_SOLID);
 	_node->setScale({2.5, 2.5, 2.5});
-	_start = Time::timestamp();
 }
 
 bool BombEntity::hasExploded() const
@@ -44,14 +42,38 @@ void BombEntity::setAutonomous(bool _autonomous)
 
 void BombEntity::update(EntitiesMap *map)
 {
-	if (Time::timestamp() > _start + _timeout)
+	if (_updateCycle == 0)
 		explode(map);
 	AEntity::update(map);
+	_updateCycle--;
+}
+
+void BombEntity::dump(std::ostream &s) const
+{
+	AEntity::dump(s);
+	struct BombEntity::serialize ser = {_range, _updateCycle, false,
+		true};
+	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	memcpy(se.get(), &ser, sizeof(ser));
+	s.write(se.get(), sizeof(ser));
+}
+
+void BombEntity::load(std::istream &s)
+{
+	AEntity::load(s);
+	struct BombEntity::serialize ser;
+	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	s.read(se.get(), sizeof(ser));
+	memcpy(&ser, se.get(), sizeof(ser));
+	_range = ser.range;
+	_updateCycle = ser.updateCycle;
+	_exploded = ser.exploded;
+	_autonomous = ser.autonomous;
 }
 
 void  BombEntity::detonate()
 {
-	_timeout = 0;
+	_updateCycle = 0;
 }
 
 void BombEntity::explode(EntitiesMap *map)
