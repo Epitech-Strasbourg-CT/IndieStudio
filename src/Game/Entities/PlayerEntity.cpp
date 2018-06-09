@@ -12,7 +12,7 @@
 
 PlayerEntity::PlayerEntity(unsigned playerSkinId)
 : ABombDropper(), AAnimatedEntity("player"), AMovable(), Controllable(),
-_old(), _look(), _alive(true)
+_old(), _look(), _alive(true), _reverse(1), _reverseCycles(0)
 {
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
@@ -35,16 +35,16 @@ _old(), _look(), _alive(true)
 void PlayerEntity::addAllEvent()
 {
 	addEvent(MOVE_UP, KEY_DOWN, [this]() {
-		this->dirBottom(1);
+		this->dirBottom(1 * this->_reverse);
 	});
 	addEvent(MOVE_DOWN, KEY_DOWN, [this]() {
-		this->dirTop(1);
+		this->dirTop(1 * this->_reverse);
 	});
 	addEvent(MOVE_LEFT, KEY_DOWN, [this]() {
-		this->dirRight(1);
+		this->dirRight(1 * this->_reverse);
 	});
 	addEvent(MOVE_RIGHT, KEY_DOWN, [this]() {
-		this->dirLeft(1);
+		this->dirLeft(1 * this->_reverse);
 	});
 	addEvent(DROP_BOMB, KEY_PRESSED, [this]() {
 		this->dropBomb(AEntity::getPosX(), AEntity::getPosY());
@@ -59,6 +59,10 @@ void PlayerEntity::update(EntitiesMap *map)
 	AEntity::update(map);
 	if (!_alive)
 		map->erase(this);
+	if (_reverseCycles == 0 && _reverse == -1)
+		_reverse = 1;
+	else if (_reverseCycles > 0)
+		_reverseCycles--;
 }
 
 void PlayerEntity::updateRenderPosition()
@@ -164,4 +168,10 @@ void PlayerEntity::kill()
 PlayerEntity::~PlayerEntity()
 {
 	cleanAnimationNodes();
+}
+
+void PlayerEntity::reverseDir()
+{
+	_reverseCycles = 180;
+	_reverse = -1;
 }
