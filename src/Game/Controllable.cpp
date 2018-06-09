@@ -50,7 +50,7 @@ void Controllable::saveController(AController *controller)
 void Controllable::dump(std::ostream &s) const
 {
 	struct Controllable::serialize ser = {};
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	memcpy(se.get(), &ser, sizeof(ser));
 	s.write(se.get(), sizeof(ser));
 }
@@ -58,7 +58,7 @@ void Controllable::dump(std::ostream &s) const
 void Controllable::load(std::istream &s)
 {
 	struct Controllable::serialize ser;
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
 }
