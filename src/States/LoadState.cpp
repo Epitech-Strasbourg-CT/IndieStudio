@@ -135,7 +135,7 @@ void LoadState::loadButtons()
 	hFind = FindFirstFile(path.c_str(), &data);
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
-			_saves.emplace_back(std::string(data.cFileName));
+			_saves.emplace_back(".save/" + std::string(data.cFileName));
 		} while (FindNextFile(hFind, &data));
 		FindClose(hFind);
 	}
