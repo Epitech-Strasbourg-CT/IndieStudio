@@ -14,7 +14,6 @@ PlayerEntity::PlayerEntity(unsigned playerSkinId)
 : ABombDropper(), AAnimatedEntity("player"), AMovable(), Controllable(),
 _old(), _look(1, 0)
 {
-	std::cout << _insertable << std::endl;
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
 	AMovable::setPosition(

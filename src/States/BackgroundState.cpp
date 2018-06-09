@@ -93,7 +93,10 @@ void BackgroundState::transitionPop()
 void BackgroundState::transitionPush(bool keep)
 {
 	AState::transitionPush(keep);
-	StateMachine::getInstance().push(new MenuState(_share), true);
+//	StateMachine::getInstance().push(new MenuState(_share), true);
+	IrrManager::getInstance().getSmgr()->addCameraSceneNode(0, {690, 100, 715}, {690, 60, 690});
+	_share.setIAState({0, 1, 1, 1});
+	StateMachine::getInstance().push(new GameState(_share), true);
 }
 
 void BackgroundState::loadMap()

@@ -69,7 +69,9 @@ private:
 	static const std::vector<std::string>
 	_mapTemplate;
 	bool canInsertTo(const irr::core::vector2di &v);
-	static const std::unordered_map<char, std::function<AEntity *(const std::vector<int> &)>> _generationMap;
+	static const std::unordered_map<char, std::function<AEntity *(
+		EntitiesMap &, const std::vector<int> &
+	)>> _generationMap;
 };
 
 
