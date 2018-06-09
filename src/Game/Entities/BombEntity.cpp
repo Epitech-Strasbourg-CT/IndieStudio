@@ -13,7 +13,7 @@
 #include "../../../include/Game/Entities/FireEntity.hpp"
 
 BombEntity::BombEntity()
-: AEntity("Bomb"),
+: AEntity("bomb"),
 _start(),
 _timeout(3000),
 _exploded(false),

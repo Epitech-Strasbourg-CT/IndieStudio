@@ -21,7 +21,9 @@ private:
 	void _fillTargetQueue();
 	void _goToTarget();
 	bool _onTarget();
+	bool _isDanger(int x, int y);
 	bool _move(ControlName_e c);
+	ControlName_e _bestEscape();
 
 	size_t _id;
 	ControlName_e _targetMove;
