@@ -16,6 +16,7 @@
 class AIChooseState : public AState, public AMenuSound {
 public:
 	AIChooseState(AStateShare &_share);
+	virtual ~AIChooseState();
 	void update();
 
 	void load() override;
@@ -31,13 +32,22 @@ public:
 	struct BouttonsDesc {
 		irr::core::rect<irr::s32> pos;
 		std::string name;
-		std::function<void(AIChooseState *)> fct;
+		std::function<bool(AIChooseState *)> fct;
 	};
 	void unload() override;
 
+	void eventsSetup();
+	void eventsClean();
+	void externalEventsClean();
+
 private:
 	void switchBtnState(irr::gui::IGUIButton *btn, int id);
-	void applyEventBoutton(const irr::SEvent &ev, MenuActions id);
+	bool applyEventButton(const irr::SEvent &ev, MenuActions id);
+
+public:
+	const std::string getName() const override;
+
+private:
 	std::vector<irr::gui::IGUIButton *> _bouttons;
 	static const std::map<MenuActions, BouttonsDesc> _descs;
 	Traveling _trav;
@@ -52,6 +62,7 @@ private:
 	void unloadBouttons();
 
 	void moveCamToStartPoint(irr::scene::ICameraSceneNode &node);
+	bool _eventsActivate;
 };
 
 

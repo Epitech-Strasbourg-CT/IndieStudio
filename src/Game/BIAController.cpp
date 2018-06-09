@@ -26,7 +26,6 @@ void BIAController::updateInputs()
 	if (!_alreadyMove && _targetPos[0] == 0 && _targetPos[1] == 0) {
 		_alreadyMove = true;
 		_targetPos = {_p->AEntity::getPosX(), _p->AEntity::getPosY()};
-		_controllable->callBind(DROP_BOMB, KEY_PRESSED);
 	}
 	if (rand() % 200 == 0)
 		_controllable->callBind(DROP_BOMB, KEY_PRESSED);

@@ -13,7 +13,8 @@
 
 class BKeyboardController : public AController {
 public:
-	BKeyboardController(size_t id);
+	explicit BKeyboardController(size_t id);
+	virtual ~BKeyboardController();
 	void registerBind(irr::EKEY_CODE code, ControlName c, ControlType t);
 	void unregisterBind(irr::EKEY_CODE code, ControlType t);
 	void updateInputs() override;

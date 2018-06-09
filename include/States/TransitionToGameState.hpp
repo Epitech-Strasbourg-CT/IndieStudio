@@ -14,6 +14,8 @@
 
 class TransitionToGameState : public AState {
 public:
+	const std::string getName() const override;
+
 	TransitionToGameState(AStateShare &_share, const std::string &str = "");
 	void update() override;
 	void transitionPop() override;

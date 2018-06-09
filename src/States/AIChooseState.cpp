@@ -22,63 +22,59 @@ AIChooseState::_descs {
 	 "launch",
 	 [](AIChooseState *self) {
 	 	if(std::find(self->_state.begin(), self->_state.end(), 1) == self->_state.end())
-			return;
+			return true;
 	 	self->getSharedResources().setIAState(self->_state);
 	 	auto &sm = StateMachine::getInstance();
 	 	sm.push(new TransitionToGameState(self->getSharedResources()), false);
+	 	return true;
 	 }
 	 }},
 {PLY1,   {
 	 {350, 400, 500, 450},
 	 "player",
 	 [](AIChooseState *self) {
-		 StateMachine::getInstance().pop();
+		 return true;
 	 }
 	 }},
 {PLY2,   {
 	 {700, 400, 850, 450},
 	 "ia",
 	 [](AIChooseState *self) {
-//		    StateMachine::getInstance().push(new SettingsState(self->_share), false);
+		 return true;
 	 }
 	 }},
 {PLY3,   {
 	 {1025, 400, 1175, 450},
 	 "ia",
 	 [](AIChooseState *self) {
-
+		 return true;
 	 }
 	 }},
 {PLY4,   {
 	 {1350, 400, 1500, 450},
 	 "ia",
 	 [](AIChooseState *self) {
-
+		 return true;
 	 }
 	 }},
 };
 
 AIChooseState::AIChooseState(AStateShare &_share) : AState(_share), AMenuSound(),
-_trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode
-("cam")), irr::core::vector3df(170, 52, -300), static_cast<irr::f32>(0.1)),
-_quitAnim(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode
-("cam")), {450, 0, 100}, 0.5),
-_state({1, 0, 0, 0}), _isInQuitAnim(false), _guiDisp(false)
+_trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), irr::core::vector3df(170, 52, -300), static_cast<irr::f32>(0.1)),
+_quitAnim(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {450, 0, 100}, 0.5),
+_state({1, 0, 0, 0}), _isInQuitAnim(false), _guiDisp(false), _eventsActivate(false)
 {
 	_trav.setFinalTime(60);
 	_trav.setFolow(static_cast<irr::f32>(0.04));
 	_trav.setEndFollow(static_cast<irr::f32>(0.04));
 	_trav.setEndExactitude(5);
 	_trav.setAccelEndFollow(static_cast<irr::f32>(0.01));
-//	_trav.push(50, {0, 0, 0});
-//	_trav.push(50, {130, 70, -500});
-//	_trav.push(50, {100, 120, -400});
 	_trav.push(50, {100, 40, -400});
+	eventsSetup();
 }
 
 void AIChooseState::load()
 {
-//	loadBouttons();
 	AState::load();
 }
 
@@ -89,12 +85,13 @@ void AIChooseState::update()
 	if (_isInQuitAnim) {
 		_quitAnim.update(cam);
 		if (_quitAnim.isFinished() == 2)
-			StateMachine::getInstance().push(new MenuState(_share), false);
+			StateMachine::getInstance().pop();
 		return;
 	}
 	if (_share.isKeyReleased(irr::KEY_ESCAPE))
 		moveCamToStartPoint(cam);
-	_trav.update(cam);
+	if (_trav.isFinished() != 2)
+		_trav.update(cam);
 	if (_trav.isFinished() >= 1 && !_guiDisp) {
 		loadBouttons();
 		_guiDisp = true;
@@ -107,8 +104,6 @@ void AIChooseState::loadBouttons()
 	auto gui = IrrManager::getInstance().getGuienv();
 	auto &er = EventReceiver::getInstance();
 	auto &ap = AssetsPool::getInstance();
-//	irr::video::SColor col = gui->getSkin()->
-//	col.setAlpha(255);
 
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
@@ -118,13 +113,6 @@ void AIChooseState::loadBouttons()
 		_bouttons.push_back(b);
 	}
 
-	er.registerEvent(2, irr::EEVENT_TYPE::EET_GUI_EVENT,
-			 [this](const irr::SEvent &ev) {
-				 auto id = static_cast<MenuActions>(ev.GUIEvent.Caller->getID());
-				 if (AIChooseState::_descs.count(id) > 0)
-					 this->applyEventBoutton(ev, id);
-				 return true;
-			 });
 	for (irr::s32 i = 0; i < irr::gui::EGDC_COUNT; ++i) {
 		irr::video::SColor col = gui->getSkin()->getColor((irr::gui::EGUI_DEFAULT_COLOR) i);
 		col.setAlpha(50);
@@ -140,8 +128,8 @@ irr::gui::IGUIButton *AIChooseState::getBoutton(MenuActions id) const
 	return (_bouttons.at(id - LAUNCH));
 }
 
-void AIChooseState::applyEventBoutton(const irr::SEvent &ev,
-AIChooseState::MenuActions id) //TODO Coding Style
+bool AIChooseState::applyEventButton(const irr::SEvent &ev,
+	AIChooseState::MenuActions id) //TODO Coding Style
 {
 	auto b = getBoutton(id);
 	std::string hover_name;
@@ -156,9 +144,8 @@ AIChooseState::MenuActions id) //TODO Coding Style
 		case irr::gui::EGET_BUTTON_CLICKED:
 			playSelect();
 			if (id == 400)
-				AIChooseState::_descs.at(id).fct(this);
-			else
-				switchBtnState(b, id - 401);
+				return AIChooseState::_descs.at(id).fct(this);
+			switchBtnState(b, id - 401);
 			break;
 		case irr::gui::EGET_ELEMENT_HOVERED:
 			playCursor();
@@ -176,6 +163,7 @@ AIChooseState::MenuActions id) //TODO Coding Style
 		default:
 			break;
 	}
+	return true;
 }
 
 void AIChooseState::switchBtnState(irr::gui::IGUIButton *btn, int id)
@@ -193,8 +181,6 @@ void AIChooseState::switchBtnState(irr::gui::IGUIButton *btn, int id)
 
 void AIChooseState::unloadBouttons()
 {
-	auto &er = EventReceiver::getInstance();
-	er.unregisterEvent(2, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	for (auto &n : _bouttons)
 		n->remove();
 	_bouttons.clear();
@@ -216,4 +202,46 @@ void AIChooseState::moveCamToStartPoint(irr::scene::ICameraSceneNode &cam)
 	_share.delCoor("menu");
 	_isInQuitAnim = true;
 	unloadBouttons();
+}
+
+const std::string AIChooseState::getName() const
+{
+	return "AIChoose";
+}
+
+void AIChooseState::eventsSetup()
+{
+	_eventsActivate = true;
+	auto &er = EventReceiver::getInstance();
+	er.registerEvent(3, irr::EEVENT_TYPE::EET_GUI_EVENT,
+	                 [this](const irr::SEvent &ev) {
+		                 if (!this->isLoaded() || !this->isEnable()
+		                 || !this->_guiDisp)
+			                 return true;
+		                 auto id = static_cast<MenuActions>(ev.GUIEvent.Caller->getID());
+		                 if (AIChooseState::_descs.count(id) > 0)
+			                 return this->applyEventButton(ev, id);
+		                 return true;
+	                 });
+}
+
+void AIChooseState::eventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	auto &er = EventReceiver::getInstance();
+	er.unregisterEvent(3, irr::EEVENT_TYPE::EET_GUI_EVENT);
+	_eventsActivate = false;
+}
+
+void AIChooseState::externalEventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	_eventsActivate = false;
+}
+
+AIChooseState::~AIChooseState()
+{
+	eventsClean();
 }

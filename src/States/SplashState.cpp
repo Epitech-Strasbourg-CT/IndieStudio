@@ -55,3 +55,8 @@ void SplashState::draw()
 
 	AState::draw();
 }
+
+const std::string SplashState::getName() const
+{
+	return "splash";
+}

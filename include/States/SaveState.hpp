@@ -23,6 +23,8 @@ public:
 		CANCEL
 	};
 
+	const std::string getName() const override;
+
 	void loadButtons();
 	void unloadButtons();
 	void load() override;

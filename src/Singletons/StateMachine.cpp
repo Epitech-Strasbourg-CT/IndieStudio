@@ -12,12 +12,12 @@ StateMachine StateMachine::_instance;
 void StateMachine::push(AState *gameState, bool keepLoaded)
 {
 	if (!_states.empty()) {
-		_states.top()->pushing(keepLoaded);
-		_states.top()->setEnable(false);
+		_states.front()->pushing(keepLoaded);
+		_states.front()->setEnable(false);
 	}
 	if (!keepLoaded && !_states.empty())
-		_states.top()->unload();
-	_states.push(std::unique_ptr<AState>(gameState));
+		_states.front()->unload();
+	_states.push_front(std::unique_ptr<AState>(gameState));
 	gameState->setEnable(true);
 	gameState->load();
 	gameState->transitionPush(keepLoaded);
@@ -26,13 +26,13 @@ void StateMachine::push(AState *gameState, bool keepLoaded)
 void StateMachine::pop()
 {
 	if (!_states.empty()) {
-		auto top = _states.top().get();
+		auto top = _states.front().get();
 		top->popping();
 		top->unload();
-		_states.pop();
+		_states.pop_front();
 	}
 	if (!_states.empty()) {
-		auto top = _states.top().get();
+		auto top = _states.front().get();
 		top->setEnable(true);
 		if (!top->isLoaded()) {
 			top->load();
@@ -57,11 +57,11 @@ int StateMachine::start()
 	while (device->run() && !_states.empty()) {
 		driver->beginScene(true, true, irr::video::SColor(255, 100, 101, 140));
 		if (!_states.empty())
-			_states.top()->update();
+			_states.front()->update();
 		if (!_states.empty())
-			_states.top()->updateRender();
+			_states.front()->updateRender();
 		if (!_states.empty())
-			_states.top()->draw();
+			_states.front()->draw();
 		smgr->drawAll();
 		guienv->drawAll();
 		driver->endScene();
@@ -73,7 +73,7 @@ AState *StateMachine::top()
 {
 	if (_states.empty())
 		return nullptr;
-	return _states.top().get();
+	return _states.front().get();
 }
 
 void StateMachine::replaceTop(AState *gameState, bool keepLoaded)
@@ -85,4 +85,13 @@ void StateMachine::replaceTop(AState *gameState, bool keepLoaded)
 StateMachine &StateMachine::getInstance()
 {
 	return _instance;
+}
+
+bool StateMachine::isInStack(std::string const &name)
+{
+	for (std::unique_ptr<AState> &elem : _states) {
+		if (elem->getName() == name)
+			return true;
+	}
+	return false;
 }

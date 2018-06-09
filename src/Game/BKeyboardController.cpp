@@ -73,3 +73,12 @@ std::unordered_map<irr::EKEY_CODE, ControlName> &BKeyboardController::_getBinds(
 		throw std::runtime_error("key mode not implemented");
 	}
 }
+
+#include <iostream>
+
+BKeyboardController::~BKeyboardController()
+{
+	std::cout << "Destroy Controller" << std::endl;
+	auto &er = EventReceiver::getInstance();
+	er.unregisterEvent(_id, irr::EET_KEY_INPUT_EVENT);
+}

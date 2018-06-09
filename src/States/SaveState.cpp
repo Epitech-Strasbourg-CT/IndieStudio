@@ -141,3 +141,8 @@ irr::gui::IGUIButton *SaveState::getButton(SaveState::Actions id) const
 		return nullptr;
 	return (_buttons.at(id - SAVE));
 }
+
+const std::string SaveState::getName() const
+{
+	return "save";
+}
