@@ -14,7 +14,7 @@
 #include "../../include/Game/Entities/PlayerEntity.hpp"
 
 BIAController::BIAController(EntitiesMap &map, size_t id) : _alreadyMove(false),
-	_id(id), _targetPos(0, 0), _map(map)
+	_id(id), _targetPos(0, 0), _spawnPos(0, 0), _map(map)
 {
 }
 
@@ -25,11 +25,12 @@ void BIAController::updateInputs()
 		return;
 	if (!_alreadyMove && _targetPos.X == 0 && _targetPos.Y == 0) {
 		_alreadyMove = true;
+		_spawnPos.X = _p->AEntity::getPosX();
+		_spawnPos.Y = _p->AEntity::getPosY();
 		_targetPos.X = _p->AEntity::getPosX();
 		_targetPos.Y = _p->AEntity::getPosY();
 	}
-	if (rand() % 200 == 0)
-		_controllable->callBind(DROP_BOMB, KEY_PRESSED);
+	_bomb();
 
 	_fillTargetQueue();
 	_goToTarget();
@@ -111,8 +112,8 @@ bool BIAController::_isSafe(irr::core::vector2di pos)
 
 std::vector<ControlName> BIAController::_genBestEscapeMoves()
 {
-	std::vector<ControlName> allMoves = {MOVE_UP, NONE, MOVE_LEFT, MOVE_RIGHT,
-		MOVE_DOWN};
+	std::vector<ControlName> allMoves = {MOVE_UP, NONE, MOVE_LEFT,
+		MOVE_RIGHT, MOVE_DOWN};
 	std::vector<ControlName> res;
 	while (!allMoves.empty()) {
 		auto i = rand() % allMoves.size();
@@ -136,7 +137,8 @@ ControlName BIAController::_bestEscape()
 		return NONE;
 	std::cout << "[";
 	for (auto &e : moves)
-		std::cout << _getDangerLevel(_getFuturePos(e), {0, 0}, 0) << ",";
+		std::cout << _getDangerLevel(_getFuturePos(e), {0, 0}, 0)
+			<< ",";
 	std::cout << "]" << std::endl;
 	int bestMov = 0;
 	int bestSafety = _getDangerLevel(_getFuturePos(moves[0]), {0, 0}, 0);
@@ -153,8 +155,10 @@ ControlName BIAController::_bestEscape()
 	auto x = _p->AEntity::getPosX();
 	auto y = _p->AEntity::getPosY();
 	std::cout << "Pending: " << _targetQueue.size() << std::endl;
+	std::cout << "Spawn pos: " << _spawnPos.X << "," << _spawnPos.Y << std::endl;
 	std::cout << "On pos: " << x << "," << y << std::endl;
-	std::cout << "Current danger level: " << _getDangerLevel(_getFuturePos(NONE), {0, 0}, 0) << std::endl;
+	std::cout << "Current danger level: "
+		<< _getDangerLevel(_getFuturePos(NONE), {0, 0}, 0) << std::endl;
 	std::cout << "Forecast danger level: " << bestSafety << std::endl;
 	std::cout << "Forecast move: " << moves[bestMov] << std::endl;
 	return moves[bestMov];
@@ -167,4 +171,16 @@ void BIAController::_fillTargetQueue()
 		_targetQueue.pop();
 	_targetQueue.push(c);
 	std::cout << std::endl;
+}
+
+bool BIAController::_bomb()
+{
+	auto x = _p->AEntity::getPosX();
+	auto y = _p->AEntity::getPosY();
+	if (x == _spawnPos.X && y == _spawnPos.Y)
+		return false;
+	if (rand() % 250)
+		return false;
+	_controllable->callBind(DROP_BOMB, KEY_PRESSED);
+	return true;
 }

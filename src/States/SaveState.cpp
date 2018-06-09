@@ -29,7 +29,10 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 		"save",
 		[](SaveState *self) {
 			self->externalEventsClean();
-			std::cout << "POP B" << std::endl;
+			SaveManager sm;
+			std::wstring wstr(self->_name->getText());
+			std::string str(wstr.begin(), wstr.end());
+			sm.save(*self->_share.getMap(), ".save/" + str + ".dat");
 			StateMachine::getInstance().pop();
 			return false;
 		}
@@ -38,7 +41,6 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 
 SaveState::SaveState(AStateShare &_share) : AState(_share), AMenuSound()
 {
-	std::cout << "OK" << std::endl;
 }
 
 SaveState::~SaveState()
@@ -76,7 +78,6 @@ void SaveState::loadButtons()
 		std::wstring(sName.begin(), sName.end()).c_str());
 	_name->setOverrideFont(_share.getFont());
 	_name->setEnabled(false);
-	std::cout << "END LOAD" << std::endl;
 }
 
 void SaveState::unloadButtons()
