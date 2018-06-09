@@ -16,7 +16,7 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	LoadState::_descs {
 	{LoadState::SAVE1,    {
 		{610, 250, 1300, 300},
-		"save",
+		"default",
 		[](LoadState *self) {
 			self->externalEventsClean();
 			StateMachine::getInstance().pop();
@@ -25,7 +25,7 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	}},
 	{LoadState::SAVE2,    {
 		{610, 350, 1300, 400},
-		"save",
+		"default",
 		[](LoadState *self) {
 			self->externalEventsClean();
 			StateMachine::getInstance().pop();
@@ -34,7 +34,7 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	}},
 	{LoadState::SAVE3,    {
 		{610, 450, 1300, 500},
-		"save",
+		"default",
 		[](LoadState *self) {
 			self->externalEventsClean();
 			StateMachine::getInstance().pop();
@@ -43,7 +43,7 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	}},
 	{LoadState::SAVE4,    {
 		{610, 550, 1300, 600},
-		"save",
+		"default",
 		[](LoadState *self) {
 			self->externalEventsClean();
 			StateMachine::getInstance().pop();
@@ -60,8 +60,8 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 		}
 	}},
 	{LoadState::PREV,    {
-		{835, 850,  935, 900},
-		"save",
+		{785, 850,  935, 900},
+		"prev",
 		[](LoadState *self) {
 			self->_idx -= 1;
 			self->setSaveButtons();
@@ -69,8 +69,8 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 		}
 	}},
 	{LoadState::NEXT,    {
-		{985, 850,  1085, 900},
-		"save",
+		{985, 850,  1135, 900},
+		"next",
 		[](LoadState *self) {
 			self->_idx += 1;
 			self->setSaveButtons();
