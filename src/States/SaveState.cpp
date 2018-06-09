@@ -108,6 +108,7 @@ void SaveState::update()
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 	AState::update();
+	AssetsPool::getInstance().cleanSound();
 }
 
 void SaveState::draw()

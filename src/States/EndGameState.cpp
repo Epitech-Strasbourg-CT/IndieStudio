@@ -82,6 +82,7 @@ void EndGameState::unload()
 void EndGameState::update()
 {
 	AState::update();
+	AssetsPool::getInstance().cleanSound();
 }
 
 void EndGameState::draw()

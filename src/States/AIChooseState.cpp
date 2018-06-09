@@ -97,6 +97,7 @@ void AIChooseState::update()
 		_guiDisp = true;
 	}
 	AState::update();
+	AssetsPool::getInstance().cleanSound();
 }
 
 void AIChooseState::loadBouttons()
