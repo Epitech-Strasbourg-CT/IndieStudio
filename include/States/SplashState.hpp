@@ -24,6 +24,8 @@ public:
 	void load() override;
 	void unload() override;
 
+	const std::string getName() const override;
+
 private:
 	std::vector<irr::scene::ISceneNode *> _nodes;
 	size_t _start;

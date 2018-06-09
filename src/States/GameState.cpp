@@ -59,3 +59,8 @@ void GameState::animCam()
 	camPos.Y = static_cast<irr::f32>((sinf(_inc) - -1.0) * (max - min) / (1.0 - -1.0) + min);
 	cam.setPosition(camPos);
 }
+
+const std::string GameState::getName() const
+{
+	return "game";
+}

@@ -39,6 +39,8 @@ public:
 	bool applyEventButton(const irr::SEvent &ev, LoadState::Actions id);
 	irr::gui::IGUIButton *getButton(LoadState::Actions) const;
 
+	const std::string getName() const override;
+
 	struct ButtonsDesc {
 		irr::core::rect<irr::s32> pos;
 		std::string name;

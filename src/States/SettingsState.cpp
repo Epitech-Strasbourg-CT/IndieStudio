@@ -210,3 +210,9 @@ void SettingsState::externalEventsClean()
 		return;
 	_eventsActivate = false;
 }
+
+
+const std::string SettingsState::getName() const
+{
+	return "settings";
+}

@@ -19,6 +19,9 @@ public:
 
 	void load() override;
 	void unload() override;
+
+	const std::string getName() const override;
+
 	void transitionPop() override;
 	void transitionPush(bool keep) override;
 

@@ -38,6 +38,11 @@ public:
 private:
 	void switchBtnState(irr::gui::IGUIButton *btn, int id);
 	void applyEventBoutton(const irr::SEvent &ev, MenuActions id);
+
+public:
+	const std::string getName() const override;
+
+private:
 	std::vector<irr::gui::IGUIButton *> _bouttons;
 	static const std::map<MenuActions, BouttonsDesc> _descs;
 	Traveling _trav;

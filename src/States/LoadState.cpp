@@ -64,7 +64,6 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 		{835, 850,  935, 900},
 		"save",
 		[](LoadState *self) {
-			//TODO secure
 			self->_idx -= 1;
 			self->setSaveButtons();
 			return true;
@@ -74,7 +73,6 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 		{985, 850,  1085, 900},
 		"save",
 		[](LoadState *self) {
-			//TODO secure
 			self->_idx += 1;
 			self->setSaveButtons();
 			return true;
@@ -233,3 +231,8 @@ void LoadState::externalEventsClean()
 	_eventsActivate = false;
 }
 
+
+const std::string LoadState::getName() const
+{
+	return "load";
+}

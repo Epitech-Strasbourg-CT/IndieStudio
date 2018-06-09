@@ -178,3 +178,8 @@ void MenuState::externalEventsClean()
 		return;
 	_eventsActivate = false;
 }
+
+const std::string MenuState::getName() const
+{
+	return "menu";
+}

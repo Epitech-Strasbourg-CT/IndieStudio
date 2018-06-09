@@ -42,6 +42,9 @@ public:
 	void unload() override;
 
 	void update() override;
+
+	const std::string getName() const override;
+
 	void draw() override;
 
 	bool applyEventButton(const irr::SEvent &ev, SettingsActions id);

@@ -127,6 +127,8 @@ void BackgroundState::loadCamRotate()
 {
 	_share.addSphereCoor("camRotateMenu", &_camRotate);
 	_share.addFunc("rotateMenu", [this] {
+		if (StateMachine::getInstance().isInStack("game"))
+			return;
 		auto step = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
 		irr::f32 min = static_cast<irr::f32>(2.7);
 		irr::f32 max = static_cast<irr::f32>(4.4);
@@ -137,4 +139,9 @@ void BackgroundState::loadCamRotate()
 		_camRotate.setInc(static_cast<irr::f32>((sinf(_inc) - -1.0) * (max - min) / (1.0 - -1.0) + min));
 		cam.setPosition(_camRotate.calc());
 	});
+}
+
+const std::string BackgroundState::getName() const
+{
+	return "background";
 }

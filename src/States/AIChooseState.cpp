@@ -32,37 +32,31 @@ AIChooseState::_descs {
 	 {350, 400, 500, 450},
 	 "player",
 	 [](AIChooseState *self) {
-		 StateMachine::getInstance().pop();
 	 }
 	 }},
 {PLY2,   {
 	 {700, 400, 850, 450},
 	 "ia",
 	 [](AIChooseState *self) {
-//		    StateMachine::getInstance().push(new SettingsState(self->_share), false);
 	 }
 	 }},
 {PLY3,   {
 	 {1025, 400, 1175, 450},
 	 "ia",
 	 [](AIChooseState *self) {
-
 	 }
 	 }},
 {PLY4,   {
 	 {1350, 400, 1500, 450},
 	 "ia",
 	 [](AIChooseState *self) {
-
 	 }
 	 }},
 };
 
 AIChooseState::AIChooseState(AStateShare &_share) : AState(_share), AMenuSound(),
-_trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode
-("cam")), irr::core::vector3df(170, 52, -300), static_cast<irr::f32>(0.1)),
-_quitAnim(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode
-("cam")), {450, 0, 100}, 0.5),
+_trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), irr::core::vector3df(170, 52, -300), static_cast<irr::f32>(0.1)),
+_quitAnim(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {450, 0, 100}, 0.5),
 _state({1, 0, 0, 0}), _isInQuitAnim(false), _guiDisp(false)
 {
 	_trav.setFinalTime(60);
@@ -78,7 +72,6 @@ _state({1, 0, 0, 0}), _isInQuitAnim(false), _guiDisp(false)
 
 void AIChooseState::load()
 {
-//	loadBouttons();
 	AState::load();
 }
 
@@ -89,12 +82,13 @@ void AIChooseState::update()
 	if (_isInQuitAnim) {
 		_quitAnim.update(cam);
 		if (_quitAnim.isFinished() == 2)
-			StateMachine::getInstance().push(new MenuState(_share), false);
+			StateMachine::getInstance().pop();
 		return;
 	}
 	if (_share.isKeyReleased(irr::KEY_ESCAPE))
 		moveCamToStartPoint(cam);
-	_trav.update(cam);
+	if (_trav.isFinished() != 2)
+		_trav.update(cam);
 	if (_trav.isFinished() >= 1 && !_guiDisp) {
 		loadBouttons();
 		_guiDisp = true;
@@ -216,4 +210,9 @@ void AIChooseState::moveCamToStartPoint(irr::scene::ICameraSceneNode &cam)
 	_share.delCoor("menu");
 	_isInQuitAnim = true;
 	unloadBouttons();
+}
+
+const std::string AIChooseState::getName() const
+{
+	return "AIChoose";
 }

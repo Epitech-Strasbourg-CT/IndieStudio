@@ -59,3 +59,8 @@ void TransitionToGameState::updateRender()
 	_emap.updateRender();
 	AState::updateRender();
 }
+
+const std::string TransitionToGameState::getName() const
+{
+	return "transitionToGame";
+}
