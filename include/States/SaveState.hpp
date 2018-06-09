@@ -19,7 +19,7 @@ public:
 	~SaveState();
 
 	enum Actions {
-		SAVE = 600,
+		SAVE = 800,
 		CANCEL
 	};
 
@@ -34,19 +34,24 @@ public:
 
 	void draw() override;
 
-	void applyEventButton(const irr::SEvent &ev, SaveState::Actions id);
+	bool applyEventButton(const irr::SEvent &ev, SaveState::Actions id);
 	irr::gui::IGUIButton *getButton(SaveState::Actions) const;
 
 	struct ButtonsDesc {
 		irr::core::rect<irr::s32> pos;
 		std::string name;
-		std::function<void(SaveState *)> fct;
+		std::function<bool(SaveState *)> fct;
 	};
+
+	void eventsSetup();
+	void eventsClean();
+	void externalEventsClean();
 
 private:
 	std::vector<irr::gui::IGUIButton *> _buttons;
 	static const std::map<SaveState::Actions, ButtonsDesc> _descs;
 	irr::gui::IGUIButton *_name;
+	bool _eventsActivate;
 };
 
 #endif /* !BOMBERMAN_SAVESTATE_HPP */

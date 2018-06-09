@@ -21,7 +21,9 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 		{610, 340,  1310, 390},
 		"resume",
 		[](PauseState *self) {
+			self->externalEventsClean();
 			StateMachine::getInstance().pop();
+			return true;
 		}
 	}},
 	{PauseState::SETTINGS,  {
@@ -31,22 +33,27 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 			auto &sm = StateMachine::getInstance();
 			auto &res = self->getSharedResources();
 			sm.push(new SettingsState(res), false);
+			return true;
 		}
 	}},
 	{PauseState::SAVE, {
 		{610, 540, 1310, 590},
 		"save",
 		[](PauseState *self) {
+			std::cout << "SAVE MENU" << std::endl;
 			auto &sm = StateMachine::getInstance();
 			auto &res = self->getSharedResources();
 			sm.push(new SaveState(res), false);
+			return true;
 			}
 	}},
 	{PauseState::EXIT_GAME, {
 		{610, 640, 1310, 690},
 		"exit",
 		[](PauseState *self) {
+			self->externalEventsClean();
 			StateMachine::getInstance().popAll();
+			return false;
 		}
 	}}
 };
@@ -57,6 +64,7 @@ PauseState::PauseState(AStateShare &_share) : AState(_share), AMenuSound()
 
 PauseState::~PauseState()
 {
+	eventsClean();
 }
 
 void PauseState::loadButtons()
@@ -72,20 +80,10 @@ void PauseState::loadButtons()
 		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
 		_buttons.push_back(b);
 	}
-
-	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
-		[this](const irr::SEvent &ev) {
-			auto id = static_cast<Actions>(ev.GUIEvent.Caller->getID());
-			if (PauseState::_descs.count(id) > 0)
-				this->applyEventButton(ev, id);
-			return true;
-		});
 }
 
 void PauseState::unloadButtons()
 {
-	auto &er = EventReceiver::getInstance();
-	er.unregisterEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	for (auto &n : _buttons)
 		n->remove();
 	_buttons.clear();
@@ -93,6 +91,7 @@ void PauseState::unloadButtons()
 
 void PauseState::load()
 {
+	eventsSetup();
 	loadButtons();
 	AState::load();
 }
@@ -117,7 +116,7 @@ void PauseState::draw()
 	im.getGuienv()->drawAll();
 }
 
-void PauseState::applyEventButton(const irr::SEvent &ev, PauseState::Actions id)
+bool PauseState::applyEventButton(const irr::SEvent &ev, PauseState::Actions id)
 {
 	auto b = getButton(id);
 	auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
@@ -127,8 +126,7 @@ void PauseState::applyEventButton(const irr::SEvent &ev, PauseState::Actions id)
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			playSelect();
-			PauseState::_descs.at(id).fct(this);
-			break;
+			return PauseState::_descs.at(id).fct(this);
 		case irr::gui::EGET_ELEMENT_HOVERED:
 			playCursor();
 			b->setImage(ap.loadTexture(hover_name));
@@ -139,6 +137,7 @@ void PauseState::applyEventButton(const irr::SEvent &ev, PauseState::Actions id)
 		default:
 			break;
 	}
+	return true;
 }
 
 irr::gui::IGUIButton *PauseState::getButton(PauseState::Actions id) const
@@ -151,4 +150,35 @@ irr::gui::IGUIButton *PauseState::getButton(PauseState::Actions id) const
 const std::string PauseState::getName() const
 {
 	return "pause";
+}
+
+void PauseState::eventsSetup()
+{
+	_eventsActivate = true;
+	auto &er = EventReceiver::getInstance();
+	er.registerEvent(10, irr::EEVENT_TYPE::EET_GUI_EVENT,
+			 [this](const irr::SEvent &ev) {
+				 if (!this->isLoaded() || !this->isEnable())
+					 return true;
+				 auto id = static_cast<Actions>(ev.GUIEvent.Caller->getID());
+				 if (PauseState::_descs.count(id) > 0)
+					 return this->applyEventButton(ev, id);
+				 return true;
+			 });
+}
+
+void PauseState::eventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	auto &er = EventReceiver::getInstance();
+	er.unregisterEvent(10, irr::EEVENT_TYPE::EET_GUI_EVENT);
+	_eventsActivate = false;
+}
+
+void PauseState::externalEventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	_eventsActivate = false;
 }
