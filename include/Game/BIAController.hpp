@@ -23,6 +23,7 @@ private:
 	bool _onTarget();
 	int _getDangerLevel(irr::core::vector2di pos, irr::core::vector2di dir, int r);
 	bool _isSafe(irr::core::vector2di pos);
+	bool _bomb();
 	bool _move(ControlName c);
 	irr::core::vector2di _getFuturePos(ControlName c);
 	std::vector<ControlName> _genBestEscapeMoves();
@@ -32,6 +33,7 @@ private:
 	ControlName _targetMove;
 	bool _alreadyMove;
 	irr::core::vector2di _targetPos;
+	irr::core::vector2di _spawnPos;
 	std::queue<ControlName> _targetQueue;
 	PlayerEntity *_p;
 	EntitiesMap &_map;
