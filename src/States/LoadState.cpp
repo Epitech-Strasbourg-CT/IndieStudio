@@ -101,6 +101,7 @@ void LoadState::loadButtons()
 		auto name = n.second.name;
 		b->setImage(ap.loadTexture("buttons/" + name + ".png"));
 		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
+		b->setOverrideFont(_share.getFont());
 		_buttons.push_back(b);
 	}
 	setSaveButtons();

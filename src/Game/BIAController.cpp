@@ -45,16 +45,16 @@ bool BIAController::_onTarget()
 		_p->AMovable::getPosY() == BORDERY / 2;
 }
 
-irr::core::vector2di BIAController::_getFuturePos(ControlName_e c)
+irr::core::vector2di BIAController::_getFuturePos(ControlName c)
 {
-	std::map<ControlName_e, std::vector<int>> a = {{MOVE_DOWN, {0, 1}},
+	std::map<ControlName, std::vector<int>> a = {{MOVE_DOWN, {0, 1}},
 		{MOVE_UP, {0, -1}}, {MOVE_LEFT, {1, 0}}, {MOVE_RIGHT, {-1, 0}}};
 	auto realX = _p->AEntity::getPosX() + a[c][0];
 	auto realY = _p->AEntity::getPosY() + a[c][1];
 	return {realX, realY};
 };
 
-bool BIAController::_move(ControlName_e c)
+bool BIAController::_move(ControlName c)
 {
 	auto pos = _getFuturePos(c);
 	if (!_map.canMoveTo(pos))
@@ -107,9 +107,9 @@ bool BIAController::_isSafe(irr::core::vector2di pos)
 	return true;
 }
 
-ControlName_e BIAController::_bestEscape()
+ControlName BIAController::_bestEscape()
 {
-	auto goal = static_cast<ControlName_e>(rand() % 4);
+	auto goal = static_cast<ControlName>(rand() % 4);
 
 	if (_isSafe(_getFuturePos(goal)))
 		return goal;

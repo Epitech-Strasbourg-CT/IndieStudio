@@ -51,9 +51,9 @@ void BackgroundState::loadCharacter()
 	auto smgr = IrrManager::getInstance().getSmgr();
 	auto &assetsPool = AssetsPool::getInstance();
 	irr::scene::IAnimatedMesh *mesh = dynamic_cast<irr::scene::IAnimatedMesh *>(assetsPool.loadMesh("player/link-idle.ms3d"));
+
 	if (!mesh)
 		throw std::runtime_error("Cannot instantiate menu player");
-
 	for (auto i = 0; i < 4; i++) {
 		_node = smgr->addAnimatedMeshSceneNode(mesh);
 		_node->setMaterialTexture(0, assetsPool.loadTexture("player/player" + std::to_string(i + 1) + ".png"));

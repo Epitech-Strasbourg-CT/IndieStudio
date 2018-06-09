@@ -12,7 +12,7 @@
 
 PlayerEntity::PlayerEntity(unsigned playerSkinId)
 : ABombDropper(), AAnimatedEntity("player"), AMovable(), Controllable(),
-_old(), _look(1, 0), _alive(true)
+_old(), _look(), _alive(true)
 {
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
@@ -26,7 +26,14 @@ _old(), _look(1, 0), _alive(true)
 	_node = addAnimationNode
 	("run", "player/link-run.ms3d", "player/player" + std::to_string(playerSkinId) + ".png");
 	_node->setScale({4, 4, 4});
+	_look.X = (playerSkinId % 2 == 0) ? 1 : -1;
+	_look.Y = (playerSkinId == 1 || playerSkinId == 2) ? 1 : -1;
 	selectAnimation("idle");
+	addAllEvent();
+}
+
+void PlayerEntity::addAllEvent()
+{
 	addEvent(MOVE_UP, KEY_DOWN, [this]() {
 		this->dirBottom(1);
 	});

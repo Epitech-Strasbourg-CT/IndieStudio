@@ -20,6 +20,8 @@
 class AStateShare {
 public:
 	AStateShare();
+	~AStateShare();
+
 	bool setIAState(std::vector<int> const &stateIA);
 	const std::vector<int> &getIAState() const;
 
@@ -49,6 +51,7 @@ public:
 	bool delFunc(std::string const &name);
 	std::function<void()> getFunc(std::string const &name);
 
+	irr::gui::IGUIFont *getFont();
 
 private:
 	std::map<std::string, irr::scene::ISceneNode *> _sharedNodes;
@@ -61,6 +64,7 @@ private:
 	std::map<std::string, SphericalCoordinate const *> _sphereCoor;
 	std::map<std::string, std::function<void()>> _func;
 	EntitiesMap *_map;
+	irr::gui::IGUIFont *_font;
 };
 
 

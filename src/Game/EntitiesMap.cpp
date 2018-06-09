@@ -18,15 +18,8 @@ const std::unordered_map<char, std::function<AEntity *(EntitiesMap &, const std:
 }}, {'1', [](EntitiesMap &map, const std::vector<int> &IAState) {
 	static unsigned id = 0;
 	id += 1;
-	if (IAState.size() >= id && IAState.at(id-1)) {
+	if (IAState.size() >= id && IAState.at(id - 1)) {
 		auto *controller = new BKeyboardController(id);
-
-		controller->registerBind(irr::KEY_UP, MOVE_UP, KEY_DOWN);
-		controller->registerBind(irr::KEY_DOWN, MOVE_DOWN, KEY_DOWN);
-		controller->registerBind(irr::KEY_LEFT, MOVE_LEFT, KEY_DOWN);
-		controller->registerBind(irr::KEY_RIGHT, MOVE_RIGHT, KEY_DOWN);
-		controller->registerBind(irr::KEY_SPACE, DROP_BOMB,
-			KEY_PRESSED);
 		EntityFactory fac;
 		PlayerEntity *player = new PlayerEntity((id < 5 ? id : 1));
 		AController::bindEntityToController(*controller, *player);

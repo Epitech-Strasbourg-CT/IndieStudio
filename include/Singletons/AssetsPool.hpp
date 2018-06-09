@@ -19,9 +19,9 @@
 class AssetsPool {
 public:
 	static AssetsPool &getInstance();
-
+	~AssetsPool();
 	enum Assets {
-		MENU,
+		MENU = 0,
 		GAME,
 		SELECT,
 		CURSOR,

@@ -46,7 +46,7 @@ public:
 private:
 	std::vector<irr::gui::IGUIButton *> _buttons;
 	static const std::map<SaveState::Actions, ButtonsDesc> _descs;
-	irr::gui::IGUIEditBox *_name;
+	irr::gui::IGUIButton *_name;
 };
 
 #endif /* !BOMBERMAN_SAVESTATE_HPP */

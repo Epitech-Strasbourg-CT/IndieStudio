@@ -23,15 +23,15 @@ private:
 	bool _onTarget();
 	int _getDangerLevel(irr::core::vector2di pos, irr::core::vector2di dir, int r);
 	bool _isSafe(irr::core::vector2di pos);
-	bool _move(ControlName_e c);
-	irr::core::vector2di _getFuturePos(ControlName_e c);
-	ControlName_e _bestEscape();
+	bool _move(ControlName c);
+	irr::core::vector2di _getFuturePos(ControlName c);
+	ControlName _bestEscape();
 
 	size_t _id;
-	ControlName_e _targetMove;
+	ControlName _targetMove;
 	bool _alreadyMove;
 	std::vector<int> _targetPos;
-	std::queue<ControlName_e> _targetQueue;
+	std::queue<ControlName> _targetQueue;
 	PlayerEntity *_p;
 	EntitiesMap &_map;
 };
