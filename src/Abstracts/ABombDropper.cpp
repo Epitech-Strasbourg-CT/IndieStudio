@@ -78,3 +78,8 @@ ABombDropper::~ABombDropper()
 	for (auto &n : _watchingBombs)
 		n->setAutonomous(true);
 }
+
+void ABombDropper::resetFireRange()
+{
+	_range = 3;
+}

@@ -9,23 +9,27 @@
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 #include "../../../include/Game/EntitiesMap.hpp"
-#include "../../../include/Game/Entities/BonusEntity.hpp"
+#include "../../../include/Game/Entities/ABonusEntity.hpp"
+#include "../../../include/Game/Entities/Bonus/UpBombBonus.hpp"
+#include "../../../include/Game/Entities/Bonus/UpFireBonus.hpp"
+#include "../../../include/Game/Entities/Bonus/InvertBonus.hpp"
+#include "../../../include/Game/Entities/Bonus/ResetFireRangeBonus.hpp"
 
 const std::map<int, std::function<AEntity *()>> PotEntity::_gemGen = {
 	{55, []() {
 		return nullptr;
 	}},
 	{20, []() {
-		return new BonusEntity(GREEN);
+		return new UpBombBonus(GREEN);
 	}},
 	{10, []() {
-		return new BonusEntity(RED);
+		return new UpFireBonus(RED);
 	}},
 	{10, []() {
-		return new BonusEntity(BLUE);
+		return new ResetFireRangeBonus(BLUE);
 	}},
 	{5, []() {
-		return new BonusEntity(YELLOW);
+		return new InvertBonus(YELLOW);
 	}}
 };
 

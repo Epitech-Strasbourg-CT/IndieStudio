@@ -10,7 +10,7 @@
 #include "../../../include/Game/Entities/PotEntity.hpp"
 #include "../../../include/Time.hpp"
 #include "../../../include/Game/Entities/BombEntity.hpp"
-#include "../../../include/Game/Entities/BonusEntity.hpp"
+#include "../../../include/Game/Entities/ABonusEntity.hpp"
 
 FireEntity::FireEntity(const irr::core::vector2di &spread, size_t size)
 : AEntity("fire"), _spreadDir(spread), _spreadSize(size), _spreaded(false), _duration(200)
@@ -64,9 +64,9 @@ void FireEntity::collide(AEntity &entity)
 				auto bomb = dynamic_cast<BombEntity *>(aEntity);
 				bomb->detonate();
 			}
-		}, {"bonus",
+		}, {"Bonus",
 			   [this](AEntity *aEntity) {
-				   auto bonus = dynamic_cast<BonusEntity *>(aEntity);
+				   auto bonus = dynamic_cast<ABonusEntity *>(aEntity);
 				   if (!_spreaded)
 				        bonus->destroy();
 			   }

@@ -2,14 +2,14 @@
 ** EPITECH PROJECT, 2018
 ** bomberman
 ** File description:
-** BonusEntity.cpp
+** ABonusEntity.cpp
 */
 
-#include "../../../include/Game/Entities/BonusEntity.hpp"
+#include "../../../include/Game/Entities/ABonusEntity.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Game/Entities/FireEntity.hpp"
 
-BonusEntity::BonusEntity(RupeeColor color): AEntity("bonus"), _destroyed(false)
+ABonusEntity::ABonusEntity(RupeeColor color): AEntity("Bonus"), _destroyed(false)
 {
 	std::cout << "Construct" << std::endl;
 	auto &im = IrrManager::getInstance();
@@ -27,19 +27,19 @@ BonusEntity::BonusEntity(RupeeColor color): AEntity("bonus"), _destroyed(false)
 		static_cast<irr::f32 >(0.033)));
 }
 
-void BonusEntity::playerChanging(PlayerEntity *entity)
-{
-	entity->upMaxBomb();
-}
+//void ABonusEntity::playerChanging(PlayerEntity *entity)
+//{
+//	entity->upMaxBomb();
+//}
 
-void BonusEntity::update(EntitiesMap *map)
+void ABonusEntity::update(EntitiesMap *map)
 {
 	AEntity::update(map);
 	if (_destroyed)
 		map->erase(this);
 }
 
-void BonusEntity::collide(AEntity &entity)
+void ABonusEntity::collide(AEntity &entity)
 {
 	std::map<std::string, std::function<void(AEntity *aEntity)>>
 		collisions = {
@@ -58,13 +58,13 @@ void BonusEntity::collide(AEntity &entity)
 	AEntity::collide(entity);
 }
 
-BonusEntity::~BonusEntity()
+ABonusEntity::~ABonusEntity()
 {
 	std::cout << "Destroy" << std::endl;
 	_node->remove();
 }
 
-void BonusEntity::destroy()
+void ABonusEntity::destroy()
 {
 	this->_destroyed = true;
 }
