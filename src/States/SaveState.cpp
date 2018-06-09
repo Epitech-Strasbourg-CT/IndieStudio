@@ -18,14 +18,23 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 		{985, 590,  1285, 640},
 		"cancel",
 		[](SaveState *self) {
+			self->externalEventsClean();
+			std::cout << "POP A" << std::endl;
 			StateMachine::getInstance().pop();
+			return false;
 		}
 	}},
 	{SaveState::SAVE,  {
 		{635, 590,  935, 640},
 		"save",
 		[](SaveState *self) {
+			self->externalEventsClean();
+			SaveManager sm;
+			std::wstring wstr(self->_name->getText());
+			std::string str(wstr.begin(), wstr.end());
+			sm.save(*self->_share.getMap(), ".save/" + str + ".dat");
 			StateMachine::getInstance().pop();
+			return false;
 		}
 	}}
 };
@@ -36,6 +45,7 @@ SaveState::SaveState(AStateShare &_share) : AState(_share), AMenuSound()
 
 SaveState::~SaveState()
 {
+	eventsClean();
 }
 
 void SaveState::loadButtons()
@@ -46,13 +56,14 @@ void SaveState::loadButtons()
 	auto &ap = AssetsPool::getInstance();
 
 	std::time_t t = std::time(0);
-	auto *tm = localtime(&t);
-	std::string sName = std::to_string(tm->tm_year + 1900)
-		+ std::to_string(tm->tm_mon)
-		+ std::to_string(tm->tm_mday)
-		+ "_" + std::to_string(tm->tm_hour)
-		+ ":" + std::to_string(tm->tm_min)
-		+ ":" + std::to_string(tm->tm_sec);
+	struct tm tm;
+	localtime_s(&tm, &t);
+	std::string sName = std::to_string(tm.tm_year + 1900)
+		+ std::to_string(tm.tm_mon)
+		+ std::to_string(tm.tm_mday)
+		+ "_" + std::to_string(tm.tm_hour)
+		+ ":" + std::to_string(tm.tm_min)
+		+ ":" + std::to_string(tm.tm_sec);
 
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
@@ -62,13 +73,6 @@ void SaveState::loadButtons()
 		_buttons.push_back(b);
 	}
 
-	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
-		[this](const irr::SEvent &ev) {
-			auto id = static_cast<Actions>(ev.GUIEvent.Caller->getID());
-			if (SaveState::_descs.count(id) > 0)
-				this->applyEventButton(ev, id);
-			return true;
-		});
 	_name = gui->addButton({835, 440, 1085, 540}, nullptr,
 		600 + SAVE_BUTTON_NUMBER,
 		std::wstring(sName.begin(), sName.end()).c_str());
@@ -78,8 +82,6 @@ void SaveState::loadButtons()
 
 void SaveState::unloadButtons()
 {
-	auto &er = EventReceiver::getInstance();
-	er.unregisterEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	for (auto &n : _buttons)
 		n->remove();
 	_buttons.clear();
@@ -88,6 +90,7 @@ void SaveState::unloadButtons()
 
 void SaveState::load()
 {
+	eventsSetup();
 	loadButtons();
 	AState::load();
 }
@@ -100,7 +103,7 @@ void SaveState::unload()
 
 void SaveState::update()
 {
-	if (getSharedResources().isKeyReleased(irr::KEY_ESCAPE))
+	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 	AState::update();
 }
@@ -112,7 +115,7 @@ void SaveState::draw()
 	im.getGuienv()->drawAll();
 }
 
-void SaveState::applyEventButton(const irr::SEvent &ev, SaveState::Actions id)
+bool SaveState::applyEventButton(const irr::SEvent &ev, SaveState::Actions id)
 {
 	auto b = getButton(id);
 	auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
@@ -122,8 +125,7 @@ void SaveState::applyEventButton(const irr::SEvent &ev, SaveState::Actions id)
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			playSelect();
-			SaveState::_descs.at(id).fct(this);
-			break;
+			return SaveState::_descs.at(id).fct(this);
 		case irr::gui::EGET_ELEMENT_HOVERED:
 			playCursor();
 			b->setImage(ap.loadTexture(hover_name));
@@ -134,6 +136,7 @@ void SaveState::applyEventButton(const irr::SEvent &ev, SaveState::Actions id)
 		default:
 			break;
 	}
+	return true;
 }
 
 irr::gui::IGUIButton *SaveState::getButton(SaveState::Actions id) const
@@ -146,4 +149,35 @@ irr::gui::IGUIButton *SaveState::getButton(SaveState::Actions id) const
 const std::string SaveState::getName() const
 {
 	return "save";
+}
+
+void SaveState::eventsSetup()
+{
+	_eventsActivate = true;
+	auto &er = EventReceiver::getInstance();
+	er.registerEvent(11, irr::EEVENT_TYPE::EET_GUI_EVENT,
+			 [this](const irr::SEvent &ev) {
+				 if (!this->isLoaded() || !this->isEnable())
+					 return true;
+				 auto id = static_cast<Actions>(ev.GUIEvent.Caller->getID());
+				 if (SaveState::_descs.count(id) > 0)
+					 return this->applyEventButton(ev, id);
+				 return true;
+			 });
+}
+
+void SaveState::eventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	auto &er = EventReceiver::getInstance();
+	er.unregisterEvent(11, irr::EEVENT_TYPE::EET_GUI_EVENT);
+	_eventsActivate = false;
+}
+
+void SaveState::externalEventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	_eventsActivate = false;
 }

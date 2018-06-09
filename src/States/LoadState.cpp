@@ -4,9 +4,8 @@
 ** File description:
 ** LoadState.cpp
 */
-#ifdef  UNIX
+
 #include <glob.h>
-#endif
 #include "../../include/States/LoadState.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/IrrManager.hpp"
@@ -17,7 +16,7 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	LoadState::_descs {
 	{LoadState::SAVE1,    {
 		{610, 250, 1300, 300},
-		"save",
+		"default",
 		[](LoadState *self) {
 			self->externalEventsClean();
 			StateMachine::getInstance().pop();
@@ -26,7 +25,7 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	}},
 	{LoadState::SAVE2,    {
 		{610, 350, 1300, 400},
-		"save",
+		"default",
 		[](LoadState *self) {
 			self->externalEventsClean();
 			StateMachine::getInstance().pop();
@@ -35,7 +34,7 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	}},
 	{LoadState::SAVE3,    {
 		{610, 450, 1300, 500},
-		"save",
+		"default",
 		[](LoadState *self) {
 			self->externalEventsClean();
 			StateMachine::getInstance().pop();
@@ -44,7 +43,7 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 	}},
 	{LoadState::SAVE4,    {
 		{610, 550, 1300, 600},
-		"save",
+		"default",
 		[](LoadState *self) {
 			self->externalEventsClean();
 			StateMachine::getInstance().pop();
@@ -61,8 +60,8 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 		}
 	}},
 	{LoadState::PREV,    {
-		{835, 850,  935, 900},
-		"save",
+		{785, 850,  935, 900},
+		"prev",
 		[](LoadState *self) {
 			self->_idx -= 1;
 			self->setSaveButtons();
@@ -70,8 +69,8 @@ const std::map<LoadState::Actions , LoadState::ButtonsDesc>
 		}
 	}},
 	{LoadState::NEXT,    {
-		{985, 850,  1085, 900},
-		"save",
+		{985, 850,  1135, 900},
+		"next",
 		[](LoadState *self) {
 			self->_idx += 1;
 			self->setSaveButtons();
@@ -104,13 +103,13 @@ void LoadState::loadButtons()
 		b->setOverrideFont(_share.getFont());
 		_buttons.push_back(b);
 	}
+	glob_t glob_result;
+
+	glob(".save/*.dat", GLOB_TILDE, NULL, &glob_result);
+	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i)
+		_saves.emplace_back(glob_result.gl_pathv[i]);
+	_idx = 0;
 	setSaveButtons();
-	#ifdef UNIX
-		glob_t glob_result;
-		glob("../.save/*", GLOB_TILDE, NULL, &glob_result);
-		for (unsigned int i = 0; i < glob_result.gl_pathc; ++i)
-			_saves.emplace_back(glob_result.gl_pathv[i]);
-	#endif
 }
 
 void LoadState::unloadButtons()
@@ -187,9 +186,10 @@ void LoadState::setSaveButtons()
 	size_t i = _idx * 4;
 	std::string empty = "- Empty Slot -";
 
-	for (; i < _saves.size() && (i == _idx * 4 || i%4); ++i) {
-		_buttons[i%4]->setText(std::wstring(_saves[i].begin(),
-			_saves[i].end()).c_str());
+	for (; i < _saves.size() && (i == (_idx * 4) || i%4); ++i) {
+		std::string temp(_saves[i].substr(_saves[i].rfind('/') + 1));
+		_buttons[i%4]->setText(std::wstring(temp.begin(),
+			temp.end()).c_str());
 		_buttons[i%4]->setEnabled(true);
 	}
 	for (; i == _idx * 4 || i%4; ++i) {
@@ -206,14 +206,14 @@ void LoadState::eventsSetup()
 	_eventsActivate = true;
 	auto &er = EventReceiver::getInstance();
 	er.registerEvent(2, irr::EEVENT_TYPE::EET_GUI_EVENT,
-	                 [this](const irr::SEvent &ev) {
-		                 if (!this->isLoaded() || !this->isEnable())
-			                 return true;
-		                 auto id = static_cast<Actions >(ev.GUIEvent.Caller->getID());
-		                 if (LoadState::_descs.count(id) > 0)
-			                 return this->applyEventButton(ev, id);
-		                 return true;
-	                 });
+		[this](const irr::SEvent &ev) {
+			if (!this->isLoaded() || !this->isEnable())
+				return true;
+		auto id = static_cast<Actions >(ev.GUIEvent.Caller->getID());
+			if (LoadState::_descs.count(id) > 0)
+				return this->applyEventButton(ev, id);
+			return true;
+		});
 }
 
 void LoadState::eventsClean()

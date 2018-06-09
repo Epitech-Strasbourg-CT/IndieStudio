@@ -5,6 +5,7 @@
 **
 */
 
+#include <algorithm>
 #include "../../include/Singletons/IrrManager.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
 

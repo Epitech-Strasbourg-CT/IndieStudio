@@ -38,20 +38,26 @@ public:
 
 	void draw() override;
 
-	void applyEventButton(const irr::SEvent &ev, PauseState::Actions id);
+	bool applyEventButton(const irr::SEvent &ev, PauseState::Actions id);
 	irr::gui::IGUIButton *getButton(PauseState::Actions) const;
 
 	struct ButtonsDesc {
 		irr::core::rect<irr::s32> pos;
 		std::string name;
-		std::function<void(PauseState *)> fct;
+		std::function<bool(PauseState *)> fct;
 	};
+
+	void eventsSetup();
+	void eventsClean();
+	void externalEventsClean();
 
 private:
 	bool _escLock = true;
 	std::vector<irr::gui::IGUIButton *> _buttons;
 
 	static const std::map<PauseState::Actions, ButtonsDesc> _descs;
+
+	bool _eventsActivate;
 };
 
 #endif /* !BOMBERMAN_PAUSESTATE_HPP */
