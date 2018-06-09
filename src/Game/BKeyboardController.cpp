@@ -5,6 +5,7 @@
 ** BKeyboardController.cpp
 */
 
+#include <string>
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 

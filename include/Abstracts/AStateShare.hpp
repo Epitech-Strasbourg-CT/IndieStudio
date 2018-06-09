@@ -13,7 +13,7 @@
 #include "../Game/EntitiesMap.hpp"
 #include "../Singletons/AssetsPool.hpp"
 #include "../Game/SphericalCoordinate.hpp"
-
+#include <stack>
 #ifndef BOMBERMAN_ASTATESHARE_HPP
 #define BOMBERMAN_ASTATESHARE_HPP
 

@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <map>
 #include "../AEntity.hpp"
 #include "../AMovable.hpp"
 #include "../Controllable.hpp"
