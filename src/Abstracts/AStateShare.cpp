@@ -12,6 +12,8 @@
 AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _stateIA(4), _map(),
 _sphereCoor(), _func()
 {
+	auto &im = IrrManager::getInstance();
+
 	EventReceiver::getInstance().registerEvent(0, irr::EET_KEY_INPUT_EVENT,
         [this](const irr::SEvent &ev) {
 		auto key = ev.KeyInput.Key;
@@ -20,6 +22,12 @@ _sphereCoor(), _func()
 		this->_isKeyReleased[key] = !ev.KeyInput.PressedDown;
 		return true;
 	});
+	_font = im.getGuienv()->getFont("assets/font/zelda.xml");
+	_font = (_font) ? _font : im.getGuienv()->getBuiltInFont();
+}
+
+AStateShare::~AStateShare()
+{
 }
 
 bool AStateShare::addSharedNode
@@ -108,6 +116,13 @@ void AStateShare::setMap(EntitiesMap *map)
 	AStateShare::_map = map;
 }
 
+void
+AStateShare::addCoor(std::string const &name, irr::core::vector3df const &coor)
+{
+	if (_coor.count(name) == 0)
+		_coor[name] = coor;
+}
+
 void AStateShare::pushMusic(irrklang::ISound *sound)
 {
 	if (!_music.empty())
@@ -116,17 +131,12 @@ void AStateShare::pushMusic(irrklang::ISound *sound)
 	_music.top()->setIsPaused(false);
 }
 
-void
-AStateShare::addCoor(std::string const &name, irr::core::vector3df const &coor)
-{
-	if (_coor.count(name) == 0)
-		_coor[name] = coor;
-}
-
 void AStateShare::popMusic(AssetsPool::Assets asset)
 {
-	AssetsPool::getInstance().unloadSound(asset, _music.top());
-	_music.pop();
+	if (!_music.empty()) {
+		AssetsPool::getInstance().unloadSound(asset, _music.top());
+		_music.pop();
+	}
 	if (!_music.empty())
 		_music.top()->setIsPaused(false);
 }
@@ -202,4 +212,9 @@ std::function<void()> AStateShare::getFunc(std::string const &name)
 	if (_func.count(name) <= 0)
 		throw std::runtime_error("Invalid get func request");
 	return _func[name];
+}
+
+irr::gui::IGUIFont *AStateShare::getFont()
+{
+	return _font;
 }

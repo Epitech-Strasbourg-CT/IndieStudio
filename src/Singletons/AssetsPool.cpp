@@ -8,20 +8,23 @@
 #include "../../include/Singletons/AssetsPool.hpp"
 
 
-const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds= {
+const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds = {
 	{
 		AssetsPool::MUSIC,
 		"assets/sounds/MenuSong.mp3",
 		&IrrManager::getMusicVolume
-	},{
+	},
+	{
 		AssetsPool::MUSIC,
 		"assets/sounds/GameSong.mp3",
 		&IrrManager::getMusicVolume
-	},{
+	},
+	{
 		AssetsPool::SFX,
 		"assets/sounds/MenuSelect.mp3",
 		&IrrManager::getEffectsVolume
-	},{
+	},
+	{
 		AssetsPool::SFX,
 		"assets/sounds/MenuCursormove.mp3",
 		&IrrManager::getEffectsVolume
@@ -29,6 +32,17 @@ const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds= {
 };
 
 AssetsPool AssetsPool::_meshPool("assets/models/", "assets/textures/");
+
+AssetsPool::~AssetsPool()
+{
+	for (int asset = MENU; asset < FINAL; ++asset) {
+		for (size_t i = 0; i < _sModule[asset].size(); ++i) {
+			_sModule[asset][i]->stop();
+			_sModule[asset][i]->drop();
+			_sModule[asset].erase(_sModule[asset].begin() + i);
+		}
+	}
+}
 
 AssetsPool &AssetsPool::getInstance()
 {
@@ -39,7 +53,7 @@ AssetsPool &AssetsPool::getInstance()
 AssetsPool::AssetsPool(const std::string &rootModelPath,
 	const std::string &rootTexturesPath
 ) : _rootModelPath(rootModelPath), _rootTexturePath(rootTexturesPath), _meshs(),
-	_textures()
+    _textures()
 {
 }
 
@@ -48,7 +62,8 @@ irr::video::ITexture *AssetsPool::loadTexture(const std::string &file)
 	irr::io::path path = std::string(_rootTexturePath + file).c_str();
 	if (_meshs.count(file) > 0)
 		return _textures.at(file);
-	irr::video::ITexture *texture = IrrManager::getInstance().getDriver()->getTexture(path);
+	irr::video::ITexture *texture = IrrManager::getInstance().getDriver()->getTexture(
+		path);
 	if (!texture)
 		throw std::runtime_error("Can't load textures " + file);
 	_textures[file] = texture;
@@ -64,7 +79,7 @@ irr::scene::IMesh *AssetsPool::loadMesh(const std::string &file)
 		path);
 	if (!mesh)
 		throw std::runtime_error("Can't load mesh " +
-			std::string(_rootModelPath + file));
+		                         std::string(_rootModelPath + file));
 	_meshs[file] = mesh;
 	return mesh;
 }
@@ -76,7 +91,7 @@ irrklang::ISound *AssetsPool::loadSound(const AssetsPool::Assets asset,
 	auto engine = IrrManager::getInstance().getEngine();
 	auto &instance = IrrManager::getInstance();
 	auto module = engine->play2D(_sounds.at(asset).name.c_str(), loop, true,
-		false);
+	                             false);
 
 	module->setVolume((instance.*(_sounds.at(asset).vol))());
 	module->setIsPaused(true);

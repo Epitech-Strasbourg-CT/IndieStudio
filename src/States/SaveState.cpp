@@ -44,6 +44,7 @@ void SaveState::loadButtons()
 	auto gui = IrrManager::getInstance().getGuienv();
 	auto &er = EventReceiver::getInstance();
 	auto &ap = AssetsPool::getInstance();
+
 	std::time_t t = std::time(0);
 	auto *tm = localtime(&t);
 	std::string sName = std::to_string(tm->tm_year + 1900)
@@ -68,10 +69,11 @@ void SaveState::loadButtons()
 				this->applyEventButton(ev, id);
 			return true;
 		});
-	_name = gui->addEditBox(std::wstring(sName.begin(),
-		sName.end()).c_str(), {835, 440, 1085, 540},
-		true, nullptr, 600 + SAVE_BUTTON_NUMBER);
-	_name->setTextAlignment(irr::gui::EGUIA_CENTER, irr::gui::EGUIA_CENTER);
+	_name = gui->addButton({835, 440, 1085, 540}, nullptr,
+		600 + SAVE_BUTTON_NUMBER,
+		std::wstring(sName.begin(), sName.end()).c_str());
+	_name->setOverrideFont(_share.getFont());
+	_name->setEnabled(false);
 }
 
 void SaveState::unloadButtons()
@@ -81,7 +83,6 @@ void SaveState::unloadButtons()
 	for (auto &n : _buttons)
 		n->remove();
 	_buttons.clear();
-	//std::cout << "Name :" << _name->getText() << std::endl;
 	_name->remove();
 }
 

@@ -88,8 +88,9 @@ void LoadState::loadButtons()
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
 		auto name = n.second.name;
-		b->setImage(ap.loadTexture("buttons/" + name + ".png"));
-		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
+		//b->setImage(ap.loadTexture("buttons/" + name + ".png"));
+		//b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
+		b->setOverrideFont(_share.getFont());
 		_buttons.push_back(b);
 	}
 	setSaveButtons();
@@ -157,13 +158,13 @@ void LoadState::applyEventButton(const irr::SEvent &ev, LoadState::Actions id)
 			playSelect();
 			LoadState::_descs.at(id).fct(this);
 			break;
-		case irr::gui::EGET_ELEMENT_HOVERED:
+		/*case irr::gui::EGET_ELEMENT_HOVERED:
 			playCursor();
 			b->setImage(ap.loadTexture(hover_name));
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			b->setImage(ap.loadTexture(name));
-			break;
+			break;*/
 		default:
 			break;
 	}

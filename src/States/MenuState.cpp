@@ -59,22 +59,22 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 
 MenuState::MenuState(AStateShare &_share) : AState(_share), AMenuSound()
 {
-	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::MENU, true));
 }
 
 MenuState::~MenuState()
 {
-	_share.popMusic(AssetsPool::MENU);
 }
 
 void MenuState::load()
 {
+	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::MENU, true));
 	loadButtons();
 	AState::load();
 }
 
 void MenuState::unload()
 {
+	_share.popMusic(AssetsPool::MENU);
 	unloadButtons();
 	AState::unload();
 }
