@@ -42,6 +42,8 @@ add_executable(bomberman
         include/Game/EntitiesMap.hpp
         src/Game/EntityFactory.cpp
         include/Game/EntityFactory.hpp
+        src/Game/ControllerFactory.cpp
+        include/Game/ControllerFactory.hpp
         src/Game/SaveManager.cpp
         include/Game/SaveManager.hpp
 

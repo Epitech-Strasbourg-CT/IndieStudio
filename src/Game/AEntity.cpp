@@ -42,7 +42,7 @@ void AEntity::updateRender()
 void AEntity::dump(std::ostream &s) const
 {
 	struct AEntity::serialize ser = {_position.X, _position.Y};
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	memcpy(se.get(), &ser, sizeof(ser));
 	s << _type;
 	s.write("\0", 1);
@@ -52,7 +52,7 @@ void AEntity::dump(std::ostream &s) const
 void AEntity::load(std::istream &s)
 {
 	struct AEntity::serialize ser {};
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
 	setPosition({ser.x, ser.y});

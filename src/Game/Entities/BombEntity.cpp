@@ -55,7 +55,7 @@ void BombEntity::dump(std::ostream &s) const
 	AEntity::dump(s);
 	struct BombEntity::serialize ser = {_range, _updateCycle, false,
 		true};
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	memcpy(se.get(), &ser, sizeof(ser));
 	s.write(se.get(), sizeof(ser));
 }
@@ -64,7 +64,7 @@ void BombEntity::load(std::istream &s)
 {
 	AEntity::load(s);
 	struct BombEntity::serialize ser;
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
 	_range = ser.range;

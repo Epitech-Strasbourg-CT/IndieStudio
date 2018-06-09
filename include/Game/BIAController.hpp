@@ -14,9 +14,10 @@
 
 class BIAController : public AController {
 public:
-	BIAController(EntitiesMap &map, size_t id);
+	BIAController(size_t id);
 
-	void updateInputs() override;
+	void updateInputs(EntitiesMap *map) override;
+	ControllerType getType() const override;
 private:
 	void _fillTargetQueue();
 	void _goToTarget();
@@ -36,5 +37,5 @@ private:
 	irr::core::vector2di _spawnPos;
 	std::queue<ControlName> _targetQueue;
 	PlayerEntity *_p;
-	EntitiesMap &_map;
+	EntitiesMap *_map;
 };

@@ -82,7 +82,7 @@ void BKeyboardController::unregisterBind(irr::EKEY_CODE code, ControlType t)
 	_getBinds(t).erase(code);
 }
 
-void BKeyboardController::updateInputs()
+void BKeyboardController::updateInputs(EntitiesMap *)
 {
 	for (auto &n : _isKeyDown)
 		if (n.second && _bindsDown.count(n.first) > 0)
@@ -122,7 +122,11 @@ std::unordered_map<irr::EKEY_CODE, ControlName> &BKeyboardController::_getBinds(
 
 BKeyboardController::~BKeyboardController()
 {
-	std::cout << "Destroy Controller" << std::endl;
 	auto &er = EventReceiver::getInstance();
 	er.unregisterEvent(_id, irr::EET_KEY_INPUT_EVENT);
+}
+
+ControllerType BKeyboardController::getType() const
+{
+	return PLAYER;
 }

@@ -88,19 +88,19 @@ void IrrManager::setMasterVolume(irrklang::ik_f32 vol)
 {
 	auto &manager = IrrManager::getInstance();
 
-	_master = std::min<irrklang::ik_f32>(std::max<irrklang::ik_f32>(-1, vol), 1);
+	_master = std::min<irrklang::ik_f32>(std::max<irrklang::ik_f32>(0, vol), 1);
 	manager.getEngine()->setSoundVolume(_master);
 }
 
 void IrrManager::setEffectsVolume(irrklang::ik_f32 vol)
 {
-	_effects = std::min<irrklang::ik_f32>(std::max<irrklang::ik_f32>(-1, vol), 1);
+	_effects = std::min<irrklang::ik_f32>(std::max<irrklang::ik_f32>(0, vol), 1);
 	AssetsPool::getInstance().setVolume(AssetsPool::SFX, _effects);
 }
 
 void IrrManager::setMusicVolume(irrklang::ik_f32 vol)
 {
-	_musics = std::min<irrklang::ik_f32>(std::max<irrklang::ik_f32>(-1, vol), 1);
+	_musics = std::min<irrklang::ik_f32>(std::max<irrklang::ik_f32>(0, vol), 1);
 	AssetsPool::getInstance().setVolume(AssetsPool::MUSIC, _musics);
 
 }

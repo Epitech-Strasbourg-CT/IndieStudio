@@ -27,9 +27,15 @@ public:
 
 	void collide(AEntity &entity) override;
 	void update(EntitiesMap *map) override;
+	void dump (std::ostream &s) const;
+	void load(std::istream &s);
 	void destroy();
 	virtual void playerChanging(PlayerEntity *entity) = 0;
 private:
+	struct serialize {
+		bool destroyed;
+	};
+
 	bool _destroyed;
 };
 

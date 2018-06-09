@@ -83,6 +83,25 @@ void PotEntity::update(EntitiesMap *map)
 	AEntity::update(map);
 }
 
+void PotEntity::dump(std::ostream &s) const
+{
+	AEntity::dump(s);
+	struct PotEntity::serialize ser = {_broken};
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
+	memcpy(se.get(), &ser, sizeof(ser));
+	s.write(se.get(), sizeof(ser));
+}
+
+void PotEntity::load(std::istream &s)
+{
+	AEntity::load(s);
+	struct PotEntity::serialize ser;
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
+	s.read(se.get(), sizeof(ser));
+	memcpy(&ser, se.get(), sizeof(ser));
+	_broken = ser.broken;
+}
+
 PotEntity::~PotEntity()
 {
 	AssetsPool::getInstance().loadSound(AssetsPool::POT, false)->setIsPaused(false);

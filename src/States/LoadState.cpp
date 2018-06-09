@@ -123,6 +123,16 @@ void LoadState::loadButtons()
 		_saves.emplace_back(glob_result.gl_pathv[i]);
 	_idx = 0;
 	#elif _WIN32
+	HANDLE hFind;
+	WIN32_FIND_DATA data;
+
+	hFind = FindFirstFile(".save/*.dat", &data);
+	if (hFind != INVALID_HANDLE_VALUE) {
+        do {
+                _saves.emplace_back(data.cFileName);
+        } while (FindNextFile(hFind, &data));
+        FindClose(hFind);
+	}
 	#endif
 	setSaveButtons();
 }
@@ -153,7 +163,7 @@ void LoadState::update()
 {
 	_share.getFunc("rotateMenu")();
 	AState::update();
-
+	AssetsPool::getInstance().cleanSound();
 	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 }

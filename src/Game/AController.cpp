@@ -17,7 +17,7 @@ void AController::registerControllable(Controllable *controllable)
 
 }
 
-void AController::updateInputs()
+void AController::updateInputs(EntitiesMap *)
 {
 
 }

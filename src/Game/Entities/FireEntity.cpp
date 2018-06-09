@@ -54,7 +54,7 @@ void FireEntity::dump(std::ostream &s) const
 	AEntity::dump(s);
 	struct FireEntity::serialize ser = {_spreadDir.X, _spreadDir.Y,
 		_spreadSize, _spreaded, _updateCycle};
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	memcpy(se.get(), &ser, sizeof(ser));
 	s.write(se.get(), sizeof(ser));
 }
@@ -63,7 +63,7 @@ void FireEntity::load(std::istream &s)
 {
 	AEntity::load(s);
 	struct FireEntity::serialize ser;
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
 	_spreadDir.X = ser.spreadDirX;
