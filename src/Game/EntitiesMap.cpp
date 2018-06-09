@@ -40,8 +40,8 @@ const std::unordered_map<char, std::function<AEntity *(EntitiesMap &, const std:
 	}
 }}, {'0', [](EntitiesMap &, const std::vector<int> &) {
 	AEntity *e = nullptr;
-	if ((rand() % 6) < 4)
-		e = new PotEntity();
+//	if ((rand() % 6) < 4)
+//		e = new PotEntity();
 	return e;
 }}};
 
@@ -231,7 +231,6 @@ void EntitiesMap::update()
 				e->update(this);
 	updateErase();
 	updateMove();
-	updateInsert();
 }
 
 EntitiesMap::EMap &EntitiesMap::getMap()

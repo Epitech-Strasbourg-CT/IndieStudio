@@ -14,7 +14,7 @@
 #include "../../include/Game/Entities/PlayerEntity.hpp"
 
 BIAController::BIAController(EntitiesMap &map, size_t id) : _alreadyMove(false),
-	_id(id), _targetPos({0, 0}), _map(map)
+	_id(id), _targetPos(0, 0), _map(map)
 {
 }
 
@@ -23,9 +23,10 @@ void BIAController::updateInputs()
 	_p = dynamic_cast<PlayerEntity *>(_controllable);
 	if (!_p)
 		return;
-	if (!_alreadyMove && _targetPos[0] == 0 && _targetPos[1] == 0) {
+	if (!_alreadyMove && _targetPos.X == 0 && _targetPos.Y == 0) {
 		_alreadyMove = true;
-		_targetPos = {_p->AEntity::getPosX(), _p->AEntity::getPosY()};
+		_targetPos.X = _p->AEntity::getPosX();
+		_targetPos.Y = _p->AEntity::getPosY();
 	}
 	if (rand() % 200 == 0)
 		_controllable->callBind(DROP_BOMB, KEY_PRESSED);
@@ -36,8 +37,8 @@ void BIAController::updateInputs()
 
 bool BIAController::_onTarget()
 {
-	return _p->AEntity::getPosX() == _targetPos[0] &&
-		_p->AEntity::getPosY() == _targetPos[1] &&
+	return _p->AEntity::getPosX() == _targetPos.X &&
+		_p->AEntity::getPosY() == _targetPos.Y &&
 		_p->AMovable::getPosX() == BORDERX / 2 &&
 		_p->AMovable::getPosY() == BORDERY / 2;
 }
@@ -55,15 +56,15 @@ irr::core::vector2di BIAController::_getFuturePos(ControlName c)
 bool BIAController::_move(ControlName c)
 {
 	auto pos = _getFuturePos(c);
-	_targetPos[0] = pos.X;
-	_targetPos[1] = pos.Y;
+	_targetPos.X = pos.X;
+	_targetPos.Y = pos.Y;
 	_targetMove = c;
 	return true;
 }
 
 void BIAController::_goToTarget()
 {
-	if (!_onTarget() && _targetMove != NONE)
+	if (!_onTarget() && _targetMove != NONE && _isSafe(_targetPos))
 		_controllable->callBind(_targetMove, KEY_DOWN);
 	else if (!_targetQueue.empty()) {
 		_move(_targetQueue.front());
@@ -116,7 +117,10 @@ std::vector<ControlName> BIAController::_genBestEscapeMoves()
 
 	while (!allMoves.empty()) {
 		auto i = rand() % allMoves.size();
-		res.push_back(allMoves[i]);
+		if (_map.canMoveTo(_getFuturePos(allMoves[i])) &&
+			_isSafe(_getFuturePos(allMoves[i]))) {
+			res.push_back(allMoves[i]);
+		}
 		allMoves.erase(allMoves.begin() + i);
 	}
 	return res;
@@ -125,13 +129,6 @@ std::vector<ControlName> BIAController::_genBestEscapeMoves()
 ControlName BIAController::_bestEscape()
 {
 	std::vector<ControlName> moves = _genBestEscapeMoves();
-	for (int i = 0; i < moves.size(); ++i) {
-		if (!_map.canMoveTo(_getFuturePos(moves[i])) ||
-			!_isSafe(_getFuturePos(moves[i]))) {
-			moves.erase(moves.begin() + i);
-			i -= 1;
-		}
-	}
 	std::cout << "[";
 	for (auto &e : moves)
 		std::cout << e << ",";

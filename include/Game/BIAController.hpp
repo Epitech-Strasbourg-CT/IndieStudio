@@ -31,7 +31,7 @@ private:
 	size_t _id;
 	ControlName _targetMove;
 	bool _alreadyMove;
-	std::vector<int> _targetPos;
+	irr::core::vector2di _targetPos;
 	std::queue<ControlName> _targetQueue;
 	PlayerEntity *_p;
 	EntitiesMap &_map;
