@@ -5,7 +5,7 @@
 ** UpBombBonus.cpp
 */
 
-#include "../../../../include/Game/Entities/Bonus/UpBombBonus.hpp"
+#include "../../../../include/Game/Bonus/UpBombBonus.hpp"
 
 
 UpBombBonus::UpBombBonus(RupeeColor color) : ABonusEntity(color)

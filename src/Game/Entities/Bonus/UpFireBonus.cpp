@@ -5,7 +5,7 @@
 ** UpFireBonus.cpp
 */
 
-#include "../../../../include/Game/Entities/Bonus/UpFireBonus.hpp"
+#include "../../../../include/Game/Bonus/UpFireBonus.hpp"
 
 UpFireBonus::UpFireBonus(RupeeColor color) : ABonusEntity(color)
 {
