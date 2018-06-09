@@ -9,6 +9,8 @@
 #include "../../include/Game/Traveling.hpp"
 #include "../../include/Singletons/IrrManager.hpp"
 
+//TODO remove debug in this class
+
 Traveling::Traveling(irr::scene::ICameraSceneNode &cam, irr::core::vector3df const &finalLook, irr::f32 startPointRatio) : _coor(),
 _startPoint(), _point(), _finalLook(finalLook), _needMoveCamToPoint(true),
 _needMovePoint(true), _cur(0), _finalTime(60),

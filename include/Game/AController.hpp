@@ -13,7 +13,7 @@
 
 class Controllable;
 
-enum ControlName_e {
+enum ControlName {
 	MOVE_UP,
 	MOVE_LEFT,
 	MOVE_RIGHT,
@@ -21,13 +21,13 @@ enum ControlName_e {
 	DROP_BOMB,
 };
 
-enum ControlType_e {
+enum ControlType {
 	KEY_DOWN,
 	KEY_PRESSED,
 	KEY_RELEASED,
 };
 
-using ControlPair_e = std::pair<ControlName_e, ControlType_e>;
+using ControlPair_e = std::pair<ControlName, ControlType>;
 
 class AController {
 public:

@@ -35,6 +35,7 @@ private:
 	struct serialize {
 	};
 
+	void addAllEvent();
 	irr::core::vector2di _old;
 	irr::core::vector2di _look;
 	irr::core::vector2di getNewPosition();
