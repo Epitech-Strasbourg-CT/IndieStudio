@@ -393,6 +393,33 @@ src/Game/Entities/AAnimatedEntity.cpp.s:
 	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/AAnimatedEntity.cpp.s
 .PHONY : src/Game/Entities/AAnimatedEntity.cpp.s
 
+src/Game/Entities/ABonusEntity.o: src/Game/Entities/ABonusEntity.cpp.o
+
+.PHONY : src/Game/Entities/ABonusEntity.o
+
+# target to build an object file
+src/Game/Entities/ABonusEntity.cpp.o:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/ABonusEntity.cpp.o
+.PHONY : src/Game/Entities/ABonusEntity.cpp.o
+
+src/Game/Entities/ABonusEntity.i: src/Game/Entities/ABonusEntity.cpp.i
+
+.PHONY : src/Game/Entities/ABonusEntity.i
+
+# target to preprocess a source file
+src/Game/Entities/ABonusEntity.cpp.i:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/ABonusEntity.cpp.i
+.PHONY : src/Game/Entities/ABonusEntity.cpp.i
+
+src/Game/Entities/ABonusEntity.s: src/Game/Entities/ABonusEntity.cpp.s
+
+.PHONY : src/Game/Entities/ABonusEntity.s
+
+# target to generate assembly for a file
+src/Game/Entities/ABonusEntity.cpp.s:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/ABonusEntity.cpp.s
+.PHONY : src/Game/Entities/ABonusEntity.cpp.s
+
 src/Game/Entities/BlockEntity.o: src/Game/Entities/BlockEntity.cpp.o
 
 .PHONY : src/Game/Entities/BlockEntity.o
@@ -447,32 +474,113 @@ src/Game/Entities/BombEntity.cpp.s:
 	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/BombEntity.cpp.s
 .PHONY : src/Game/Entities/BombEntity.cpp.s
 
-src/Game/Entities/BonusEntity.o: src/Game/Entities/BonusEntity.cpp.o
+src/Game/Entities/Bonus/InvertBonus.o: src/Game/Entities/Bonus/InvertBonus.cpp.o
 
-.PHONY : src/Game/Entities/BonusEntity.o
+.PHONY : src/Game/Entities/Bonus/InvertBonus.o
 
 # target to build an object file
-src/Game/Entities/BonusEntity.cpp.o:
-	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/BonusEntity.cpp.o
-.PHONY : src/Game/Entities/BonusEntity.cpp.o
+src/Game/Entities/Bonus/InvertBonus.cpp.o:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/InvertBonus.cpp.o
+.PHONY : src/Game/Entities/Bonus/InvertBonus.cpp.o
 
-src/Game/Entities/BonusEntity.i: src/Game/Entities/BonusEntity.cpp.i
+src/Game/Entities/Bonus/InvertBonus.i: src/Game/Entities/Bonus/InvertBonus.cpp.i
 
-.PHONY : src/Game/Entities/BonusEntity.i
+.PHONY : src/Game/Entities/Bonus/InvertBonus.i
 
 # target to preprocess a source file
-src/Game/Entities/BonusEntity.cpp.i:
-	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/BonusEntity.cpp.i
-.PHONY : src/Game/Entities/BonusEntity.cpp.i
+src/Game/Entities/Bonus/InvertBonus.cpp.i:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/InvertBonus.cpp.i
+.PHONY : src/Game/Entities/Bonus/InvertBonus.cpp.i
 
-src/Game/Entities/BonusEntity.s: src/Game/Entities/BonusEntity.cpp.s
+src/Game/Entities/Bonus/InvertBonus.s: src/Game/Entities/Bonus/InvertBonus.cpp.s
 
-.PHONY : src/Game/Entities/BonusEntity.s
+.PHONY : src/Game/Entities/Bonus/InvertBonus.s
 
 # target to generate assembly for a file
-src/Game/Entities/BonusEntity.cpp.s:
-	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/BonusEntity.cpp.s
-.PHONY : src/Game/Entities/BonusEntity.cpp.s
+src/Game/Entities/Bonus/InvertBonus.cpp.s:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/InvertBonus.cpp.s
+.PHONY : src/Game/Entities/Bonus/InvertBonus.cpp.s
+
+src/Game/Entities/Bonus/ResetFireRangeBonus.o: src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.o
+
+.PHONY : src/Game/Entities/Bonus/ResetFireRangeBonus.o
+
+# target to build an object file
+src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.o:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.o
+.PHONY : src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.o
+
+src/Game/Entities/Bonus/ResetFireRangeBonus.i: src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.i
+
+.PHONY : src/Game/Entities/Bonus/ResetFireRangeBonus.i
+
+# target to preprocess a source file
+src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.i:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.i
+.PHONY : src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.i
+
+src/Game/Entities/Bonus/ResetFireRangeBonus.s: src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.s
+
+.PHONY : src/Game/Entities/Bonus/ResetFireRangeBonus.s
+
+# target to generate assembly for a file
+src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.s:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.s
+.PHONY : src/Game/Entities/Bonus/ResetFireRangeBonus.cpp.s
+
+src/Game/Entities/Bonus/UpBombBonus.o: src/Game/Entities/Bonus/UpBombBonus.cpp.o
+
+.PHONY : src/Game/Entities/Bonus/UpBombBonus.o
+
+# target to build an object file
+src/Game/Entities/Bonus/UpBombBonus.cpp.o:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/UpBombBonus.cpp.o
+.PHONY : src/Game/Entities/Bonus/UpBombBonus.cpp.o
+
+src/Game/Entities/Bonus/UpBombBonus.i: src/Game/Entities/Bonus/UpBombBonus.cpp.i
+
+.PHONY : src/Game/Entities/Bonus/UpBombBonus.i
+
+# target to preprocess a source file
+src/Game/Entities/Bonus/UpBombBonus.cpp.i:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/UpBombBonus.cpp.i
+.PHONY : src/Game/Entities/Bonus/UpBombBonus.cpp.i
+
+src/Game/Entities/Bonus/UpBombBonus.s: src/Game/Entities/Bonus/UpBombBonus.cpp.s
+
+.PHONY : src/Game/Entities/Bonus/UpBombBonus.s
+
+# target to generate assembly for a file
+src/Game/Entities/Bonus/UpBombBonus.cpp.s:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/UpBombBonus.cpp.s
+.PHONY : src/Game/Entities/Bonus/UpBombBonus.cpp.s
+
+src/Game/Entities/Bonus/UpFireBonus.o: src/Game/Entities/Bonus/UpFireBonus.cpp.o
+
+.PHONY : src/Game/Entities/Bonus/UpFireBonus.o
+
+# target to build an object file
+src/Game/Entities/Bonus/UpFireBonus.cpp.o:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/UpFireBonus.cpp.o
+.PHONY : src/Game/Entities/Bonus/UpFireBonus.cpp.o
+
+src/Game/Entities/Bonus/UpFireBonus.i: src/Game/Entities/Bonus/UpFireBonus.cpp.i
+
+.PHONY : src/Game/Entities/Bonus/UpFireBonus.i
+
+# target to preprocess a source file
+src/Game/Entities/Bonus/UpFireBonus.cpp.i:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/UpFireBonus.cpp.i
+.PHONY : src/Game/Entities/Bonus/UpFireBonus.cpp.i
+
+src/Game/Entities/Bonus/UpFireBonus.s: src/Game/Entities/Bonus/UpFireBonus.cpp.s
+
+.PHONY : src/Game/Entities/Bonus/UpFireBonus.s
+
+# target to generate assembly for a file
+src/Game/Entities/Bonus/UpFireBonus.cpp.s:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/Game/Entities/Bonus/UpFireBonus.cpp.s
+.PHONY : src/Game/Entities/Bonus/UpFireBonus.cpp.s
 
 src/Game/Entities/FireEntity.o: src/Game/Entities/FireEntity.cpp.o
 
@@ -852,6 +960,33 @@ src/States/BackgroundState.cpp.s:
 	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/States/BackgroundState.cpp.s
 .PHONY : src/States/BackgroundState.cpp.s
 
+src/States/EndGameState.o: src/States/EndGameState.cpp.o
+
+.PHONY : src/States/EndGameState.o
+
+# target to build an object file
+src/States/EndGameState.cpp.o:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/States/EndGameState.cpp.o
+.PHONY : src/States/EndGameState.cpp.o
+
+src/States/EndGameState.i: src/States/EndGameState.cpp.i
+
+.PHONY : src/States/EndGameState.i
+
+# target to preprocess a source file
+src/States/EndGameState.cpp.i:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/States/EndGameState.cpp.i
+.PHONY : src/States/EndGameState.cpp.i
+
+src/States/EndGameState.s: src/States/EndGameState.cpp.s
+
+.PHONY : src/States/EndGameState.s
+
+# target to generate assembly for a file
+src/States/EndGameState.cpp.s:
+	$(MAKE) -f CMakeFiles/bomberman.dir/build.make CMakeFiles/bomberman.dir/src/States/EndGameState.cpp.s
+.PHONY : src/States/EndGameState.cpp.s
+
 src/States/GameState.o: src/States/GameState.cpp.o
 
 .PHONY : src/States/GameState.o
@@ -1188,15 +1323,27 @@ help:
 	@echo "... src/Game/Entities/AAnimatedEntity.o"
 	@echo "... src/Game/Entities/AAnimatedEntity.i"
 	@echo "... src/Game/Entities/AAnimatedEntity.s"
+	@echo "... src/Game/Entities/ABonusEntity.o"
+	@echo "... src/Game/Entities/ABonusEntity.i"
+	@echo "... src/Game/Entities/ABonusEntity.s"
 	@echo "... src/Game/Entities/BlockEntity.o"
 	@echo "... src/Game/Entities/BlockEntity.i"
 	@echo "... src/Game/Entities/BlockEntity.s"
 	@echo "... src/Game/Entities/BombEntity.o"
 	@echo "... src/Game/Entities/BombEntity.i"
 	@echo "... src/Game/Entities/BombEntity.s"
-	@echo "... src/Game/Entities/BonusEntity.o"
-	@echo "... src/Game/Entities/BonusEntity.i"
-	@echo "... src/Game/Entities/BonusEntity.s"
+	@echo "... src/Game/Entities/Bonus/InvertBonus.o"
+	@echo "... src/Game/Entities/Bonus/InvertBonus.i"
+	@echo "... src/Game/Entities/Bonus/InvertBonus.s"
+	@echo "... src/Game/Entities/Bonus/ResetFireRangeBonus.o"
+	@echo "... src/Game/Entities/Bonus/ResetFireRangeBonus.i"
+	@echo "... src/Game/Entities/Bonus/ResetFireRangeBonus.s"
+	@echo "... src/Game/Entities/Bonus/UpBombBonus.o"
+	@echo "... src/Game/Entities/Bonus/UpBombBonus.i"
+	@echo "... src/Game/Entities/Bonus/UpBombBonus.s"
+	@echo "... src/Game/Entities/Bonus/UpFireBonus.o"
+	@echo "... src/Game/Entities/Bonus/UpFireBonus.i"
+	@echo "... src/Game/Entities/Bonus/UpFireBonus.s"
 	@echo "... src/Game/Entities/FireEntity.o"
 	@echo "... src/Game/Entities/FireEntity.i"
 	@echo "... src/Game/Entities/FireEntity.s"
@@ -1239,6 +1386,9 @@ help:
 	@echo "... src/States/BackgroundState.o"
 	@echo "... src/States/BackgroundState.i"
 	@echo "... src/States/BackgroundState.s"
+	@echo "... src/States/EndGameState.o"
+	@echo "... src/States/EndGameState.i"
+	@echo "... src/States/EndGameState.s"
 	@echo "... src/States/GameState.o"
 	@echo "... src/States/GameState.i"
 	@echo "... src/States/GameState.s"
