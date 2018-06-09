@@ -126,6 +126,8 @@ void BackgroundState::loadCamRotate()
 {
 	_share.addSphereCoor("camRotateMenu", &_camRotate);
 	_share.addFunc("rotateMenu", [this] {
+		if (StateMachine::getInstance().isInStack("game"))
+			return;
 		auto step = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
 		irr::f32 min = static_cast<irr::f32>(2.7);
 		irr::f32 max = static_cast<irr::f32>(4.4);
