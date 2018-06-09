@@ -16,7 +16,7 @@ public:
 	BombEntity();
 
 	bool hasExploded() const;
-	void setAutonomous(bool _utonomous);
+	void setAutonomous(bool _autonomous);
 	void explode(EntitiesMap *map);
 	void update(EntitiesMap *map) override;
 	void dump (std::ostream &s) const;

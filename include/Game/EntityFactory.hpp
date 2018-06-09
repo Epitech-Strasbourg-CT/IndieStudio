@@ -16,7 +16,7 @@
 class EntityFactory {
 	public:
 	EntityFactory();
-	~EntityFactory();
+	~EntityFactory() = default;
 
 	std::unique_ptr<AEntity> createEntity(const std::string &,
 		unsigned playerSkinId = 1

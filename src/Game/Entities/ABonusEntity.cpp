@@ -34,6 +34,25 @@ void ABonusEntity::update(EntitiesMap *map)
 		map->erase(this);
 }
 
+void ABonusEntity::dump(std::ostream &s) const
+{
+	AEntity::dump(s);
+	struct ABonusEntity::serialize ser = {_destroyed};
+	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	memcpy(se.get(), &ser, sizeof(ser));
+	s.write(se.get(), sizeof(ser));
+}
+
+void ABonusEntity::load(std::istream &s)
+{
+	AEntity::load(s);
+	struct ABonusEntity::serialize ser;
+	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	s.read(se.get(), sizeof(ser));
+	memcpy(&ser, se.get(), sizeof(ser));
+	_destroyed = ser.destroyed;
+}
+
 void ABonusEntity::collide(AEntity &entity)
 {
 	std::map<std::string, std::function<void(AEntity *aEntity)>>

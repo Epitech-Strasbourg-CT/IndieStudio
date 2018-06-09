@@ -70,7 +70,7 @@ private:
 	static const std::vector<std::string>
 	_mapTemplate;
 	static const std::unordered_map<char, std::function<AEntity *(
-		EntitiesMap &, const std::vector<int> &
+		const std::vector<int> &
 	)>> _generationMap;
 };
 

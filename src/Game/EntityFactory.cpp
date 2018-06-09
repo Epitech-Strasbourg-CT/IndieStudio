@@ -11,6 +11,10 @@
 #include "../../include/Game/Entities/PotEntity.hpp"
 #include "../../include/Game/Entities/FireEntity.hpp"
 #include "../../include/Game/Entities/ABonusEntity.hpp"
+#include "../../include/Game/Bonus/InvertBonus.hpp"
+#include "../../include/Game/Bonus/ResetFireRangeBonus.hpp"
+#include "../../include/Game/Bonus/UpBombBonus.hpp"
+#include "../../include/Game/Bonus/UpFireBonus.hpp"
 
 EntityFactory::EntityFactory() : _fac({{"entity", [](unsigned) {
 	return std::unique_ptr<AEntity>(new AEntity("entity"));
@@ -24,13 +28,15 @@ EntityFactory::EntityFactory() : _fac({{"entity", [](unsigned) {
 	return std::unique_ptr<PotEntity>(new PotEntity());
 }}, {"fire", [](unsigned) {
 	return std::unique_ptr<FireEntity>(new FireEntity());
-}}, {"bonus", [](unsigned) {
-	return std::unique_ptr<PotEntity>(new PotEntity());
+}}, {"invert_bonus", [](unsigned) {
+	return std::unique_ptr<InvertBonus>(new InvertBonus());
+}}, {"reduce_bonus", [](unsigned) {
+	return std::unique_ptr<ResetFireRangeBonus>(new ResetFireRangeBonus());
+}}, {"bomb_bonus", [](unsigned) {
+	return std::unique_ptr<UpBombBonus>(new UpBombBonus());
+}}, {"fire_bonus", [](unsigned) {
+	return std::unique_ptr<UpFireBonus>(new UpFireBonus());
 }},})
-{
-}
-
-EntityFactory::~EntityFactory()
 {
 }
 

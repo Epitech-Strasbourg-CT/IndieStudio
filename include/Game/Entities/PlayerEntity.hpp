@@ -23,6 +23,7 @@ class PlayerEntity : public ABombDropper,
                      public AMovable<int> {
 public:
 	PlayerEntity(unsigned playerSkinId = 1);
+	void reloadSkin();
 	void update(EntitiesMap *map) override;
 	bool updatePosition(EntitiesMap *map);
 	void updateRender() override;
@@ -34,9 +35,15 @@ public:
 	virtual ~PlayerEntity();
 private:
 	struct serialize {
+		unsigned playerSkinId;
+		int lookX;
+		int lookY;
+		bool alive;
+		ControllerType ctType;
 	};
 
 	void addAllEvent();
+	unsigned _playerSkinId;
 	irr::core::vector2di _old;
 	irr::core::vector2di _look;
 	irr::core::vector2di getNewPosition();
