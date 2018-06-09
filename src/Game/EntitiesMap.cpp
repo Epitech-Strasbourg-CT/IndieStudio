@@ -231,6 +231,7 @@ void EntitiesMap::update()
 				e->update(this);
 	updateErase();
 	updateMove();
+	updateInsert();
 }
 
 EntitiesMap::EMap &EntitiesMap::getMap()

@@ -28,6 +28,7 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 		            	auto &res = self->getSharedResources();
 		            	self->getSharedResources().addCoor("menu", self->_share.getSphereCoor("camRotateMenu")->calc());
 		            	sm.push(new AIChooseState(res), false);
+		            	return true;
 		            }
 	            }},
 	{LOAD,      {
@@ -37,6 +38,7 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 				    auto &sm = StateMachine::getInstance();
 				    auto &res = self->getSharedResources();
 				    sm.push(new LoadState(res), false);
+			            return true;
 		            }
 	            }},
 	{SETTINGS,  {
@@ -46,29 +48,30 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 				    auto &sm = StateMachine::getInstance();
 				    auto &res = self->getSharedResources();
 			            sm.push(new SettingsState(res), false);
+			            return true;
 		            }
 	            }},
 	{EXIT_GAME, {
-		            {610, 640, 1310, 690},
-		            "exit",
-		            [](MenuState *self) {
-			            StateMachine::getInstance().popAll();
+	                {610, 640, 1310, 690}, "exit", [](MenuState *self) {
+	                	        self->externalEventsClean();
+					StateMachine::getInstance().popAll();
+					return false;
 		            }
 	            }},
 };
 
-MenuState::MenuState(AStateShare &_share) : AState(_share), AMenuSound()
+MenuState::MenuState(AStateShare &_share) : AState(_share), AMenuSound(), _eventsActivate(true)
 {
-	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::MENU, true));
 }
 
 MenuState::~MenuState()
 {
-	_share.popMusic(AssetsPool::MENU);
+	eventsClean();
 }
 
 void MenuState::load()
 {
+	eventsSetup();
 	loadButtons();
 	AState::load();
 }
@@ -95,8 +98,6 @@ irr::gui::IGUIButton *MenuState::getButton(MenuActions id) const
 
 void MenuState::unloadButtons()
 {
-	auto &er = EventReceiver::getInstance();
-	er.unregisterEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	for (auto &n : _buttons)
 		n->remove();
 	_buttons.clear();
@@ -116,16 +117,9 @@ void MenuState::loadButtons()
 		_buttons.push_back(b);
 	}
 
-	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
-	                 [this](const irr::SEvent &ev) {
-		                 auto id = static_cast<MenuActions>(ev.GUIEvent.Caller->getID());
-		                 if (MenuState::_descs.count(id) > 0)
-			                 this->applyEventButton(ev, id);
-		                 return true;
-	                 });
 }
 
-void MenuState::applyEventButton(const irr::SEvent &ev, MenuActions id)
+bool MenuState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 {
 	auto b = getButton(id);
 	auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
@@ -135,8 +129,7 @@ void MenuState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			playSelect();
-			MenuState::_descs.at(id).fct(this);
-			break;
+			return MenuState::_descs.at(id).fct(this);
 		case irr::gui::EGET_ELEMENT_HOVERED:
 			playCursor();
 			b->setImage(ap.loadTexture(hover_name));
@@ -147,9 +140,41 @@ void MenuState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 		default:
 			break;
 	}
+	return true;
 }
 
 void MenuState::update()
 {
 	_share.getFunc("rotateMenu")();
+}
+
+void MenuState::eventsSetup()
+{
+	_eventsActivate = true;
+	auto &er = EventReceiver::getInstance();
+	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
+	                 [this](const irr::SEvent &ev) {
+		                 if (!this->isLoaded() || !this->isEnable())
+			                 return true;
+		                 auto id = static_cast<MenuActions>(ev.GUIEvent.Caller->getID());
+		                 if (MenuState::_descs.count(id) > 0)
+			                 return this->applyEventButton(ev, id);
+		                 return true;
+	                 });
+}
+
+void MenuState::eventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	auto &er = EventReceiver::getInstance();
+	er.unregisterEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT);
+	_eventsActivate = false;
+}
+
+void MenuState::externalEventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	_eventsActivate = false;
 }

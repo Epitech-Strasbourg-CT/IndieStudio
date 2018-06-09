@@ -16,9 +16,12 @@ bool EventReceiver::OnEvent(const irr::SEvent &event)
 	auto type = event.EventType;
 	if (_binds.count(event.EventType) <= 0)
 		return false;
-	for (auto it = _binds[type].begin(); it != _binds[type].end(); it++) {
-		if (it->second (event) == false)
+	for (auto it = _binds[type].begin(); it != _binds[type].end();) {
+		if (!it->second(event)) {
+			std::cout << "UNREGISTER " << it->first << std::endl;
 			it = _binds[type].erase(it);
+		} else
+			it++;
 	}
 	if (_binds[type].empty())
 		_binds.erase(type);
@@ -32,11 +35,11 @@ EventReceiver::EventReceiver()
 
 void EventReceiver::unregisterEvent(size_t id, irr::EEVENT_TYPE type)
 {
-	std::cout << "TRY ERASE " << id << std::endl;
-	if (_binds.count(type) <= 0 || _binds[type].count(id))
+	if (_binds.count(type) <= 0 || _binds[type].count(id) <= 0)
 		return;
+	std::cout << "UNREGISTER " << id << std::endl;
 	_binds[type].erase(id);
-	std::cout << "ERASE " << id << std::endl;
+	for (auto &n :_binds[type])
 	if (_binds[type].empty())
 		_binds.erase(type);
 }

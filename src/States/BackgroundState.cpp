@@ -22,7 +22,7 @@ _camRotate(static_cast<irr::f32>(2.3), static_cast<irr::f32>(3.14159265 / 3.0), 
 void BackgroundState::load()
 {
 	AssetsPool::getInstance().loadSound(AssetsPool::MENU, true); //TODO see this line with the group
-
+	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::MENU, true));
 	loadMapMenu();
 	loadCharacter();
 	loadSkyBox();
@@ -83,6 +83,7 @@ void BackgroundState::loadSkyBox()
 
 void BackgroundState::unload()
 {
+	_share.popMusic(AssetsPool::MENU);
 	_share.delSharedNode("menu");
 	_share.delSharedNode("skybox");
 	for (auto i = 0; i < 4; i++)

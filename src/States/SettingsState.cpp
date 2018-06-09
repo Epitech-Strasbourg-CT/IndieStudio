@@ -10,6 +10,7 @@
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/States/SettingsState.hpp"
+#include "../../include/States/MenuState.hpp"
 
 const std::map<SettingsActions, SettingsState::ButtonsDesc>
 	SettingsState::_descs{
@@ -19,6 +20,7 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
 			manager.setMasterVolume(manager.getMasterVolume() + (irrklang::ik_f32 )0.1);
+			return true;
 		}
 	}},
 	{MASTER_VOL_DOWN,    {
@@ -27,6 +29,7 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
 			manager.setMasterVolume(manager.getMasterVolume() - (irrklang::ik_f32 )0.1);
+			return true;
 		}
 	}},
 	{MUSIC_VOL_UP,    {
@@ -35,6 +38,7 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
 			manager.setMusicVolume(manager.getMusicVolume() + (irrklang::ik_f32 )0.1);
+			return true;
 		}
 	}},
 	{MUSIC_VOL_DOWN, {
@@ -43,6 +47,7 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
 			manager.setMusicVolume(manager.getMusicVolume() - (irrklang::ik_f32 )0.1);
+			return true;
 		}
 	}},
 	{SFX_VOL_UP,	{
@@ -51,6 +56,7 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
 			manager.setEffectsVolume(manager.getEffectsVolume() + (irrklang::ik_f32 )0.1);
+			return true;
 		}
 	}},
 	{SFX_VOL_DOWN,    {
@@ -59,13 +65,16 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 		[](SettingsState *self) {
 			auto &manager = IrrManager::getInstance();
 			manager.setEffectsVolume(manager.getEffectsVolume() - (irrklang::ik_f32 )0.1);
+			return true;
 		}
 	}},
 	{VOL_APPLY,    {
 		{1220, 850,  1520, 900},
 		"save",
 		[](SettingsState *self) {
+			self->externalEventsClean();
 			StateMachine::getInstance().pop();
+			return false;
 		}
 	}},
 	{VOL_CANCEL,    {
@@ -77,7 +86,9 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 			manager.setMasterVolume(self->_master);
 			manager.setMusicVolume(self->_music);
 			manager.setEffectsVolume(self->_sfx);
+			self->externalEventsClean();
 			StateMachine::getInstance().pop();
+			return false;
 		}
 	}},
 };
@@ -93,10 +104,12 @@ SettingsState::SettingsState(AStateShare &_share) : AState(_share), AMenuSound()
 
 SettingsState::~SettingsState()
 {
+	eventsClean();
 }
 
 void SettingsState::load()
 {
+	eventsSetup();
 	loadButtons();
 	AState::load();
 }
@@ -130,8 +143,6 @@ irr::gui::IGUIButton *SettingsState::getButton(SettingsActions id) const
 
 void SettingsState::unloadButtons()
 {
-	auto &er = EventReceiver::getInstance();
-	er.unregisterEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	for (auto &n : _buttons)
 		n->remove();
 }
@@ -150,16 +161,9 @@ void SettingsState::loadButtons()
 		_buttons.push_back(b);
 	}
 
-	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
-	                 [this](const irr::SEvent &ev) {
-		                 auto id = static_cast<SettingsActions>(ev.GUIEvent.Caller->getID());
-		                 if (SettingsState::_descs.count(id) > 0)
-			                 this->applyEventButton(ev, id);
-		                 return true;
-	                 });
 }
 
-void SettingsState::applyEventButton(const irr::SEvent &ev, SettingsActions id)
+bool SettingsState::applyEventButton(const irr::SEvent &ev, SettingsActions id)
 {
 	auto b = getButton(id);
 	auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
@@ -169,9 +173,40 @@ void SettingsState::applyEventButton(const irr::SEvent &ev, SettingsActions id)
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			playSelect();
-			SettingsState::_descs.at(id).fct(this);
-			break;
+			return SettingsState::_descs.at(id).fct(this);
 		default:
 			break;
 	}
+	return true;
+}
+
+void SettingsState::eventsSetup()
+{
+	_eventsActivate = true;
+	auto &er = EventReceiver::getInstance();
+	er.registerEvent(2, irr::EEVENT_TYPE::EET_GUI_EVENT,
+	                 [this](const irr::SEvent &ev) {
+		                 if (!this->isLoaded() || !this->isEnable())
+			                 return true;
+		                 auto id = static_cast<SettingsActions >(ev.GUIEvent.Caller->getID());
+		                 if (SettingsState::_descs.count(id) > 0)
+			                 return this->applyEventButton(ev, id);
+		                 return true;
+	                 });
+}
+
+void SettingsState::eventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	auto &er = EventReceiver::getInstance();
+	er.unregisterEvent(2, irr::EEVENT_TYPE::EET_GUI_EVENT);
+	_eventsActivate = false;
+}
+
+void SettingsState::externalEventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	_eventsActivate = false;
 }
