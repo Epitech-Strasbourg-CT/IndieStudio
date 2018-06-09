@@ -61,6 +61,7 @@ void ABonusEntity::collide(AEntity &entity)
 ABonusEntity::~ABonusEntity()
 {
 	std::cout << "Destroy" << std::endl;
+	AssetsPool::getInstance().loadSound(AssetsPool::RUPEE, false)->setIsPaused(false);
 	_node->remove();
 }
 

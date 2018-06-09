@@ -11,6 +11,7 @@
 #include "../../include/Game/Entities/PlayerEntity.hpp"
 #include "../../include/Game/Entities/BlockEntity.hpp"
 #include "../../include/Game/BIAController.hpp"
+#include "../../include/Singletons/AssetsPool.hpp"
 
 const std::unordered_map<char, std::function<AEntity *(EntitiesMap &, const std::vector<int> &)>>
 	EntitiesMap::_generationMap = {{'X', [](EntitiesMap &, const std::vector<int> &) {
@@ -224,6 +225,7 @@ void EntitiesMap::update()
 				e->update(this);
 	updateErase();
 	updateMove();
+	AssetsPool::getInstance().cleanSound();
 }
 
 EntitiesMap::EMap &EntitiesMap::getMap()

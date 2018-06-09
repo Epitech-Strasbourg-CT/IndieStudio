@@ -85,5 +85,6 @@ void PotEntity::update(EntitiesMap *map)
 
 PotEntity::~PotEntity()
 {
+	AssetsPool::getInstance().loadSound(AssetsPool::POT, false)->setIsPaused(false);
 	_node->remove();
 }

@@ -29,6 +29,8 @@ _autonomous(false)
 	_node->setMaterialType(irr::video::EMT_SOLID);
 	_node->setScale({2.5, 2.5, 2.5});
 	_start = Time::timestamp();
+	AssetsPool::getInstance().loadSound(AssetsPool::BDROP, false)->setIsPaused(
+		false);
 }
 
 bool BombEntity::hasExploded() const
@@ -69,6 +71,7 @@ void BombEntity::explode(EntitiesMap *map)
 
 BombEntity::~BombEntity()
 {
+	AssetsPool::getInstance().loadSound(AssetsPool::BBLOW, false)->setIsPaused(false);
 	_node->remove();
 }
 
