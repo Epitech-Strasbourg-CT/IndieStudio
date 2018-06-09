@@ -11,6 +11,7 @@
 #include "../../include/Singletons/IrrManager.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
+#include "../../include/Game/SaveManager.hpp"
 
 const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 	SaveState::_descs{
@@ -25,6 +26,10 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 		{635, 590,  935, 640},
 		"save",
 		[](SaveState *self) {
+			SaveManager sm;
+			std::wstring wstr(self->_name->getText());
+			std::string str(wstr.begin(), wstr.end());
+			sm.save(*self->_share.getMap(), ".save/" + str + ".dat");
 			StateMachine::getInstance().pop();
 		}
 	}}
