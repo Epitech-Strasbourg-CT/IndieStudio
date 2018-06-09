@@ -7,7 +7,7 @@
 
 #include "../../../../include/Game/Bonus/InvertBonus.hpp"
 
-InvertBonus::InvertBonus(RupeeColor color) : ABonusEntity(color)
+InvertBonus::InvertBonus() : ABonusEntity("invert_bonus", YELLOW)
 {
 }
 

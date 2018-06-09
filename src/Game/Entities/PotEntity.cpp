@@ -20,16 +20,16 @@ const std::map<int, std::function<AEntity *()>> PotEntity::_gemGen = {
 		return nullptr;
 	}},
 	{20, []() {
-		return new UpBombBonus(GREEN);
+		return new UpBombBonus();
 	}},
 	{10, []() {
-		return new UpFireBonus(RED);
+		return new UpFireBonus();
 	}},
 	{10, []() {
-		return new ResetFireRangeBonus(BLUE);
+		return new ResetFireRangeBonus();
 	}},
 	{5, []() {
-		return new InvertBonus(YELLOW);
+		return new InvertBonus();
 	}}
 };
 

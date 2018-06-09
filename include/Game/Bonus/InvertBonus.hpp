@@ -12,7 +12,7 @@
 
 class InvertBonus : public ABonusEntity {
 public:
-	InvertBonus(RupeeColor color);
+	InvertBonus();
 
 	void playerChanging(PlayerEntity *entity) override;
 };

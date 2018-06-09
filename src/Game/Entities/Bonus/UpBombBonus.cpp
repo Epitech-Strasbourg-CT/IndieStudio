@@ -7,8 +7,7 @@
 
 #include "../../../../include/Game/Bonus/UpBombBonus.hpp"
 
-
-UpBombBonus::UpBombBonus(RupeeColor color) : ABonusEntity(color)
+UpBombBonus::UpBombBonus() : ABonusEntity("bomb_bonus", GREEN)
 {
 }
 
