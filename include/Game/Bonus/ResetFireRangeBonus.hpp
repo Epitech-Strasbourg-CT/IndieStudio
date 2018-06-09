@@ -8,7 +8,7 @@
 #ifndef BOMBERMAN_RESETFIRERANGEBONUS_HPP
 	#define BOMBERMAN_RESETFIRERANGEBONUS_HPP
 
-	#include "../ABonusEntity.hpp"
+	#include "../Entities/ABonusEntity.hpp"
 
 class ResetFireRangeBonus : public ABonusEntity {
 public:

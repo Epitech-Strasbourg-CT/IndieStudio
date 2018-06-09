@@ -8,7 +8,7 @@
 #ifndef BOMBERMAN_INVERTBONUS_HPP
 	#define BOMBERMAN_INVERTBONUS_HPP
 
-	#include "../ABonusEntity.hpp"
+	#include "../Entities/ABonusEntity.hpp"
 
 class InvertBonus : public ABonusEntity {
 public:
