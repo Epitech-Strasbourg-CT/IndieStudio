@@ -36,7 +36,7 @@ public:
 	void update() override;
 	void draw() override;
 
-	void applyEventButton(const irr::SEvent &ev, LoadState::Actions id);
+	bool applyEventButton(const irr::SEvent &ev, LoadState::Actions id);
 	irr::gui::IGUIButton *getButton(LoadState::Actions) const;
 
 	const std::string getName() const override;
@@ -44,8 +44,12 @@ public:
 	struct ButtonsDesc {
 		irr::core::rect<irr::s32> pos;
 		std::string name;
-		std::function<void(LoadState *)> fct;
+		std::function<bool(LoadState *)> fct;
 	};
+
+	void eventsSetup();
+	void eventsClean();
+	void externalEventsClean();
 
 private:
 	void setSaveButtons();
@@ -54,6 +58,7 @@ private:
 	static const std::map<LoadState::Actions, ButtonsDesc> _descs;
 	std::vector<std::string> _saves;
 	size_t _idx;
+	bool _eventsActivate;
 };
 
 #endif /* !BOMBERMAN_LOADSTATE_HPP */

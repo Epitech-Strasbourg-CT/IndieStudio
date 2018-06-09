@@ -9,6 +9,25 @@
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
 #include "../../../include/Game/EntitiesMap.hpp"
+#include "../../../include/Game/Entities/BonusEntity.hpp"
+
+const std::map<int, std::function<AEntity *()>> PotEntity::_gemGen = {
+	{55, []() {
+		return nullptr;
+	}},
+	{20, []() {
+		return new BonusEntity(GREEN);
+	}},
+	{10, []() {
+		return new BonusEntity(RED);
+	}},
+	{10, []() {
+		return new BonusEntity(BLUE);
+	}},
+	{5, []() {
+		return new BonusEntity(YELLOW);
+	}}
+};
 
 PotEntity::PotEntity() : AEntity("pot"), _broken(false)
 {
@@ -32,16 +51,35 @@ void PotEntity::breakMe()
 	_broken = true;
 }
 
+void PotEntity::genRandomGem(EntitiesMap *map)
+{
+	auto sum = 0;
+	for (auto &n : PotEntity::_gemGen)
+		sum += n.first;
+	auto floor = rand() % sum;
+	AEntity *elem = 0;
+	auto floorSeek = 0;
+	for (auto &n : PotEntity::_gemGen) {
+		floorSeek += n.first;
+		if (floor < floorSeek) {
+			elem = n.second();
+			break;
+		}
+	}
+	if (elem)
+		map->insert(elem, getPosition());
+}
+
 void PotEntity::update(EntitiesMap *map)
 {
-	if (_broken)
+	if (_broken) {
+		genRandomGem(map);
 		map->erase(this);
+	}
 	AEntity::update(map);
 }
 
 PotEntity::~PotEntity()
 {
-	//free((void *)1);
-	//std::cout << "DELETE POT" << std::endl;
 	_node->remove();
 }

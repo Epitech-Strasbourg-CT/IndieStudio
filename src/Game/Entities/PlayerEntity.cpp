@@ -12,7 +12,7 @@
 
 PlayerEntity::PlayerEntity(unsigned playerSkinId)
 : ABombDropper(), AAnimatedEntity("player"), AMovable(), Controllable(),
-_old(), _look()
+_old(), _look(), _alive(true)
 {
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
@@ -57,6 +57,8 @@ void PlayerEntity::update(EntitiesMap *map)
 	Controllable::update();
 	ABombDropper::update(map);
 	AEntity::update(map);
+	if (!_alive)
+		map->erase(this);
 }
 
 void PlayerEntity::updateRenderPosition()
@@ -152,4 +154,14 @@ void PlayerEntity::load(std::istream &s)
 	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
+}
+
+void PlayerEntity::kill()
+{
+	_alive = false;
+}
+
+PlayerEntity::~PlayerEntity()
+{
+	cleanAnimationNodes();
 }

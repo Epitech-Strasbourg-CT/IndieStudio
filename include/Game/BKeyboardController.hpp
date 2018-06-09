@@ -15,9 +15,10 @@
 
 class BKeyboardController : public AController {
 public:
-	BKeyboardController(size_t id);
-	void registerBind(irr::EKEY_CODE code, ControlName c, ControlType t);
-	void unregisterBind(irr::EKEY_CODE code, ControlType t);
+	explicit BKeyboardController(size_t id);
+	virtual ~BKeyboardController();
+	void registerBind(irr::EKEY_CODE code, ControlName_e c, ControlType_e t);
+	void unregisterBind(irr::EKEY_CODE code, ControlType_e t);
 	void updateInputs() override;
 
 	struct KeyMap {

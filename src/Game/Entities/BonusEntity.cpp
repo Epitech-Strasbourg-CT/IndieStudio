@@ -6,7 +6,65 @@
 */
 
 #include "../../../include/Game/Entities/BonusEntity.hpp"
+#include "../../../include/Singletons/AssetsPool.hpp"
+#include "../../../include/Game/Entities/FireEntity.hpp"
 
-BonusEntity::BonusEntity(): AEntity("bonus")
+BonusEntity::BonusEntity(RupeeColor color): AEntity("bonus"), _destroyed(false)
 {
+	std::cout << "Construct" << std::endl;
+	auto &im = IrrManager::getInstance();
+	auto &am = AssetsPool::getInstance();
+	auto mesh = am.loadMesh("rupee/rupee.obj");
+	_stackable = true;
+	_insertable = true;
+	_node = im.getSmgr()->addMeshSceneNode(mesh);
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	auto rupee = "rupee/Rupee." + std::to_string(color) + ".png";
+	_node->setMaterialTexture(0, am.loadTexture(rupee));
+	_node->setScale(irr::core::vector3df(
+		static_cast<irr::f32 >(0.033),
+		static_cast<irr::f32 >(0.02),
+		static_cast<irr::f32 >(0.033)));
+}
+
+void BonusEntity::playerChanging(PlayerEntity *entity)
+{
+	entity->upMaxBomb();
+}
+
+void BonusEntity::update(EntitiesMap *map)
+{
+	AEntity::update(map);
+	if (_destroyed)
+		map->erase(this);
+}
+
+void BonusEntity::collide(AEntity &entity)
+{
+	std::map<std::string, std::function<void(AEntity *aEntity)>>
+		collisions = {
+		{"player",
+			[this](AEntity *aEntity) {
+				std::cout << "PLAYER COLLIDE" << std::endl;
+				auto p = dynamic_cast<PlayerEntity *>(aEntity);
+				this->playerChanging(p);
+				this->destroy();
+			}
+		}
+
+	};
+	if (collisions.count(entity.getType()) > 0)
+		collisions[entity.getType()](&entity);
+	AEntity::collide(entity);
+}
+
+BonusEntity::~BonusEntity()
+{
+	std::cout << "Destroy" << std::endl;
+	_node->remove();
+}
+
+void BonusEntity::destroy()
+{
+	this->_destroyed = true;
 }

@@ -113,6 +113,7 @@ void EntitiesMap::updateInsert()
 		auto x = n.v.X;
 		auto y = n.v.Y;
 		if (!canInsertTo(n.v)) {
+			std::cout << "GO TRASH : " << n.e->getType() << std::endl;
 			trash.push_back(std::unique_ptr<AEntity>(n.e));
 			continue;
 		}
@@ -163,6 +164,10 @@ void EntitiesMap::updateMove()
 		};
 		auto elem = std::find_if(list.begin(), list.end(), finder);
 		if (elem != list.end()) {
+			for (auto &s : _map[dy][dx]) {
+				s->collide(*(n.e));
+				n.e->collide(*(s.get()));
+			}
 			elem->release();
 			list.erase(elem);
 			_map[dy][dx].push_back(std::unique_ptr<AEntity>(n.e));
@@ -212,6 +217,7 @@ void EntitiesMap::updateRender()
 
 void EntitiesMap::update()
 {
+	updateInsert();
 	for (auto &n : _map)
 		for (auto &eList : n)
 			for (auto &e : eList)
