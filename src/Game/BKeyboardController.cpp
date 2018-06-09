@@ -26,14 +26,14 @@ BKeyboardController::BKeyboardController(size_t id) : _id(id), _bindsDown(),
 		});
 }
 
-void BKeyboardController::registerBind(irr::EKEY_CODE code, ControlName_e c,
-	ControlType_e t
+void BKeyboardController::registerBind(irr::EKEY_CODE code, ControlName c,
+	ControlType t
 )
 {
 	_getBinds(t)[code] = c;
 }
 
-void BKeyboardController::unregisterBind(irr::EKEY_CODE code, ControlType_e t)
+void BKeyboardController::unregisterBind(irr::EKEY_CODE code, ControlType t)
 {
 	_getBinds(t).erase(code);
 }
@@ -58,8 +58,8 @@ void BKeyboardController::updateInputs()
 		}
 }
 
-std::unordered_map<irr::EKEY_CODE, ControlName_e> &BKeyboardController::_getBinds(
-	ControlType_e t
+std::unordered_map<irr::EKEY_CODE, ControlName> &BKeyboardController::_getBinds(
+	ControlType t
 )
 {
 	switch (t) {

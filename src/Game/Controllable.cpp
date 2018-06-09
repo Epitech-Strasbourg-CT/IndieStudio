@@ -7,14 +7,14 @@
 
 #include "../../include/Game/Controllable.hpp"
 
-void Controllable::addEvent(ControlName_e c, ControlType_e t,
+void Controllable::addEvent(ControlName c, ControlType t,
 	std::function<void()> fct
 )
 {
 	_getBinds(t)[c] = fct;
 }
 
-void Controllable::delEvent(ControlName_e c, ControlType_e t)
+void Controllable::delEvent(ControlName c, ControlType t)
 {
 	_getBinds(t).erase(c);
 }
@@ -36,7 +36,7 @@ Controllable::Controllable()
 {
 }
 
-void Controllable::callBind(ControlName_e c, ControlType_e t)
+void Controllable::callBind(ControlName c, ControlType t)
 {
 	this->_actions.emplace(c, t);
 }
@@ -62,8 +62,8 @@ void Controllable::load(std::istream &s)
 	memcpy(&ser, se.get(), sizeof(ser));
 }
 
-std::unordered_map<ControlName_e, std::function<void()>> &
-Controllable::_getBinds(ControlType_e t)
+std::unordered_map<ControlName, std::function<void()>> &
+Controllable::_getBinds(ControlType t)
 {
 	switch (t) {
 	case KEY_DOWN:

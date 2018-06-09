@@ -17,12 +17,12 @@
 class Controllable {
 public:
 	explicit Controllable();
-	void callBind(ControlName_e c, ControlType_e t);
+	void callBind(ControlName c, ControlType t);
 	void saveController(AController *);
 
 protected:
-	void addEvent(ControlName_e c, ControlType_e t, std::function<void()>);
-	void delEvent(ControlName_e c, ControlType_e t);
+	void addEvent(ControlName c, ControlType t, std::function<void()>);
+	void delEvent(ControlName c, ControlType t);
 	virtual void update();
 
 	void dump(std::ostream &s) const;
@@ -32,11 +32,11 @@ protected:
 	};
 
 private:
-	std::unordered_map<ControlName_e, std::function<void()>>
-		&_getBinds(ControlType_e t);
-	std::set<ControlPair_e> _actions;
-	std::unordered_map<ControlName_e, std::function<void()>> _bindsDown;
-	std::unordered_map<ControlName_e, std::function<void()>> _bindsPressed;
-	std::unordered_map<ControlName_e, std::function<void()>> _bindsReleased;
+	std::unordered_map<ControlName, std::function<void()>>
+		&_getBinds(ControlType t);
+	std::set<ControlPair> _actions;
+	std::unordered_map<ControlName, std::function<void()>> _bindsDown;
+	std::unordered_map<ControlName, std::function<void()>> _bindsPressed;
+	std::unordered_map<ControlName, std::function<void()>> _bindsReleased;
 	std::unique_ptr<AController> _controller;
 };

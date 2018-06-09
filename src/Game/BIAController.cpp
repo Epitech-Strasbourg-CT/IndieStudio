@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <map>
+#include <thread>
+#include <vector>
 #include "../../include/Game/BIAController.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Game/Entities/PlayerEntity.hpp"
@@ -24,16 +26,12 @@ void BIAController::updateInputs()
 	if (!_alreadyMove && _targetPos[0] == 0 && _targetPos[1] == 0) {
 		_alreadyMove = true;
 		_targetPos = {_p->AEntity::getPosX(), _p->AEntity::getPosY()};
-	}
-//	std::cout << "Current: (" << _p->AEntity::getPosX() << ","
-//		<< _p->AEntity::getPosY() << ")" << std::endl;
-//	std::cout << "Target: (" << _targetPos[0] << "," << _targetPos[1] << ")"
-//		<< std::endl;
-//	std::cout << std::endl;
-	if (rand() % 150 == 0)
 		_controllable->callBind(DROP_BOMB, KEY_PRESSED);
-	if (_targetQueue.empty())
-		_fillTargetQueue();
+	}
+	if (rand() % 200 == 0)
+		_controllable->callBind(DROP_BOMB, KEY_PRESSED);
+
+	_fillTargetQueue();
 	_goToTarget();
 }
 
@@ -45,20 +43,19 @@ bool BIAController::_onTarget()
 		_p->AMovable::getPosY() == BORDERY / 2;
 }
 
-irr::core::vector2di BIAController::_getFuturePos(ControlName_e c)
+irr::core::vector2di BIAController::_getFuturePos(ControlName c)
 {
-	std::map<ControlName_e, std::vector<int>> a = {{MOVE_DOWN, {0, 1}},
-		{MOVE_UP, {0, -1}}, {MOVE_LEFT, {1, 0}}, {MOVE_RIGHT, {-1, 0}}};
+	std::map<ControlName, std::vector<int>> a = {{NONE, {0, 0}},
+		{MOVE_DOWN, {0, 1}}, {MOVE_UP, {0, -1}}, {MOVE_LEFT, {1, 0}},
+		{MOVE_RIGHT, {-1, 0}}};
 	auto realX = _p->AEntity::getPosX() + a[c][0];
 	auto realY = _p->AEntity::getPosY() + a[c][1];
 	return {realX, realY};
 };
 
-bool BIAController::_move(ControlName_e c)
+bool BIAController::_move(ControlName c)
 {
 	auto pos = _getFuturePos(c);
-	if (!_map.canMoveTo(pos))
-		return false;
 	_targetPos[0] = pos.X;
 	_targetPos[1] = pos.Y;
 	_targetMove = c;
@@ -67,7 +64,7 @@ bool BIAController::_move(ControlName_e c)
 
 void BIAController::_goToTarget()
 {
-	if (!_onTarget())
+	if (!_onTarget() && _targetMove != NONE)
 		_controllable->callBind(_targetMove, KEY_DOWN);
 	else if (!_targetQueue.empty()) {
 		_move(_targetQueue.front());
@@ -75,21 +72,26 @@ void BIAController::_goToTarget()
 	}
 }
 
-int BIAController::_getDangerLevel(irr::core::vector2di pos, irr::core::vector2di dir, int r)
+int BIAController::_getDangerLevel(irr::core::vector2di pos,
+	irr::core::vector2di dir, int r
+)
 {
 	if (r < 0)
 		return false;
 	if (dir.X == 0 && dir.Y == 0) {
-		return (_getDangerLevel(pos, {1, 0}, 5) +
-			_getDangerLevel(pos, {-1, 0}, 5) +
-			_getDangerLevel(pos, {0, 1}, 5) +
-			_getDangerLevel(pos, {0, -1}, 5));
+		return (_getDangerLevel(pos, {1, 0}, 6) +
+			_getDangerLevel(pos, {-1, 0}, 6) +
+			_getDangerLevel(pos, {0, 1}, 6) +
+			_getDangerLevel(pos, {0, -1}, 6));
 	}
 	if (pos.Y >= 0 && pos.X >= 0 && _map.getMap().size() > pos.Y &&
 		_map.getMap()[pos.Y].size() > pos.X)
 		for (auto &e : _map.getMap()[pos.Y][pos.X]) {
 			if (e->getType() == "bomb")
-				return true;
+				return r;
+			else if (e->getType() == "block" ||
+				e->getType() == "pot")
+				return 0;
 		}
 	pos.X += dir.X;
 	pos.Y += dir.Y;
@@ -107,40 +109,67 @@ bool BIAController::_isSafe(irr::core::vector2di pos)
 	return true;
 }
 
-ControlName_e BIAController::_bestEscape()
+std::vector<ControlName> BIAController::_genBestEscapeMoves()
 {
-	auto goal = static_cast<ControlName_e>(rand() % 4);
+	std::vector<ControlName> allMoves = {MOVE_UP, NONE, MOVE_LEFT, MOVE_RIGHT,
+		MOVE_DOWN};
+	std::vector<ControlName> res;
 
-	if (_isSafe(_getFuturePos(goal)))
-		return goal;
-	else
-		return _bestEscape();
+	while (!allMoves.empty()) {
+		auto i = rand() % allMoves.size();
+		res.push_back(allMoves[i]);
+		allMoves.erase(allMoves.begin() + i);
+	}
+	return res;
+}
+
+ControlName BIAController::_bestEscape()
+{
+	std::vector<ControlName> moves = _genBestEscapeMoves();
+	for (int i = 0; i < moves.size(); ++i) {
+		if (!_map.canMoveTo(_getFuturePos(moves[i])) ||
+			!_isSafe(_getFuturePos(moves[i]))) {
+			moves.erase(moves.begin() + i);
+			i -= 1;
+		}
+	}
+	std::cout << "[";
+	for (auto &e : moves)
+		std::cout << e << ",";
+	std::cout << "]" << std::endl;
+	if (moves.empty())
+		return NONE;
+	std::cout << "[";
+	for (auto &e : moves)
+		std::cout << _getDangerLevel(_getFuturePos(e), {0, 0}, 0) << ",";
+	std::cout << "]" << std::endl;
+	int bestMov = 0;
+	int bestSafety = _getDangerLevel(_getFuturePos(moves[0]), {0, 0}, 0);
+
+	for (int i = 1; i < moves.size(); ++i) {
+		auto c = moves[i];
+		auto futurePos = _getFuturePos(c);
+		auto newSafety = _getDangerLevel(futurePos, {0, 0}, 0);
+		if (newSafety < bestSafety && _isSafe(futurePos)) {
+			bestMov = i;
+			bestSafety = newSafety;
+		}
+	}
+	auto x = _p->AEntity::getPosX();
+	auto y = _p->AEntity::getPosY();
+	std::cout << "Pending: " << _targetQueue.size() << std::endl;
+	std::cout << "On pos: " << x << "," << y << std::endl;
+	std::cout << "Current danger level: " << _getDangerLevel(_getFuturePos(NONE), {0, 0}, 0) << std::endl;
+	std::cout << "Forecast danger level: " << bestSafety << std::endl;
+	std::cout << "Forecast move: " << moves[bestMov] << std::endl;
+	return moves[bestMov];
 }
 
 void BIAController::_fillTargetQueue()
 {
-	int x = _p->AEntity::getPosX();
-	int y = _p->AEntity::getPosY();
-	if (_getDangerLevel({x, y}, {0, 0}, 5)) {
-		std::cout << "in danger" << std::endl;
-		_targetQueue.push(_bestEscape());
-	}
-//	std::cout << "uuu" << std::endl;
-//	for (auto i = 0 ; i < _map.getMap().size() ; ++i)
-//		for (auto j = 0 ; j < _map.getMap()[i].size() ; ++j)
-//			for (auto o = 0 ; o < _map.getMap()[i][j].size() ; ++o)
-//				if (_map.getMap()[i][j][o]->getType() == "player")
-//					std::cout << "found player at (" << i << "," << j << ")" << std::endl;
-//	std::cout << "ooo" << std::endl;
-//	_targetQueue.push(MOVE_DOWN);
-//	_targetQueue.push(MOVE_DOWN);
-//	_targetQueue.push(MOVE_RIGHT);
-//	_targetQueue.push(MOVE_RIGHT);
-//	_targetQueue.push(MOVE_RIGHT);
-//	_targetQueue.push(MOVE_RIGHT);
-//	_targetQueue.push(MOVE_DOWN);
-//	_targetQueue.push(MOVE_DOWN);
-//	_targetQueue.push(MOVE_DOWN);
-//	_targetQueue.push(MOVE_DOWN);
-//	_targetQueue.push(MOVE_DOWN);
+	auto c = _bestEscape();
+	while (!_targetQueue.empty())
+		_targetQueue.pop();
+	_targetQueue.push(c);
+	std::cout << std::endl;
 }
