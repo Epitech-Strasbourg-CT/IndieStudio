@@ -4,8 +4,10 @@
 ** File description:
 ** LoadState.cpp
 */
-
+#ifdef __linux__
 #include <glob.h>
+#elif _WIN32
+#endif
 #include "../../include/States/LoadState.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/IrrManager.hpp"
@@ -103,12 +105,15 @@ void LoadState::loadButtons()
 		b->setOverrideFont(_share.getFont());
 		_buttons.push_back(b);
 	}
+	#ifdef __linux__
 	glob_t glob_result;
 
 	glob(".save/*.dat", GLOB_TILDE, NULL, &glob_result);
 	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i)
 		_saves.emplace_back(glob_result.gl_pathv[i]);
 	_idx = 0;
+	#elif _WIN32
+	#endif
 	setSaveButtons();
 }
 

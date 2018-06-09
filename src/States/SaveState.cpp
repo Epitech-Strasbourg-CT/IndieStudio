@@ -11,6 +11,7 @@
 #include "../../include/Singletons/IrrManager.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
+#include "../../include/Game/SaveManager.hpp"
 
 const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 	SaveState::_descs{
