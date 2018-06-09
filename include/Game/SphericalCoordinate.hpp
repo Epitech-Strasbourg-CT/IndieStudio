@@ -15,7 +15,7 @@ public:
 	SphericalCoordinate();
 	SphericalCoordinate(irr::f32 inc, irr::f32 azimuth, irr::f32 rayon);
 	SphericalCoordinate(irr::f32 inc, irr::f32 azimuth, irr::f32 rayon, irr::core::vector3df origin);
-	irr::core::vector3df calc();
+	irr::core::vector3df calc() const;
 	void setInc(irr::f32 inc);
 	void setAzimuth(irr::f32 azimuth);
 	void setRayon(irr::f32 rayon);

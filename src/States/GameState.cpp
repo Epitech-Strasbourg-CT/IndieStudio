@@ -13,6 +13,7 @@
 #include "../../include/Game/SaveManager.hpp"
 #include "../../include/Game/BKeyboardController.hpp"
 #include "../../include/States/PauseState.hpp"
+#include "../../include/States/TransitionEndGameState.hpp"
 
 GameState::GameState(AStateShare &_share) : AState(_share), _inc(0)
 {
@@ -31,6 +32,9 @@ void GameState::update()
 		StateMachine::getInstance().push(new PauseState(getSharedResources()), false);
 	else
 		_share.getMap()->update();
+
+	//TODO Call this when the game is finished
+//	StateMachine::getInstance().push(new TransitionEndGameState(_share), false);
 }
 
 void GameState::load()

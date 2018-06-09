@@ -109,6 +109,7 @@ void SettingsState::unload()
 
 void SettingsState::update()
 {
+	_share.getFunc("rotateMenu")();
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 }

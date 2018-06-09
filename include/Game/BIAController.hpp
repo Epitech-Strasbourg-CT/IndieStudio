@@ -7,13 +7,31 @@
 
 #pragma once
 
+#include <vector>
 #include "Controllable.hpp"
+#include "Entities/PlayerEntity.hpp"
+#include "../Game/EntitiesMap.hpp"
 
 class BIAController : public AController {
 public:
-	BIAController(size_t id);
+	BIAController(EntitiesMap &map, size_t id);
 
 	void updateInputs() override;
 private:
+	void _fillTargetQueue();
+	void _goToTarget();
+	bool _onTarget();
+	int _getDangerLevel(irr::core::vector2di pos, irr::core::vector2di dir, int r);
+	bool _isSafe(irr::core::vector2di pos);
+	bool _move(ControlName_e c);
+	irr::core::vector2di _getFuturePos(ControlName_e c);
+	ControlName_e _bestEscape();
+
 	size_t _id;
+	ControlName_e _targetMove;
+	bool _alreadyMove;
+	std::vector<int> _targetPos;
+	std::queue<ControlName_e> _targetQueue;
+	PlayerEntity *_p;
+	EntitiesMap &_map;
 };

@@ -12,12 +12,27 @@
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/MenuState.hpp"
 #include "../../include/States/GameState.hpp"
+#include "../../include/States/TransitionToGameState.hpp"
 
-BackgroundState::BackgroundState(AStateShare &_share) : AState(_share)
+BackgroundState::BackgroundState(AStateShare &_share) : AState(_share),
+_camRotate(static_cast<irr::f32>(2.3), static_cast<irr::f32>(3.14159265 / 3.0), 700, {450, 0, 100}), _inc(0)
 {
 }
 
 void BackgroundState::load()
+{
+	AssetsPool::getInstance().loadSound(AssetsPool::MENU, true); //TODO see this line with the group
+
+	loadMapMenu();
+	loadCharacter();
+	loadSkyBox();
+	loadMap();
+	loadCamRotate();
+	auto er = EventReceiver::getInstance();
+	AState::load();
+}
+
+void BackgroundState::loadMapMenu()
 {
 	auto smgr = IrrManager::getInstance().getSmgr();
 	auto &assetsPool = AssetsPool::getInstance();
@@ -29,14 +44,6 @@ void BackgroundState::load()
 	irr::core::vector3df(0, -1, static_cast<irr::f32>(-47.38)));
 	_node->setScale({1000, 1000, 1000});
 	_share.addSharedNode("menu", _node);
-
-	AssetsPool::getInstance().loadSound(AssetsPool::MENU, true); //TODO see this line with the group
-
-	loadCharacter();
-	loadSkyBox();
-	loadMap();
-	auto er = EventReceiver::getInstance();
-	AState::load();
 }
 
 void BackgroundState::loadCharacter()
@@ -94,6 +101,9 @@ void BackgroundState::transitionPush(bool keep)
 {
 	AState::transitionPush(keep);
 	StateMachine::getInstance().push(new MenuState(_share), true);
+//	IrrManager::getInstance().getSmgr()->addCameraSceneNode(0, {690, 100, 715}, {690, 60, 690});
+//	_share.setIAState({0, 1, 1, 1});
+//	StateMachine::getInstance().push(new TransitionToGameState(_share), true);
 }
 
 void BackgroundState::loadMap()
@@ -110,4 +120,20 @@ void BackgroundState::loadMap()
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialType(irr::video::EMT_SOLID);
 	_share.addSharedNode("map", _node);
+}
+
+void BackgroundState::loadCamRotate()
+{
+	_share.addSphereCoor("camRotateMenu", &_camRotate);
+	_share.addFunc("rotateMenu", [this] {
+		auto step = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
+		irr::f32 min = static_cast<irr::f32>(2.7);
+		irr::f32 max = static_cast<irr::f32>(4.4);
+		auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
+
+		cam.setTarget({450, 0, 100});
+		_inc += step;
+		_camRotate.setInc(static_cast<irr::f32>((sinf(_inc) - -1.0) * (max - min) / (1.0 - -1.0) + min));
+		cam.setPosition(_camRotate.calc());
+	});
 }

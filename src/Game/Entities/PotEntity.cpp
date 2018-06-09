@@ -36,7 +36,7 @@ PotEntity::PotEntity() : AEntity("pot"), _broken(false)
 	auto mesh = am.loadMesh("block/Pot.dae");
 	_stackable = false;
 	_node = im.getSmgr()->addMeshSceneNode(mesh);
-	_node->setScale({4, 4, 4});
+	_node->setScale({3.5, 3.5, 3.5});
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setRotation({-90, 0, 0});
 }
