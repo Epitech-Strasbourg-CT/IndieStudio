@@ -19,6 +19,7 @@ public:
 	virtual void update(EntitiesMap *);
 	void upMaxBomb();
 	void upFireRange();
+	void resetFireRange();
 protected:
 	void dropBomb(int x, int y);
 	unsigned getMaxBomb() const;

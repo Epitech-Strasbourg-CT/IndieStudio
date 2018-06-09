@@ -2,14 +2,14 @@
 ** EPITECH PROJECT, 2018
 ** bomberman
 ** File description:
-** BonusEntity.hpp
+** ABonusEntity.hpp
 */
 
 #ifndef BOMBERMAN_BONUSENTITY_HPP
-#define BOMBERMAN_BONUSENTITY_HPP
+	#define BOMBERMAN_BONUSENTITY_HPP
 
-#include "../AEntity.hpp"
-#include "PlayerEntity.hpp"
+	#include "../AEntity.hpp"
+	#include "PlayerEntity.hpp"
 
 enum RupeeColor{
 	GREEN = 0,
@@ -20,14 +20,15 @@ enum RupeeColor{
 	PURPLE
 };
 
-class BonusEntity: public AEntity {
+class ABonusEntity : public AEntity {
 public:
-	explicit BonusEntity(RupeeColor color);
+	ABonusEntity(RupeeColor color);
+	virtual ~ABonusEntity();
+
 	void collide(AEntity &entity) override;
-	virtual void playerChanging(PlayerEntity *entity);
 	void update(EntitiesMap *map) override;
-	virtual ~BonusEntity();
 	void destroy();
+	virtual void playerChanging(PlayerEntity *entity) = 0;
 private:
 	bool _destroyed;
 };
