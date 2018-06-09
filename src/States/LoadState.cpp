@@ -143,7 +143,7 @@ void LoadState::update()
 {
 	_share.getFunc("rotateMenu")();
 	AState::update();
-
+	AssetsPool::getInstance().cleanSound();
 	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 }

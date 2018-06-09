@@ -75,7 +75,6 @@ void SaveState::loadButtons()
 	}
 
 	std::wstring wname(sName.begin(), sName.end());
-	std::cout << sName.c_str() << std::endl;
 	_name = gui->addButton({610, 465, 1310, 515}, nullptr,
 		600 + SAVE_BUTTON_NUMBER, wname.c_str());
 	_name->setOverrideFont(_share.getFont());
@@ -109,6 +108,7 @@ void SaveState::update()
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 	AState::update();
+	AssetsPool::getInstance().cleanSound();
 }
 
 void SaveState::draw()

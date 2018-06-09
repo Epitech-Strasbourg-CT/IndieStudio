@@ -107,6 +107,7 @@ void PauseState::update()
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 	AState::update();
+	AssetsPool::getInstance().cleanSound();
 }
 
 void PauseState::draw()
