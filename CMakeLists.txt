@@ -97,8 +97,20 @@ add_executable(bomberman
         src/Game/Entities/AAnimatedEntity.cpp
         include/Game/Entities/AAnimatedEntity.hpp
 
+        src/States/EndGameState.cpp
+        include/States/EndGameState.hpp
+
         src/States/TransitionToGameState.cpp
-        include/States/TransitionToGameState.hpp src/States/SaveState.cpp include/States/SaveState.hpp src/Abstracts/AMenuSound.cpp include/Abstracts/AMenuSound.hpp src/States/TransitionEndGameState.cpp include/States/TransitionEndGameState.hpp src/States/EndGameState.cpp include/States/EndGameState.hpp)
+        include/States/TransitionToGameState.hpp
+
+        src/States/SaveState.cpp
+        include/States/SaveState.hpp
+
+        src/Abstracts/AMenuSound.cpp
+        include/Abstracts/AMenuSound.hpp
+
+        src/States/TransitionEndGameState.cpp
+        include/States/TransitionEndGameState.hpp)
 
 # endregion
 

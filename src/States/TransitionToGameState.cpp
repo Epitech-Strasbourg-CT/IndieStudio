@@ -28,7 +28,7 @@ _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")),
 	_trav.push(30, {100, 190, 500});
 	_trav.push(30, {300, 150, 650});
 	_trav.push(30, {500, 150, 800});
-	_trav.push(50, {690, 100, 715});
+	_trav.push(50, {690, 120, 715});
 }
 
 void TransitionToGameState::transitionPop()
@@ -58,4 +58,9 @@ void TransitionToGameState::updateRender()
 {
 	_emap.updateRender();
 	AState::updateRender();
+}
+
+const std::string TransitionToGameState::getName() const
+{
+	return "transitionToGame";
 }

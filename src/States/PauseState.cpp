@@ -147,3 +147,8 @@ irr::gui::IGUIButton *PauseState::getButton(PauseState::Actions id) const
 		return nullptr;
 	return (_buttons.at(id - RESUME));
 }
+
+const std::string PauseState::getName() const
+{
+	return "pause";
+}

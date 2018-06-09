@@ -19,3 +19,8 @@ void TransitionEndGameState::update()
 	_trav.update(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")));
 	AState::update();
 }
+
+const std::string TransitionEndGameState::getName() const
+{
+	return "transitionEndGame";
+}

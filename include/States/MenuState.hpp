@@ -33,34 +33,33 @@ public:
 	explicit MenuState(AStateShare &_share);
 	~MenuState();
 
-
 	void loadButtons();
 	void unloadButtons();
 	void load() override;
 	void unload() override;
 
 	void update() override;
-
 	void draw() override;
 
-	void applyEventButton(const irr::SEvent &ev, MenuActions id);
+	bool applyEventButton(const irr::SEvent &ev, MenuActions id);
 	irr::gui::IGUIButton *getButton(MenuActions) const;
+
+	const std::string getName() const override;
 
 	struct ButtonsDesc {
 		irr::core::rect<irr::s32> pos;
 		std::string name;
-		std::function<void(MenuState *)> fct;
+		std::function<bool(MenuState *)> fct;
 	};
+
+	void eventsSetup();
+	void eventsClean();
+	void externalEventsClean();
 
 private:
 	std::vector<irr::gui::IGUIButton *> _buttons;
 	static const std::map<MenuActions , ButtonsDesc> _descs;
-
-//	static const std::unordered_map<int,//irr::s32,
-//	std::function<void(irr::s32, MenuState *)>> _assets;
-//	std::vector<irr::gui::IGUIButton *> _buttons;
-//	static const std::map<MenuActions , ButtonsDesc> _descs;
-//	irrklang::ISound *_sound;
+	bool _eventsActivate;
 };
 
 #endif //BOMBERMAN_MENUSTATE_HPP

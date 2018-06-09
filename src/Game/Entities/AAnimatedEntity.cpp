@@ -23,7 +23,7 @@ irr::scene::ISceneNode *AAnimatedEntity::addAnimationNode(
 		throw std::runtime_error("Name already taken");
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
-	auto m = static_cast<irr::scene::IAnimatedMesh *>(am.loadMesh(mesh));
+	auto m = dynamic_cast<irr::scene::IAnimatedMesh *>(am.loadMesh(mesh));
 	auto node = im.getSmgr()->addAnimatedMeshSceneNode(m);
 	node->setVisible(false);
 	node->setMaterialFlag(irr::video::EMF_LIGHTING, false);

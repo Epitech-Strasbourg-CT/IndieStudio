@@ -22,7 +22,7 @@ _camRotate(static_cast<irr::f32>(2.3), static_cast<irr::f32>(3.14159265 / 3.0), 
 void BackgroundState::load()
 {
 	AssetsPool::getInstance().loadSound(AssetsPool::MENU, true); //TODO see this line with the group
-
+	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::MENU, true));
 	loadMapMenu();
 	loadCharacter();
 	loadSkyBox();
@@ -83,6 +83,7 @@ void BackgroundState::loadSkyBox()
 
 void BackgroundState::unload()
 {
+	_share.popMusic(AssetsPool::MENU);
 	_share.delSharedNode("menu");
 	_share.delSharedNode("skybox");
 	for (auto i = 0; i < 4; i++)
@@ -101,6 +102,9 @@ void BackgroundState::transitionPush(bool keep)
 {
 	AState::transitionPush(keep);
 	StateMachine::getInstance().push(new MenuState(_share), true);
+//	IrrManager::getInstance().getSmgr()->addCameraSceneNode(0, {690, 100, 715}, {690, 60, 690});
+//	_share.setIAState({0, 1, 1, 1});
+//	StateMachine::getInstance().push(new TransitionToGameState(_share), true);
 }
 
 void BackgroundState::loadMap()
@@ -123,6 +127,8 @@ void BackgroundState::loadCamRotate()
 {
 	_share.addSphereCoor("camRotateMenu", &_camRotate);
 	_share.addFunc("rotateMenu", [this] {
+		if (StateMachine::getInstance().isInStack("game"))
+			return;
 		auto step = static_cast<irr::f32>((2.0 * M_PI) / 1000.0);
 		irr::f32 min = static_cast<irr::f32>(2.7);
 		irr::f32 max = static_cast<irr::f32>(4.4);
@@ -133,4 +139,9 @@ void BackgroundState::loadCamRotate()
 		_camRotate.setInc(static_cast<irr::f32>((sinf(_inc) - -1.0) * (max - min) / (1.0 - -1.0) + min));
 		cam.setPosition(_camRotate.calc());
 	});
+}
+
+const std::string BackgroundState::getName() const
+{
+	return "background";
 }

@@ -17,6 +17,7 @@ class StateMachine {
 public:
 	static StateMachine &getInstance();
 
+	bool isInStack(std::string const &name);
 	void push(AState *gameState, bool keepLoaded);
 	void replaceTop(AState *gameState, bool keepLoaded);
 	void pop();
@@ -27,7 +28,7 @@ private:
 	StateMachine() = default;
 	~StateMachine() = default;
 
-	std::stack<std::unique_ptr<AState>> _states;
+	std::list<std::unique_ptr<AState>> _states;
 
 	static StateMachine _instance;
 };

@@ -14,58 +14,68 @@
 #include "../../include/Singletons/AssetsPool.hpp"
 
 const std::map<LoadState::Actions , LoadState::ButtonsDesc>
-	LoadState::_descs{
+	LoadState::_descs {
 	{LoadState::SAVE1,    {
 		{610, 250, 1300, 300},
 		"save",
 		[](LoadState *self) {
+			self->externalEventsClean();
 			StateMachine::getInstance().pop();
+			return false;
 		}
 	}},
 	{LoadState::SAVE2,    {
 		{610, 350, 1300, 400},
 		"save",
 		[](LoadState *self) {
+			self->externalEventsClean();
 			StateMachine::getInstance().pop();
+			return false;
 		}
 	}},
 	{LoadState::SAVE3,    {
 		{610, 450, 1300, 500},
 		"save",
 		[](LoadState *self) {
+			self->externalEventsClean();
 			StateMachine::getInstance().pop();
+			return false;
 		}
 	}},
 	{LoadState::SAVE4,    {
 		{610, 550, 1300, 600},
 		"save",
 		[](LoadState *self) {
+			self->externalEventsClean();
 			StateMachine::getInstance().pop();
+			return false;
 		}
 	}},
 	{LoadState::CANCEL,  {
 		{1570, 850,  1870, 900},
 		"cancel",
 		[](LoadState *self) {
+			self->externalEventsClean();
 			StateMachine::getInstance().pop();
+			return false;
 		}
 	}},
 	{LoadState::PREV,    {
 		{835, 850,  935, 900},
 		"save",
 		[](LoadState *self) {
-			//TODO secure
 			self->_idx -= 1;
 			self->setSaveButtons();
+			return true;
 		}
 	}},
 	{LoadState::NEXT,    {
 		{985, 850,  1085, 900},
 		"save",
 		[](LoadState *self) {
-			//TODO secure
 			self->_idx += 1;
 			self->setSaveButtons();
+			return true;
 		}
 	}}
 };
@@ -77,6 +87,7 @@ AMenuSound(), _idx(0)
 
 LoadState::~LoadState()
 {
+	eventsClean();
 }
 
 void LoadState::loadButtons()
@@ -88,19 +99,12 @@ void LoadState::loadButtons()
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
 		auto name = n.second.name;
-		//b->setImage(ap.loadTexture("buttons/" + name + ".png"));
-		//b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
+		b->setImage(ap.loadTexture("buttons/" + name + ".png"));
+		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
 		b->setOverrideFont(_share.getFont());
 		_buttons.push_back(b);
 	}
 	setSaveButtons();
-	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
-		[this](const irr::SEvent &ev) {
-			auto id = static_cast<Actions>(ev.GUIEvent.Caller->getID());
-			if (LoadState::_descs.count(id) > 0)
-				this->applyEventButton(ev, id);
-			return true;
-		});
 	#ifdef UNIX
 		glob_t glob_result;
 		glob("../.save/*", GLOB_TILDE, NULL, &glob_result);
@@ -120,6 +124,7 @@ void LoadState::unloadButtons()
 
 void LoadState::load()
 {
+	eventsSetup();
 	loadButtons();
 	AState::load();
 }
@@ -146,7 +151,7 @@ void LoadState::draw()
 	im.getGuienv()->drawAll();
 }
 
-void LoadState::applyEventButton(const irr::SEvent &ev, LoadState::Actions id)
+bool LoadState::applyEventButton(const irr::SEvent &ev, LoadState::Actions id)
 {
 	auto b = getButton(id);
 	auto hover_name = "buttons/" + _descs.at(id).name + "_hover.png";
@@ -156,18 +161,18 @@ void LoadState::applyEventButton(const irr::SEvent &ev, LoadState::Actions id)
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
 			playSelect();
-			LoadState::_descs.at(id).fct(this);
-			break;
-		/*case irr::gui::EGET_ELEMENT_HOVERED:
+			return LoadState::_descs.at(id).fct(this);
+		case irr::gui::EGET_ELEMENT_HOVERED:
 			playCursor();
 			b->setImage(ap.loadTexture(hover_name));
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
 			b->setImage(ap.loadTexture(name));
-			break;*/
+			break;
 		default:
 			break;
 	}
+	return true;
 }
 
 irr::gui::IGUIButton *LoadState::getButton(LoadState::Actions id) const
@@ -194,4 +199,41 @@ void LoadState::setSaveButtons()
 	}
 	_buttons[PREV - SAVE1]->setEnabled(_idx > 0);
 	_buttons[NEXT - SAVE1]->setEnabled((_idx + 1) * 4 < _saves.size());
+}
+
+void LoadState::eventsSetup()
+{
+	_eventsActivate = true;
+	auto &er = EventReceiver::getInstance();
+	er.registerEvent(2, irr::EEVENT_TYPE::EET_GUI_EVENT,
+	                 [this](const irr::SEvent &ev) {
+		                 if (!this->isLoaded() || !this->isEnable())
+			                 return true;
+		                 auto id = static_cast<Actions >(ev.GUIEvent.Caller->getID());
+		                 if (LoadState::_descs.count(id) > 0)
+			                 return this->applyEventButton(ev, id);
+		                 return true;
+	                 });
+}
+
+void LoadState::eventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	auto &er = EventReceiver::getInstance();
+	er.unregisterEvent(2, irr::EEVENT_TYPE::EET_GUI_EVENT);
+	_eventsActivate = false;
+}
+
+void LoadState::externalEventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	_eventsActivate = false;
+}
+
+
+const std::string LoadState::getName() const
+{
+	return "load";
 }

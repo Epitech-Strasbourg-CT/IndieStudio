@@ -38,7 +38,7 @@ SplashState::SplashState(AStateShare &_share)
 : AState(_share),
 _nodes(),
 _start(),
-_duration(2000)
+_duration(0)
 {
 }
 
@@ -54,4 +54,9 @@ void SplashState::draw()
 	false);
 
 	AState::draw();
+}
+
+const std::string SplashState::getName() const
+{
+	return "splash";
 }
