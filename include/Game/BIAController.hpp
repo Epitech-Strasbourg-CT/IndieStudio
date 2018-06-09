@@ -21,9 +21,10 @@ private:
 	void _fillTargetQueue();
 	void _goToTarget();
 	bool _onTarget();
-	bool _isInBombRadius(irr::core::vector2di pos, irr::core::vector2di dir, int r);
+	int _getDangerLevel(irr::core::vector2di pos, irr::core::vector2di dir, int r);
 	bool _isSafe(irr::core::vector2di pos);
 	bool _move(ControlName_e c);
+	irr::core::vector2di _getFuturePos(ControlName_e c);
 	ControlName_e _bestEscape();
 
 	size_t _id;

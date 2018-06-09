@@ -45,16 +45,22 @@ bool BIAController::_onTarget()
 		_p->AMovable::getPosY() == BORDERY / 2;
 }
 
-bool BIAController::_move(ControlName_e c)
+irr::core::vector2di BIAController::_getFuturePos(ControlName_e c)
 {
 	std::map<ControlName_e, std::vector<int>> a = {{MOVE_DOWN, {0, 1}},
 		{MOVE_UP, {0, -1}}, {MOVE_LEFT, {1, 0}}, {MOVE_RIGHT, {-1, 0}}};
 	auto realX = _p->AEntity::getPosX() + a[c][0];
 	auto realY = _p->AEntity::getPosY() + a[c][1];
-	if (!_map.canMoveTo({realX, realY}) || !_isSafe({realX, realY}))
+	return {realX, realY};
+};
+
+bool BIAController::_move(ControlName_e c)
+{
+	auto pos = _getFuturePos(c);
+	if (!_map.canMoveTo(pos))
 		return false;
-	_targetPos[0] = realX;
-	_targetPos[1] = realY;
+	_targetPos[0] = pos.X;
+	_targetPos[1] = pos.Y;
 	_targetMove = c;
 	return true;
 }
@@ -69,15 +75,15 @@ void BIAController::_goToTarget()
 	}
 }
 
-bool BIAController::_isInBombRadius(irr::core::vector2di pos, irr::core::vector2di dir, int r)
+int BIAController::_getDangerLevel(irr::core::vector2di pos, irr::core::vector2di dir, int r)
 {
 	if (r < 0)
 		return false;
 	if (dir.X == 0 && dir.Y == 0) {
-		return (_isInBombRadius(pos, {1, 0}, 5) ||
-			_isInBombRadius(pos, {-1, 0}, 5) ||
-			_isInBombRadius(pos, {0, 1}, 5) ||
-			_isInBombRadius(pos, {0, -1}, 5));
+		return (_getDangerLevel(pos, {1, 0}, 5) +
+			_getDangerLevel(pos, {-1, 0}, 5) +
+			_getDangerLevel(pos, {0, 1}, 5) +
+			_getDangerLevel(pos, {0, -1}, 5));
 	}
 	if (pos.Y >= 0 && pos.X >= 0 && _map.getMap().size() > pos.Y &&
 		_map.getMap()[pos.Y].size() > pos.X)
@@ -87,7 +93,7 @@ bool BIAController::_isInBombRadius(irr::core::vector2di pos, irr::core::vector2
 		}
 	pos.X += dir.X;
 	pos.Y += dir.Y;
-	return _isInBombRadius(pos, dir, r - 1);
+	return _getDangerLevel(pos, dir, r - 1);
 }
 
 bool BIAController::_isSafe(irr::core::vector2di pos)
@@ -103,14 +109,19 @@ bool BIAController::_isSafe(irr::core::vector2di pos)
 
 ControlName_e BIAController::_bestEscape()
 {
-	return static_cast<ControlName_e>(rand() % 4);
+	auto goal = static_cast<ControlName_e>(rand() % 4);
+
+	if (_isSafe(_getFuturePos(goal)))
+		return goal;
+	else
+		return _bestEscape();
 }
 
 void BIAController::_fillTargetQueue()
 {
 	int x = _p->AEntity::getPosX();
 	int y = _p->AEntity::getPosY();
-	if (_isInBombRadius({x, y}, {0, 0}, 5)) {
+	if (_getDangerLevel({x, y}, {0, 0}, 5)) {
 		std::cout << "in danger" << std::endl;
 		_targetQueue.push(_bestEscape());
 	}

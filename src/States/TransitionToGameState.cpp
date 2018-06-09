@@ -20,15 +20,15 @@ _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")),
 	//	SaveManager::save(_emap, saveManager);
 	}
 	_emap.updateInsert();
-//	_trav.setFolow(static_cast<irr::f32>(0.04));
-//	_trav.setEndFollow(static_cast<irr::f32>(0.01));
-//	_trav.setAccelEndFollow(static_cast<irr::f32>(0.002));
-//	_trav.setEndExactitude(static_cast<irr::f32>(0.1));
-//	_trav.push(30, {-100, 150, 0});
-//	_trav.push(30, {100, 190, 500});
-//	_trav.push(30, {300, 150, 650});
-//	_trav.push(30, {500, 150, 800});
-//	_trav.push(50, {690, 100, 715});
+	_trav.setFolow(static_cast<irr::f32>(0.04));
+	_trav.setEndFollow(static_cast<irr::f32>(0.01));
+	_trav.setAccelEndFollow(static_cast<irr::f32>(0.002));
+	_trav.setEndExactitude(static_cast<irr::f32>(0.1));
+	_trav.push(30, {-100, 150, 0});
+	_trav.push(30, {100, 190, 500});
+	_trav.push(30, {300, 150, 650});
+	_trav.push(30, {500, 150, 800});
+	_trav.push(50, {690, 100, 715});
 }
 
 void TransitionToGameState::transitionPop()
