@@ -8,6 +8,7 @@
 #ifndef BOMBERMAN_LOADSTATE_HPP
 #define BOMBERMAN_LOADSTATE_HPP
 
+#include <vector>
 #include "../Abstracts/AState.hpp"
 #include "../Abstracts/AMenuSound.hpp"
 

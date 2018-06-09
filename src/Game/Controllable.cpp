@@ -21,7 +21,8 @@ void Controllable::delEvent(ControlName c, ControlType t)
 
 void Controllable::update()
 {
-	_controller->updateInputs();
+	if (_controller)
+		_controller->updateInputs();
 	for (auto &n : _actions) {
 		auto c = std::get<0>(n);
 		auto t = std::get<1>(n);

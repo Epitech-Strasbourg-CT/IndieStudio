@@ -22,7 +22,7 @@ enum RupeeColor{
 
 class ABonusEntity : public AEntity {
 public:
-	ABonusEntity(RupeeColor color);
+	ABonusEntity(const std::string &name, RupeeColor color);
 	virtual ~ABonusEntity();
 
 	void collide(AEntity &entity) override;

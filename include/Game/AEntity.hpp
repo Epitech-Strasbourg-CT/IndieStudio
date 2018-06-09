@@ -11,6 +11,7 @@
 #include <iostream>
 #include <irrlicht.h>
 #include <regex>
+#include <ik_ISound.h>
 
 #define ENTITY_SIZE_X 5.0
 #define ENTITY_SIZE_Y 4.0

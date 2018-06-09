@@ -5,9 +5,9 @@
 ** ResetFireRangeBonus.cpp
 */
 
-#include "../../../../include/Game/Entities/Bonus/ResetFireRangeBonus.hpp"
+#include "../../../../include/Game/Bonus/ResetFireRangeBonus.hpp"
 
-ResetFireRangeBonus::ResetFireRangeBonus(RupeeColor color) : ABonusEntity(color)
+ResetFireRangeBonus::ResetFireRangeBonus() : ABonusEntity("reduce_bonus", BLUE)
 {
 }
 

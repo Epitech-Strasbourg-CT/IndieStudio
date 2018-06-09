@@ -57,14 +57,14 @@ void SaveState::loadButtons()
 	auto &ap = AssetsPool::getInstance();
 
 	std::time_t t = std::time(0);
-	struct tm tm;
-	localtime_s(&tm, &t);
-	std::string sName = std::to_string(tm.tm_year + 1900)
-		+ std::to_string(tm.tm_mon)
-		+ std::to_string(tm.tm_mday)
-		+ "_" + std::to_string(tm.tm_hour)
-		+ ":" + std::to_string(tm.tm_min)
-		+ ":" + std::to_string(tm.tm_sec);
+	auto tm = localtime(&t);
+
+	std::string sName = std::to_string(tm->tm_year + 1900)
+		+ std::to_string(tm->tm_mon)
+		+ std::to_string(tm->tm_mday)
+		+ "_" + std::to_string(tm->tm_hour)
+		+ ":" + std::to_string(tm->tm_min)
+		+ ":" + std::to_string(tm->tm_sec);
 
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
@@ -74,10 +74,12 @@ void SaveState::loadButtons()
 		_buttons.push_back(b);
 	}
 
-	_name = gui->addButton({835, 440, 1085, 540}, nullptr,
-		600 + SAVE_BUTTON_NUMBER,
-		std::wstring(sName.begin(), sName.end()).c_str());
+	std::wstring wname(sName.begin(), sName.end());
+	std::cout << sName.c_str() << std::endl;
+	_name = gui->addButton({610, 465, 1310, 515}, nullptr,
+		600 + SAVE_BUTTON_NUMBER, wname.c_str());
 	_name->setOverrideFont(_share.getFont());
+	_name->setImage(ap.loadTexture("buttons/default.png"));
 	_name->setEnabled(false);
 }
 
