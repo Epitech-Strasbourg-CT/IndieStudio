@@ -8,6 +8,7 @@
 #ifndef BOMBERMAN_SAVESTATE_HPP
 #define BOMBERMAN_SAVESTATE_HPP
 
+#include <time.h>
 #include "../Abstracts/AState.hpp"
 #include "../Abstracts/AMenuSound.hpp"
 
