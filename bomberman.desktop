@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Bomberman
+GenericName=Bomberman Game
+X-GNOME-FullName=Bomberman Zelda
+Comment=Jouer à Bomberman Zelda
+Exec=/home/arthur/delivery/TEK2/CPP/cpp_indie_studio/bin/bomberman
+Icon=bomberman.png
+Terminal=false
+Type=Game
+StartupNotify=true
+Categories=Game
+
