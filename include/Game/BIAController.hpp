@@ -19,12 +19,12 @@ public:
 	void updateInputs(EntitiesMap *map) override;
 	ControllerType getType() const override;
 private:
-	void _fillTargetQueue();
+	void _fillTargetQueue(ControlName c);
 	void _goToTarget();
 	bool _onTarget();
 	int _getDangerLevel(irr::core::vector2di pos, irr::core::vector2di dir, int r);
 	bool _isSafe(irr::core::vector2di pos);
-	bool _bomb();
+	bool _bomb(ControlName c);
 	bool _move(ControlName c);
 	irr::core::vector2di _getFuturePos(ControlName c);
 	std::vector<ControlName> _genBestEscapeMoves();

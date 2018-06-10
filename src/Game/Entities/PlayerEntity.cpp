@@ -18,7 +18,7 @@ _incorporel(false), _alive(true), _moveCoef(1),
 _reverseCycles(0)
 : ABombDropper(), AAnimatedEntity("player"), AMovable(), _playerSkinId(playerSkinId), Controllable(),
 _old(), _look(), _alive(true), _playerSkinId(playerSkinId), _reverse(1),
-_reverseCycles(0), _id(playerSkinId)
+_reverseCycles(0), _id(playerSkinId - 1)
 {
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
