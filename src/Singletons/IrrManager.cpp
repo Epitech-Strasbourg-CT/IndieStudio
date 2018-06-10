@@ -32,6 +32,7 @@ IrrManager::IrrManager()
 	_smgr = _device->getSceneManager();
 	_guienv = _device->getGUIEnvironment();
 	_engine = irrklang::createIrrKlangDevice();
+	_device->setResizable(false);
 }
 
 irr::IrrlichtDevice *IrrManager::getDevice() const

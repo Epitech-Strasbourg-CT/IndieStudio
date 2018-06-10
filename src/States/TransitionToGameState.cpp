@@ -24,7 +24,7 @@ _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")),
 	_trav.setEndFollow(static_cast<irr::f32>(0.01));
 	_trav.setAccelEndFollow(static_cast<irr::f32>(0.002));
 	_trav.setEndExactitude(static_cast<irr::f32>(0.1));
-	_trav.push(30, {-100, 150, 0});
+	_trav.push(30, {-100, 170, 0});
 	_trav.push(30, {100, 190, 500});
 	_trav.push(30, {300, 150, 650});
 	_trav.push(30, {500, 150, 800});

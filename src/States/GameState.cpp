@@ -34,7 +34,7 @@ void GameState::update()
 	else {
 		auto nbPlayer = _share.getMap()->update();
 		auto podium = _share.getMap()->getPodium();
-		if (nbPlayer == 1) {
+		if (nbPlayer <= 1) {
 			addLastPlayerDead(podium);
 			StateMachine::getInstance().push(new PodiumState(_share), false);
 		}
