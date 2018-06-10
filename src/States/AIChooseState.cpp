@@ -111,12 +111,6 @@ void AIChooseState::loadBouttons()
 		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
 		_bouttons.push_back(b);
 	}
-
-	for (irr::s32 i = 0; i < irr::gui::EGDC_COUNT; ++i) {
-		irr::video::SColor col = gui->getSkin()->getColor((irr::gui::EGUI_DEFAULT_COLOR) i);
-		col.setAlpha(50);
-		gui->getSkin()->setColor((irr::gui::EGUI_DEFAULT_COLOR) i, col);
-	}
 }
 
 
