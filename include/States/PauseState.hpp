@@ -24,6 +24,7 @@ public:
 		RESUME = 300,
 		SETTINGS,
 		SAVE,
+		BACK_MENU,
 		EXIT_GAME
 	};
 

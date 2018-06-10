@@ -31,7 +31,6 @@ void BIAController::updateInputs(EntitiesMap *map)
 		_targetPos.X = _p->AEntity::getPosX();
 		_targetPos.Y = _p->AEntity::getPosY();
 	}
-	std::cout << "-----------------" << std::endl;
 	if (!_bomb())
 		_fillTargetQueue();
 	_goToTarget();
@@ -149,26 +148,8 @@ std::vector<ControlName> BIAController::_genBestEscapeMoves(
 ControlName BIAController::_bestEscape(irr::core::vector2di pos, bool recur)
 {
 	std::vector<ControlName> moves = _genBestEscapeMoves(pos, recur);
-	if (_onBomb(pos) || !recur) {
-		if (!recur)
-			std::cout << "rec" << std::endl;
-		else
-			std::cout << "SUR BOMBE" << std::endl;
-		std::cout << "[";
-		for (auto &e : moves)
-			std::cout << e << ",";
-		std::cout << "]" << std::endl;
-	}
 	if (moves.empty())
 		return NONE;
-	if (_onBomb(pos) || !recur) {
-		std::cout << "[";
-		for (auto &e : moves)
-			std::cout
-				<< _getDangerLevel(_getFuturePos(e, pos), {0, 0}, 0)
-				<< ",";
-		std::cout << "]" << std::endl << std::endl;
-	}
 	int bestMov = 0;
 	int bestSafety = _getDangerLevel(_getFuturePos(moves[0], pos), {0, 0},
 		0);
