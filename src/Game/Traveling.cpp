@@ -15,9 +15,6 @@ _needMovePoint(true), _cur(0), _finalTime(60),
 _follow(static_cast<irr::f32>(0.1)), _endExac(5),
 _endFollow(static_cast<irr::f32>(0.1)), _accelEndFollow(0), _isFixedLook(false), _fixedLook()
 {
-	_cube = IrrManager::getInstance().getSmgr()->addCubeSceneNode();
-	_cube->setVisible(false);
-
 	auto targetPos = cam.getPosition();
 	irr::core::vector3df vect({
 				  (cam.getTarget().X - cam.getPosition().X) * static_cast<irr::f32>(startPointRatio),
@@ -25,7 +22,6 @@ _endFollow(static_cast<irr::f32>(0.1)), _accelEndFollow(0), _isFixedLook(false),
 				  (cam.getTarget().Z - cam.getPosition().Z) * static_cast<irr::f32>(startPointRatio)
 				  });
 	targetPos += vect;
-	_cube->setPosition(targetPos);
 	if (_isFixedLook)
 		cam.setTarget(_fixedLook);
 	else
@@ -71,7 +67,6 @@ void Traveling::movePoint(irr::scene::ICameraSceneNode &cam)
 				  (c2.second.Z - c1.Z) / static_cast<irr::f32>(time)
 				  });
 	_point += vect;
-	_cube->setPosition(_point);
 	_cur += 1;
 	if (_isFixedLook)
 		cam.setTarget(_fixedLook);
@@ -111,7 +106,6 @@ void Traveling::movePointToEnd(irr::scene::ICameraSceneNode &cam)
 		_needMoveCamToPoint = false;
 		_cur = 0;
 	}
-	_cube->setPosition(_point);
 	if (_isFixedLook)
 		cam.setTarget(_fixedLook);
 	else
@@ -196,7 +190,6 @@ void Traveling::resetStartPoint(irr::scene::ICameraSceneNode &cam, irr::f32 star
 				  (cam.getTarget().Z - cam.getPosition().Z) * static_cast<irr::f32>(startPointRatio)
 				  });
 	targetPos += vect;
-	_cube->setPosition(targetPos);
 	if (_isFixedLook)
 		cam.setTarget(_fixedLook);
 	else

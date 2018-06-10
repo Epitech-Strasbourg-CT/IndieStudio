@@ -48,8 +48,6 @@ private:
 	bool _isFixedLook;
 	irr::core::vector3df _fixedLook;
 
-	irr::scene::ISceneNode *_cube;
-
 	void moveCameraToEnd(irr::scene::ICameraSceneNode &cam);
 };
 

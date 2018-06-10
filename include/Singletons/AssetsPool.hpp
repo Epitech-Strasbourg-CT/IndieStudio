@@ -62,7 +62,6 @@ private:
 	std::map<std::string, irr::video::ITexture *> _textures;
 	std::vector<std::vector<irrklang::ISound *>> _sModule;
 
-	//FIXME CONST STATIC
 	static const std::vector<soundInfo> _sounds;
 	static AssetsPool _meshPool;
 };

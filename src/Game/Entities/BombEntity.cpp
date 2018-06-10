@@ -15,7 +15,7 @@
 BombEntity::BombEntity()
 : AEntity("bomb"),
 _range(1),
-_updateCycle(180),
+_updateCycle(70),
 _exploded(false),
 _autonomous(false)
 {
