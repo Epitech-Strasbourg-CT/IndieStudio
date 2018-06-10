@@ -116,8 +116,6 @@ void LoadState::loadButtons()
 		b->setOverrideFont(_share.getFont());
 		_buttons.push_back(b);
 	}
-	std::cout << "test" << std::
-
 	#ifdef __linux__
 	glob_t glob_result;
 
