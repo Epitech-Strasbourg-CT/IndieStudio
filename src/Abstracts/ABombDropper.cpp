@@ -81,5 +81,5 @@ ABombDropper::~ABombDropper()
 
 void ABombDropper::resetFireRange()
 {
-	_range = 3;
+	_range = 1;
 }

@@ -63,8 +63,8 @@ void SaveState::loadButtons()
 		+ std::to_string(tm->tm_mon)
 		+ std::to_string(tm->tm_mday)
 		+ "_" + std::to_string(tm->tm_hour)
-		+ ":" + std::to_string(tm->tm_min)
-		+ ":" + std::to_string(tm->tm_sec);
+		+ std::to_string(tm->tm_min)
+		+ std::to_string(tm->tm_sec);
 
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
