@@ -18,6 +18,8 @@ const std::unordered_map<char, std::function<AEntity *(const std::vector<int> &)
 	return new BlockEntity();
 }}, {'1', [](const std::vector<int> &IAState) {
 	static unsigned id = 0;
+	if (id == 4)
+		id = 0;
 	id += 1;
 	if (IAState.size() >= id && IAState.at(id - 1)) {
 		auto *controller = new BKeyboardController(id);

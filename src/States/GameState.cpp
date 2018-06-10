@@ -16,7 +16,7 @@
 #include "../../include/States/PauseState.hpp"
 #include "../../include/States/PodiumState.hpp"
 
-GameState::GameState(AStateShare &_share) : AState(_share), _inc(0)
+GameState::GameState(AStateShare &_share) : AState(_share), _inc(0), _nbPlayerTot(4)
 {
 	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::GAME, true));
 }
@@ -28,8 +28,6 @@ GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_sh
 
 void GameState::update()
 {
-	static size_t nbPlayerTot = 4;
-
 	animCam();
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().push(new PauseState(getSharedResources()), false);
@@ -40,16 +38,13 @@ void GameState::update()
 			addLastPlayerDead(podium);
 			StateMachine::getInstance().push(new PodiumState(_share), false);
 		}
-		if (nbPlayer < nbPlayerTot) {
-			for (auto i = 4 - nbPlayerTot; i < (nbPlayerTot - nbPlayer) + (4 - nbPlayerTot); i++) {
+		if (nbPlayer < _nbPlayerTot) {
+			for (auto i = 4 - _nbPlayerTot; i < (_nbPlayerTot - nbPlayer) + (4 - _nbPlayerTot); i++)
 				addDeadPlayer(podium[i], i);
-			}
-			nbPlayerTot = nbPlayer;
+			_nbPlayerTot = nbPlayer;
 		}
 	}
-//			StateMachine::getInstance().push(new TransitionEndGameState(_share), false);
 	AssetsPool::getInstance().cleanSound();
-	//TODO Call this when the game is finished
 }
 
 void GameState::addDeadPlayer(int idPlayer, int rank)
@@ -62,6 +57,7 @@ void GameState::addDeadPlayer(int idPlayer, int rank)
 	mesh->setPosition({static_cast<irr::f32>(685 + rank * -6), 65, 640});
 	mesh->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	mesh->setMaterialType(irr::video::EMT_SOLID);
+	_share.addSharedNode("deadPlayer" + std::to_string(idPlayer), mesh);
 }
 
 void GameState::load()
