@@ -51,21 +51,18 @@ SaveState::~SaveState()
 
 void SaveState::loadButtons()
 {
-	//FIXME Norme
 	auto gui = IrrManager::getInstance().getGuienv();
 	auto &er = EventReceiver::getInstance();
 	auto &ap = AssetsPool::getInstance();
 
 	std::time_t t = std::time(0);
 	auto tm = localtime(&t);
-
 	std::string sName = std::to_string(tm->tm_year + 1900)
 		+ std::to_string(tm->tm_mon)
 		+ std::to_string(tm->tm_mday)
 		+ "_" + std::to_string(tm->tm_hour)
 		+ std::to_string(tm->tm_min)
 		+ std::to_string(tm->tm_sec);
-
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
 		auto name = n.second.name;
@@ -73,7 +70,6 @@ void SaveState::loadButtons()
 		b->setPressedImage(ap.loadTexture("buttons/" + name + "_hover.png"));
 		_buttons.push_back(b);
 	}
-
 	std::wstring wname(sName.begin(), sName.end());
 	_name = gui->addButton({610, 465, 1310, 515}, nullptr,
 		600 + SAVE_BUTTON_NUMBER, wname.c_str());

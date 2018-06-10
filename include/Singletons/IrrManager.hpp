@@ -42,7 +42,6 @@ private:
 	irr::u32 _width;
 	irr::u32 _height;
 
-	//FIXME Norme
 	irrklang::ik_f32 _master;
 	irrklang::ik_f32 _effects;
 	irrklang::ik_f32 _musics;

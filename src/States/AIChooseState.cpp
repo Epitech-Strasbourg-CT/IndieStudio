@@ -122,7 +122,7 @@ irr::gui::IGUIButton *AIChooseState::getBoutton(MenuActions id) const
 }
 
 bool AIChooseState::applyEventButton(const irr::SEvent &ev,
-	AIChooseState::MenuActions id) //TODO Coding Style
+	AIChooseState::MenuActions id)
 {
 	auto b = getBoutton(id);
 	std::string hover_name;
