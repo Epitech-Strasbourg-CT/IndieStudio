@@ -31,9 +31,9 @@ void BIAController::updateInputs(EntitiesMap *map)
 		_targetPos.X = _p->AEntity::getPosX();
 		_targetPos.Y = _p->AEntity::getPosY();
 	}
-	_bomb();
-
-	_fillTargetQueue();
+	auto c = _bestEscape();
+	_bomb(c);
+	_fillTargetQueue(c);
 	_goToTarget();
 }
 
@@ -81,10 +81,10 @@ int BIAController::_getDangerLevel(irr::core::vector2di pos,
 	if (r < 0)
 		return false;
 	if (dir.X == 0 && dir.Y == 0) {
-		return (_getDangerLevel(pos, {1, 0}, 6) +
-			_getDangerLevel(pos, {-1, 0}, 6) +
-			_getDangerLevel(pos, {0, 1}, 6) +
-			_getDangerLevel(pos, {0, -1}, 6));
+		return (_getDangerLevel(pos, {1, 0}, 3) +
+			_getDangerLevel(pos, {-1, 0}, 3) +
+			_getDangerLevel(pos, {0, 1}, 3) +
+			_getDangerLevel(pos, {0, -1}, 3));
 	}
 	if (pos.Y >= 0 && pos.X >= 0 && _map->getMap().size() > pos.Y &&
 		_map->getMap()[pos.Y].size() > pos.X)
@@ -165,22 +165,22 @@ ControlName BIAController::_bestEscape()
 	return moves[bestMov];
 }
 
-void BIAController::_fillTargetQueue()
+void BIAController::_fillTargetQueue(ControlName c)
 {
-	auto c = _bestEscape();
+
 	while (!_targetQueue.empty())
 		_targetQueue.pop();
 	_targetQueue.push(c);
 //	std::cout << std::endl;
 }
 
-bool BIAController::_bomb()
+bool BIAController::_bomb(ControlName c)
 {
 	auto x = _p->AEntity::getPosX();
 	auto y = _p->AEntity::getPosY();
 	if (x == _spawnPos.X && y == _spawnPos.Y)
 		return false;
-	if (rand() % 250)
+	if (rand() % 250 || c == NONE)
 		return false;
 	_controllable->callBind(DROP_BOMB, KEY_PRESSED);
 	return true;
