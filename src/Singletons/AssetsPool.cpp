@@ -22,6 +22,11 @@ const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds = {
 		&IrrManager::getMusicVolume
 	},
 	{
+		AssetsPool::MUSIC,
+		"assets/sounds/Victory.mp3",
+		&IrrManager::getMusicVolume
+	},
+	{
 		AssetsPool::SFX,
 		"assets/sounds/MenuSelect.mp3",
 		&IrrManager::getEffectsVolume

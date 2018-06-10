@@ -23,6 +23,11 @@ GameState::GameState(AStateShare &_share) : AState(_share), _inc(0), _nbPlayerTo
 
 GameState::GameState(AStateShare &_share, std::string &filename) : GameState(_share)
 {
+	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::GAME, true));
+}
+
+GameState::~GameState()
+{
 	_share.popMusic(AssetsPool::GAME);
 }
 

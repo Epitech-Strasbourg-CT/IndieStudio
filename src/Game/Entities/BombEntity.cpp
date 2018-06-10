@@ -82,6 +82,7 @@ void BombEntity::explode(EntitiesMap *map)
 {
 	if (_exploded)
 		return;
+	AssetsPool::getInstance().loadSound(AssetsPool::BBLOW, false)->setIsPaused(false);
 	if (_autonomous) {
 		map->insert(new FireEntity({0, 0}, _range), getPosition());
 		map->erase(this);
@@ -93,7 +94,6 @@ void BombEntity::explode(EntitiesMap *map)
 
 BombEntity::~BombEntity()
 {
-	AssetsPool::getInstance().loadSound(AssetsPool::BBLOW, false)->setIsPaused(false);
 	_node->remove();
 }
 

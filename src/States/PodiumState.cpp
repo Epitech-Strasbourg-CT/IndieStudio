@@ -43,7 +43,14 @@ _isLoad(false)
 	_trav.setFolow(0.01);
 	_trav.setEndExactitude(0.1);
 	_trav.push(50, {675, 80, 655});
+	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::WIN, true));
 }
+
+PodiumState::~PodiumState()
+{
+	_share.popMusic(AssetsPool::WIN);
+}
+
 
 void PodiumState::update()
 {
@@ -154,10 +161,10 @@ void PodiumState::unloadDeadPlayer()
 {
 	for (auto i = 1; i <= 4; i++) {
 		try {
-			std::cout << "UNLOAD deadPlayer" + std::to_string(i) << std::endl;
 			auto &n = _share.getSharedNode("deadPlayer" + std::to_string(i));
 			n.remove();
 			_share.delSharedNode("deadPlayer" + std::to_string(i));
 		} catch (std::exception const &err) {}
 	}
 }
+
