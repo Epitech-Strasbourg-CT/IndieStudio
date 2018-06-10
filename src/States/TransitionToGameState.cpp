@@ -17,9 +17,8 @@ _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")),
 {
 	if (saveName.empty())
 		_emap.generate(_share.getIAState());
-	else {
+	else
 		SaveManager::load(_emap, saveName);
-	}
 	_emap.updateInsert();
 	_trav.setFolow(static_cast<irr::f32>(0.04));
 	_trav.setEndFollow(static_cast<irr::f32>(0.01));

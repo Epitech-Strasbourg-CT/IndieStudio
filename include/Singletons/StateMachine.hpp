@@ -21,6 +21,7 @@ public:
 	void push(AState *gameState, bool keepLoaded);
 	void replaceTop(AState *gameState, bool keepLoaded);
 	void pop();
+	void popUntil(std::string const &state);
 	void popAll();
 	AState *top();
 	int start();
