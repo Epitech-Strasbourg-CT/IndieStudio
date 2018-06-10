@@ -41,6 +41,12 @@ void StateMachine::pop()
 	}
 }
 
+void StateMachine::popUntil(std::string const &state)
+{
+	while (!_states.empty() && _states.front()->getName() != state)
+		pop();
+}
+
 void StateMachine::popAll()
 {
 	while (!_states.empty())

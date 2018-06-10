@@ -17,9 +17,8 @@ PodiumState::_descs{
 {610, 200, 1310, 250},
 "launch",
 [](PodiumState *self) {
-//	auto &sm = StateMachine::getInstance();
-//	auto &res = self->getSharedResources();
-//	sm.push(new AIChooseState(res), false);
+	self->unloadDeadPlayer();
+	StateMachine::getInstance().popUntil("menu");
 	return true;
 }
 }},
@@ -48,7 +47,7 @@ void PodiumState::update()
 {
 	if (_trav.isFinished() >= 1 && !_isLoad) {
 		_isLoad = true;
-		setText();
+		loadText();
 		eventsSetup();
 		loadButtons();
 	}
@@ -61,15 +60,15 @@ const std::string PodiumState::getName() const
 	return "podium";
 }
 
-void PodiumState::setText()
+void PodiumState::loadText()
 {
 	for (auto i = 0; i < 4; i++) {
-		std::wstring str = std::to_wstring(4 - i) + L" eme";
+		std::wstring str = std::to_wstring(4 - i) + ((i == 3) ? L" er" : L" eme");
 		auto text = IrrManager::getInstance().getSmgr()->addTextSceneNode(_share.getFont(), str.c_str());
 		text->setPosition({static_cast<irr::f32>(685 + i * -6), 65, 645});
+		_text.push_back(text);
 	}
 }
-
 
 void PodiumState::loadButtons()
 {
@@ -117,10 +116,10 @@ bool PodiumState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
-//			playSelect();//TODO Sound
+			playSelect();
 			return PodiumState::_descs.at(id).fct(this);
 		case irr::gui::EGET_ELEMENT_HOVERED:
-//			playCursor();
+			playCursor();
 			b->setImage(ap.loadTexture(hover_name));
 			break;
 		case irr::gui::EGET_ELEMENT_LEFT:
@@ -134,6 +133,10 @@ bool PodiumState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 
 void PodiumState::unload()
 {
+	for (auto elem : _text) {
+		elem->remove();
+	}
+	_text.clear();
 	unloadButtons();
 	AState::unload();
 }
@@ -143,4 +146,15 @@ void PodiumState::unloadButtons()
 	for (auto &n : _buttons)
 		n->remove();
 	_buttons.clear();
+}
+
+void PodiumState::unloadDeadPlayer()
+{
+	for (auto i = 0; i < 4; i++) {
+		try {
+			auto &n = _share.getSharedNode("deadPlayer" + std::to_string(i));
+			n.remove();
+			_share.delSharedNode("deadPlayer" + std::to_string(i));
+		} catch (std::exception const &err) {}
+	}
 }
