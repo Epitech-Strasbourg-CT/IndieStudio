@@ -123,3 +123,8 @@ irr::gui::IGUIButton *EndGameState::getButton(EndGameState::Actions id) const
 		return nullptr;
 	return (_buttons.at(id - RESTART));
 }
+
+const std::string EndGameState::getName() const
+{
+	return "endGame";
+}

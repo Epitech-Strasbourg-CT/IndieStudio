@@ -9,9 +9,9 @@
 	#define BOMBERMAN_GAMESTATE_HPP
 
 
-#include "../Abstracts/AState.hpp"
-#include "../Game/EntitiesMap.hpp"
-#include "../Game/Entities/PlayerEntity.hpp"
+	#include "../Abstracts/AState.hpp"
+	#include "../Game/EntitiesMap.hpp"
+	#include "../Game/Entities/PlayerEntity.hpp"
 
 class GameState : public AState {
 public:
@@ -25,6 +25,8 @@ public:
 	void updateRender() override;
 	void animCam();
 private:
+	void addDeadPlayer(int idPlayer, int rank);
+	void addLastPlayerDead(std::vector<int> podium);
 	bool _canPause;
 	irr::f32 _inc;
 };

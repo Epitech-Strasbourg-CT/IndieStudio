@@ -23,6 +23,9 @@ class PlayerEntity : public ABombDropper,
                      public AMovable<int> {
 public:
 	PlayerEntity(unsigned playerSkinId = 1);
+	virtual ~PlayerEntity();
+
+	size_t getId();
 	void reloadSkin();
 	void reverseDir();
 	void update(EntitiesMap *map) override;
@@ -33,7 +36,6 @@ public:
 	void dump (std::ostream &s) const;
 	void load(std::istream &s);
 	void kill();
-	virtual ~PlayerEntity();
 private:
 	struct serialize {
 		unsigned playerSkinId;
@@ -51,4 +53,5 @@ private:
 	bool _alive;
 	int _reverse;
 	int _reverseCycles;
+	size_t _id;
 };
