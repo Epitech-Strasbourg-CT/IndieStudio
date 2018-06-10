@@ -16,7 +16,7 @@
 #include "../../include/States/PauseState.hpp"
 #include "../../include/States/PodiumState.hpp"
 
-GameState::GameState(AStateShare &_share) : AState(_share), _inc(0), _nbPlayerTot(4)
+GameState::GameState(AStateShare &_share) : AState(_share), _inc(0), _nbPlayerTot(-1)
 {
 	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::GAME, true));
 }
@@ -39,6 +39,8 @@ void GameState::update()
 	else {
 		auto nbPlayer = _share.getMap()->update();
 		auto podium = _share.getMap()->getPodium();
+		if (_nbPlayerTot == -1)
+			_nbPlayerTot = nbPlayer;
 		if (nbPlayer <= 1) {
 			addLastPlayerDead(podium);
 			StateMachine::getInstance().push(new PodiumState(_share), false);
@@ -46,7 +48,7 @@ void GameState::update()
 		if (nbPlayer < _nbPlayerTot) {
 			for (auto i = 4 - _nbPlayerTot; i < (_nbPlayerTot - nbPlayer) + (4 - _nbPlayerTot); i++)
 				addDeadPlayer(podium[i], i);
-			_nbPlayerTot = nbPlayer;
+			_nbPlayerTot = static_cast<int>(nbPlayer);
 		}
 	}
 	AssetsPool::getInstance().cleanSound();
