@@ -17,23 +17,17 @@ const std::unordered_map<char, std::function<AEntity *(const std::vector<int> &)
 	EntitiesMap::_generationMap = {{'X', [](const std::vector<int> &) {
 	return new BlockEntity();
 }}, {'1', [](const std::vector<int> &IAState) {
-	static unsigned id = 0;
-	if (id == 4)
-		id = 0;
-	id += 1;
-	if (IAState.size() >= id && IAState.at(id - 1)) {
-		auto *controller = new BKeyboardController(id);
-		EntityFactory fac;
-		PlayerEntity *player = new PlayerEntity((id < 5 ? id : 1));
-		AController::bindEntityToController(*controller, *player);
-		return player;
-	} else {
-		auto *controller = new BIAController(id);
-
-		PlayerEntity *player = new PlayerEntity((id < 5 ? id : 1));
-		AController::bindEntityToController(*controller, *player);
-		return player;
-	}
+	bool ia = IAState.at(0);
+	return EntitiesMap::generatePlayer(1, ia);
+}}, {'2', [](const std::vector<int> &IAState) {
+	bool ia = IAState.at(1);
+	return EntitiesMap::generatePlayer(2, ia);
+}}, {'3', [](const std::vector<int> &IAState) {
+	bool ia = IAState.at(2);
+	return EntitiesMap::generatePlayer(3, ia);
+}}, {'4', [](const std::vector<int> &IAState) {
+	bool ia = IAState.at(3);
+	return EntitiesMap::generatePlayer(4, ia);
 }}, {'0', [](const std::vector<int> &) {
 	AEntity *e = nullptr;
 	if ((rand() % 6) < 4)
@@ -42,11 +36,30 @@ const std::unordered_map<char, std::function<AEntity *(const std::vector<int> &)
 }}};
 
 const std::vector<std::string> EntitiesMap::_mapTemplate = {
-	"XXXXXXXXXXXXXXXXXXX", "X1 0000000000000 1X", "X X0X0X0X0X0X0X0X X",
+	"XXXXXXXXXXXXXXXXXXX", "X1 0000000000000 2X", "X X0X0X0X0X0X0X0X X",
 	"X00000000000000000X", "X0X0X0X0X0X0X0X0X0X", "X00000000000000000X",
 	"X0X0X0X0X0X0X0X0X0X", "X00000000000000000X", "X0X0X0X0X0X0X0X0X0X",
 	"X00000000000000000X", "X0X0X0X0X0X0X0X0X0X", "X00000000000000000X",
-	"X X0X0X0X0X0X0X0X X", "X1 0000000000000 1X", "XXXXXXXXXXXXXXXXXXX",};
+	"X X0X0X0X0X0X0X0X X", "X3 0000000000000 4X", "XXXXXXXXXXXXXXXXXXX",};
+
+PlayerEntity *EntitiesMap::generatePlayer(unsigned playerSkinId, bool ia)
+{
+	if (ia) {
+		auto *controller = new BKeyboardController(playerSkinId);
+		EntityFactory fac;
+		PlayerEntity *player = new PlayerEntity(
+			(playerSkinId < 5 ? playerSkinId : 1));
+		AController::bindEntityToController(*controller, *player);
+		return player;
+	} else {
+		auto *controller = new BIAController(playerSkinId);
+
+		PlayerEntity *player = new PlayerEntity(
+			(playerSkinId < 5 ? playerSkinId : 1));
+		AController::bindEntityToController(*controller, *player);
+		return player;
+	}
+}
 
 bool EntitiesMap::generate(const std::vector<int> &IAState)
 {
