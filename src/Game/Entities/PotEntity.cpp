@@ -18,26 +18,26 @@
 #include "../../../include/Game/Bonus/IncorporelBonus.hpp"
 
 const std::map<int, std::function<AEntity *()>> PotEntity::_gemGen = {
-	{55, []() {
+	{50, []() {
 		return nullptr;
 	}},
-	{20, []() {
-		return new IncorporelBonus();
-	}},
-	{20, []() {
-		return new UpSpeedBonus();
-	}},
-	{20, []() {
+	{30, []() {
 		return new UpBombBonus();
 	}},
-	{10, []() {
+	{30, []() {
+		return new InvertBonus();
+	}},
+	{20, []() {
 		return new UpFireBonus();
 	}},
-	{10, []() {
+	{20, []() {
 		return new ResetFireRangeBonus();
 	}},
-	{5, []() {
-		return new InvertBonus();
+	{10, []() {
+		return new IncorporelBonus();
+	}},
+	{10, []() {
+		return new UpSpeedBonus();
 	}}
 };
 
