@@ -38,7 +38,7 @@ using ControlPair = std::pair<ControlName, ControlType>;
 
 class AController {
 public:
-	virtual void updateInputs(EntitiesMap *map);
+	virtual void updateInputs(EntitiesMap *map) = 0;
 	virtual ~AController();
 	static void bindEntityToController(AController &, Controllable &);
 	virtual ControllerType getType() const = 0;

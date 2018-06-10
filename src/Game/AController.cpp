@@ -17,11 +17,6 @@ void AController::registerControllable(Controllable *controllable)
 
 }
 
-void AController::updateInputs(EntitiesMap *)
-{
-
-}
-
 void AController::bindEntityToController(AController &con, Controllable &ent)
 {
 	con.registerControllable(&ent);
