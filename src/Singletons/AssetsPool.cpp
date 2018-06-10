@@ -13,52 +13,52 @@
 const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds = {
 	{
 		AssetsPool::MUSIC,
-		"assets/sounds/MenuSong.mp3",
+		"assets/sounds/MenuSong.wav",
 		&IrrManager::getMusicVolume
 	},
 	{
 		AssetsPool::MUSIC,
-		"assets/sounds/GameSong.mp3",
+		"assets/sounds/GameSong.wav",
 		&IrrManager::getMusicVolume
 	},
 	{
 		AssetsPool::MUSIC,
-		"assets/sounds/Victory.mp3",
+		"assets/sounds/Victory.wav",
 		&IrrManager::getMusicVolume
 	},
 	{
 		AssetsPool::SFX,
-		"assets/sounds/MenuSelect.mp3",
+		"assets/sounds/MenuSelect.wav",
 		&IrrManager::getEffectsVolume
 	},
 	{
 		AssetsPool::SFX,
-		"assets/sounds/MenuCursormove.mp3",
+		"assets/sounds/MenuCursormove.wav",
 		&IrrManager::getEffectsVolume
 	},
 	{
 		AssetsPool::SFX,
-		"assets/sfx/BombBlow.mp3",
+		"assets/sfx/BombBlow.wav",
 		&IrrManager::getEffectsVolume
 	},
 	{
 		AssetsPool::SFX,
-		"assets/sfx/BombDrop.mp3",
+		"assets/sfx/BombDrop.wav",
 		&IrrManager::getEffectsVolume
 	},
 	{
 		AssetsPool::SFX,
-		"assets/sfx/GetRupee.mp3",
+		"assets/sfx/GetRupee.wav",
 		&IrrManager::getEffectsVolume
 	},
 	{
 		AssetsPool::SFX,
-		"assets/sfx/LinkDeath.mp3",
+		"assets/sfx/LinkDeath.wav",
 		&IrrManager::getEffectsVolume
 	},
 	{
 		AssetsPool::SFX,
-		"assets/sfx/PotShatter.mp3",
+		"assets/sfx/PotShatter.wav",
 		&IrrManager::getEffectsVolume
 	}
 };
