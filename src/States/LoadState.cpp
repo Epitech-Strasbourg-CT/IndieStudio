@@ -144,8 +144,6 @@ void LoadState::loadButtons()
 
 void LoadState::unloadButtons()
 {
-	auto &er = EventReceiver::getInstance();
-	er.unregisterEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	for (auto &n : _buttons)
 		n->remove();
 	_buttons.clear();
@@ -239,7 +237,7 @@ void LoadState::eventsSetup()
 {
 	_eventsActivate = true;
 	auto &er = EventReceiver::getInstance();
-	er.registerEvent(2, irr::EEVENT_TYPE::EET_GUI_EVENT,
+	er.registerEvent(20, irr::EEVENT_TYPE::EET_GUI_EVENT,
 		[this](const irr::SEvent &ev) {
 			if (!this->isLoaded() || !this->isEnable())
 				return true;
@@ -255,7 +253,7 @@ void LoadState::eventsClean()
 	if (!_eventsActivate)
 		return;
 	auto &er = EventReceiver::getInstance();
-	er.unregisterEvent(2, irr::EEVENT_TYPE::EET_GUI_EVENT);
+	er.unregisterEvent(20, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	_eventsActivate = false;
 }
 

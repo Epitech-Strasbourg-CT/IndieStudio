@@ -8,7 +8,8 @@
 #ifndef BOMBERMAN_PODIUMSTATE_HPP
 	#define BOMBERMAN_PODIUMSTATE_HPP
 
-	#include "../Abstracts/AState.hpp"
+#include <vector>
+#include "../Abstracts/AState.hpp"
 	#include "../Game/Traveling.hpp"
 #include "../Abstracts/AMenuSound.hpp"
 
@@ -45,11 +46,13 @@ private:
 	bool _isLoad;
 
 	void eventsSetup();
+	void eventsClean();
 
 	bool applyEventButton(const irr::SEvent &ev, MenuActions id);
 
 	void unloadButtons();
 	void unloadDeadPlayer();
+	bool _eventsActivate;
 };
 
 #endif /* !BOMBERMAN_PODIUMSTATE_HPP */
