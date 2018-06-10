@@ -24,6 +24,7 @@ _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")),
 void TransitionToMenuState::update()
 {
 	if (_trav.isFinished() == 2) {
+		unloadDeadPlayer();
 		StateMachine::getInstance().popUntil("menu");
 		return;
 	}
@@ -34,4 +35,15 @@ void TransitionToMenuState::update()
 const std::string TransitionToMenuState::getName() const
 {
 	return "transitionToMenu";
+}
+
+void TransitionToMenuState::unloadDeadPlayer()
+{
+	for (auto i = 1; i <= 4; i++) {
+		try {
+			auto &n = _share.getSharedNode("deadPlayer" + std::to_string(i));
+			n.remove();
+			_share.delSharedNode("deadPlayer" + std::to_string(i));
+		} catch (std::exception const &err) {}
+	}
 }

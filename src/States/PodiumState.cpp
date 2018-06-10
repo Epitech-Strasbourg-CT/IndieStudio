@@ -19,7 +19,6 @@ PodiumState::_descs{
 {610, 200, 1310, 250},
 "back",
 [](PodiumState *self) {
-	self->unloadDeadPlayer();
 	auto &share = self->getSharedResources();
 	StateMachine::getInstance().push(new TransitionToMenuState(share), false);
 	return true;
@@ -168,15 +167,3 @@ void PodiumState::unloadButtons()
 		n->remove();
 	_buttons.clear();
 }
-
-void PodiumState::unloadDeadPlayer()
-{
-	for (auto i = 1; i <= 4; i++) {
-		try {
-			auto &n = _share.getSharedNode("deadPlayer" + std::to_string(i));
-			n.remove();
-			_share.delSharedNode("deadPlayer" + std::to_string(i));
-		} catch (std::exception const &err) {}
-	}
-}
-

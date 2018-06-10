@@ -258,3 +258,15 @@ std::vector<int> EntitiesMap::getPodium()
 {
 	return _orderDie;
 }
+
+int EntitiesMap::getPodiumN(int n)
+{
+	if (_orderDie.size() <= n)
+		return -1;
+	return _orderDie[n];
+}
+
+void EntitiesMap::setPodium(const std::vector<int> &orderDie)
+{
+	_orderDie = orderDie;
+}

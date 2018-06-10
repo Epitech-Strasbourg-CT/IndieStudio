@@ -48,6 +48,8 @@ public:
 	static PlayerEntity *generatePlayer(unsigned playerSkinId, bool ia);
 
 	std::vector<int> getPodium();
+	int getPodiumN(int n);
+	void setPodium(const std::vector<int> &orderDie);
 
 
 private:

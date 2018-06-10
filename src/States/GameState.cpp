@@ -39,12 +39,16 @@ void GameState::update()
 	else {
 		auto nbPlayer = _share.getMap()->update();
 		auto podium = _share.getMap()->getPodium();
-		if (_nbPlayerTot == -1)
-			_nbPlayerTot = nbPlayer;
+		if (_nbPlayerTot == -1) {
+			for (auto i = 0 ; i < 4 - nbPlayer ; i++)
+				addDeadPlayer(podium[i], i);
+			_nbPlayerTot = static_cast<int>(nbPlayer);
+		}
 		if (nbPlayer <= 1) {
 			addLastPlayerDead(podium);
 			StateMachine::getInstance().push(new PodiumState(_share), false);
 		}
+		std::cout << "PODIUM SIZE" << podium.size() << std::endl;
 		if (nbPlayer < _nbPlayerTot) {
 			for (auto i = 4 - _nbPlayerTot; i < (_nbPlayerTot - nbPlayer) + (4 - _nbPlayerTot); i++)
 				addDeadPlayer(podium[i], i);
