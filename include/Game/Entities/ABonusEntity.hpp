@@ -31,6 +31,7 @@ public:
 	void load(std::istream &s);
 	void destroy();
 	virtual void playerChanging(PlayerEntity *entity) = 0;
+	void updateRender() override;
 private:
 	struct serialize {
 		bool destroyed;

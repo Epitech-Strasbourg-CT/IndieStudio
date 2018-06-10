@@ -12,9 +12,10 @@
 #include "../../../include/Game/ControllerFactory.hpp"
 
 PlayerEntity::PlayerEntity(unsigned playerSkinId)
-	: ABombDropper(), AAnimatedEntity("player"), AMovable(), Controllable(),
-	_playerSkinId(playerSkinId), _old(), _look(), _alive(true), _reverse(1),
-	_reverseCycles(0)
+: ABombDropper(), AAnimatedEntity("player"), AMovable(), Controllable(),
+_playerSkinId(playerSkinId), _old(), _look(),
+_incorporel(false), _alive(true), _moveCoef(1),
+_reverseCycles(0)
 {
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
@@ -43,16 +44,16 @@ void PlayerEntity::reloadSkin()
 void PlayerEntity::addAllEvent()
 {
 	addEvent(MOVE_UP, KEY_DOWN, [this]() {
-		this->dirBottom(1 * this->_reverse);
+		this->dirBottom(1 * this->_moveCoef);
 	});
 	addEvent(MOVE_DOWN, KEY_DOWN, [this]() {
-		this->dirTop(1 * this->_reverse);
+		this->dirTop(1 * this->_moveCoef);
 	});
 	addEvent(MOVE_LEFT, KEY_DOWN, [this]() {
-		this->dirRight(1 * this->_reverse);
+		this->dirRight(1 * this->_moveCoef);
 	});
 	addEvent(MOVE_RIGHT, KEY_DOWN, [this]() {
-		this->dirLeft(1 * this->_reverse);
+		this->dirLeft(1 * this->_moveCoef);
 	});
 	addEvent(DROP_BOMB, KEY_PRESSED, [this]() {
 		this->dropBomb(AEntity::getPosX(), AEntity::getPosY());
@@ -67,8 +68,8 @@ void PlayerEntity::update(EntitiesMap *map)
 	AEntity::update(map);
 	if (!_alive)
 		map->erase(this);
-	if (_reverseCycles == 0 && _reverse == -1)
-		_reverse = 1;
+	if (_reverseCycles == 0 && _moveCoef < 0)
+		_moveCoef *= -1;
 	else if (_reverseCycles > 0)
 		_reverseCycles--;
 }
@@ -127,7 +128,7 @@ bool PlayerEntity::updatePosition(EntitiesMap *map)
 	auto dirP = ePosNew - ePos;
 	auto diag = abs(dirP.X) + abs(dirP.Y) == 1;
 	_look = mDir;
-	if (ePos != ePosNew && diag && map->canMoveTo(ePosNew)) {
+	if (ePos != ePosNew && diag && map->canMoveTo(ePosNew, this)) {
 		if (dirP.X != 0)
 			mPos.X = static_cast<int>(dirP.X > 0 ? 0 : BORDERX);
 		if (dirP.Y != 0)
@@ -152,7 +153,8 @@ void PlayerEntity::dump(std::ostream &s) const
 {
 	AEntity::dump(s);
 	Controllable::dump(s);
-	struct PlayerEntity::serialize ser = {_playerSkinId, _look.X, _look.Y,
+	struct PlayerEntity::serialize ser = {_playerSkinId, _incorporel,
+		_moveCoef, _reverseCycles, _look.X, _look.Y,
 		_alive, _controller->getType()};
 	if (_controller)
 		ser.ctType = _controller->getType();
@@ -173,6 +175,9 @@ void PlayerEntity::load(std::istream &s)
 	_look.X = ser.lookX;
 	_look.Y = ser.lookY;
 	_alive = ser.alive;
+	_reverseCycles = ser.reverseCycles;
+	_moveCoef = ser.moveCoef;
+	_incorporel = ser.incorporel;
 	reloadSkin();
 	ControllerFactory cf;
 	auto c = cf.createController(ser.ctType, _playerSkinId);
@@ -194,5 +199,24 @@ PlayerEntity::~PlayerEntity()
 void PlayerEntity::reverseDir()
 {
 	_reverseCycles = 180;
-	_reverse = -1;
+	if (_moveCoef > 0)
+		_moveCoef *= -1;
+}
+
+void PlayerEntity::speedUp()
+{
+	if (_moveCoef < 0)
+		_moveCoef = -2;
+	else
+		_moveCoef = 2;
+}
+
+void PlayerEntity::setIncorporel()
+{
+	_incorporel = true;
+}
+
+bool PlayerEntity::isIncorporel() const
+{
+	return _incorporel;
 }

@@ -25,6 +25,7 @@ public:
 	PlayerEntity(unsigned playerSkinId = 1);
 	void reloadSkin();
 	void reverseDir();
+	void speedUp();
 	void update(EntitiesMap *map) override;
 	bool updatePosition(EntitiesMap *map);
 	void updateRender() override;
@@ -34,9 +35,14 @@ public:
 	void load(std::istream &s);
 	void kill();
 	virtual ~PlayerEntity();
+	bool isIncorporel() const;
+	void setIncorporel();
 private:
 	struct serialize {
 		unsigned playerSkinId;
+		bool incorporel;
+		int moveCoef;
+		int reverseCycles;
 		int lookX;
 		int lookY;
 		bool alive;
@@ -48,7 +54,8 @@ private:
 	irr::core::vector2di _old;
 	irr::core::vector2di _look;
 	irr::core::vector2di getNewPosition();
+	bool _incorporel;
 	bool _alive;
-	int _reverse;
+	int _moveCoef;
 	int _reverseCycles;
 };

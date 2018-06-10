@@ -12,6 +12,10 @@
 ABonusEntity::ABonusEntity(const std::string &name, RupeeColor color)
 : AEntity(name),  _destroyed(false)
 {
+	auto ori = getOrigin();
+	ori.Y += 3;
+	ori.X -= 1;
+	setOrigin(ori);
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
 	auto mesh = am.loadMesh("rupee/rupee.obj");
@@ -21,10 +25,11 @@ ABonusEntity::ABonusEntity(const std::string &name, RupeeColor color)
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	auto rupee = "rupee/Rupee." + std::to_string(color) + ".png";
 	_node->setMaterialTexture(0, am.loadTexture(rupee));
+	_node->setRotation({0, 90, 0});
 	_node->setScale(irr::core::vector3df(
-		static_cast<irr::f32 >(0.033),
-		static_cast<irr::f32 >(0.02),
-		static_cast<irr::f32 >(0.033)));
+		static_cast<irr::f32 >(0.04),
+		static_cast<irr::f32 >(0.04),
+		static_cast<irr::f32 >(0.04)));
 }
 
 void ABonusEntity::update(EntitiesMap *map)
@@ -61,9 +66,16 @@ void ABonusEntity::collide(AEntity &entity)
 			[this](AEntity *aEntity) {
 				auto p = dynamic_cast<PlayerEntity *>(aEntity);
 				this->playerChanging(p);
+				AssetsPool::getInstance().loadSound(AssetsPool::RUPEE, false)->setIsPaused(false);
 				this->destroy();
 			}
-		}
+		}, {"fire",
+			[this](AEntity *aEntity) {
+				auto p = dynamic_cast<FireEntity *>(aEntity);
+				if (!p->isSpread())
+					this->destroy();
+			}
+		},
 
 	};
 	if (collisions.count(entity.getType()) > 0)
@@ -71,9 +83,13 @@ void ABonusEntity::collide(AEntity &entity)
 	AEntity::collide(entity);
 }
 
+void ABonusEntity::updateRender()
+{
+	AEntity::updateRender();
+}
+
 ABonusEntity::~ABonusEntity()
 {
-	AssetsPool::getInstance().loadSound(AssetsPool::RUPEE, false)->setIsPaused(false);
 	_node->remove();
 }
 
