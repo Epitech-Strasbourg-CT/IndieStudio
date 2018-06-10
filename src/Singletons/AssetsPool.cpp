@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "../../include/Singletons/AssetsPool.hpp"
+#include "../../include/PathManager.hpp"
 
 
 const std::vector<AssetsPool::soundInfo> AssetsPool::_sounds = {
@@ -85,7 +86,7 @@ AssetsPool::AssetsPool(const std::string &rootModelPath,
 
 irr::video::ITexture *AssetsPool::loadTexture(const std::string &file)
 {
-	irr::io::path path = std::string(_rootTexturePath + file).c_str();
+	irr::io::path path = PathManager::getExecPath(_rootTexturePath + file).c_str();
 	if (_meshs.count(file) > 0)
 		return _textures.at(file);
 	irr::video::ITexture *texture = IrrManager::getInstance().getDriver()->getTexture(
@@ -98,7 +99,7 @@ irr::video::ITexture *AssetsPool::loadTexture(const std::string &file)
 
 irr::scene::IMesh *AssetsPool::loadMesh(const std::string &file)
 {
-	irr::io::path path = std::string(_rootModelPath + file).c_str();
+	irr::io::path path = PathManager::getExecPath(std::string(_rootModelPath + file)).c_str();
 	if (_meshs.count(file) > 0)
 		return _meshs.at(file);
 	irr::scene::IMesh *mesh = IrrManager::getInstance().getSmgr()->getMesh(
@@ -116,7 +117,7 @@ irrklang::ISound *AssetsPool::loadSound(const AssetsPool::Assets asset,
 {
 	auto engine = IrrManager::getInstance().getEngine();
 	auto &instance = IrrManager::getInstance();
-	auto module = engine->play2D(_sounds.at(asset).name.c_str(), loop, true,
+	auto module = engine->play2D(PathManager::getExecPath(_sounds.at(asset).name).c_str(), loop, true,
 	                             false);
 
 	module->setVolume((instance.*(_sounds.at(asset).vol))());

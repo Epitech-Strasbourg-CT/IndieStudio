@@ -31,9 +31,9 @@ void BIAController::updateInputs(EntitiesMap *map)
 		_targetPos.X = _p->AEntity::getPosX();
 		_targetPos.Y = _p->AEntity::getPosY();
 	}
-	auto c = _bestEscape();
-	_bomb(c);
-	_fillTargetQueue(c);
+	std::cout << "-----------------" << std::endl;
+	if (!_bomb())
+		_fillTargetQueue();
 	_goToTarget();
 }
 
@@ -45,19 +45,21 @@ bool BIAController::_onTarget()
 		_p->AMovable::getPosY() == BORDERY / 2;
 }
 
-irr::core::vector2di BIAController::_getFuturePos(ControlName c)
+irr::core::vector2di BIAController::_getFuturePos(ControlName c,
+	irr::core::vector2di pos
+)
 {
 	std::map<ControlName, std::vector<int>> a = {{NONE, {0, 0}},
 		{MOVE_DOWN, {0, 1}}, {MOVE_UP, {0, -1}}, {MOVE_LEFT, {1, 0}},
 		{MOVE_RIGHT, {-1, 0}}};
-	auto realX = _p->AEntity::getPosX() + a[c][0];
-	auto realY = _p->AEntity::getPosY() + a[c][1];
-	return {realX, realY};
+	return {pos.X + a[c][0], pos.Y + a[c][1]};
 };
 
 bool BIAController::_move(ControlName c)
 {
-	auto pos = _getFuturePos(c);
+	auto x = _p->AEntity::getPosX();
+	auto y = _p->AEntity::getPosY();
+	auto pos = _getFuturePos(c, {x, y});
 	_targetPos.X = pos.X;
 	_targetPos.Y = pos.Y;
 	_targetMove = c;
@@ -111,15 +113,32 @@ bool BIAController::_isSafe(irr::core::vector2di pos)
 	return true;
 }
 
-std::vector<ControlName> BIAController::_genBestEscapeMoves()
+bool BIAController::_onBomb(irr::core::vector2di pos)
+{
+	if (pos.Y >= 0 && pos.X >= 0 && _map->getMap().size() > pos.Y &&
+		_map->getMap()[pos.Y].size() > pos.X)
+		for (auto &e : _map->getMap()[pos.Y][pos.X]) {
+			if (e->getType() == "bomb")
+				return true;
+		}
+	return false;
+}
+
+std::vector<ControlName> BIAController::_genBestEscapeMoves(
+	irr::core::vector2di pos, bool recur
+)
 {
 	std::vector<ControlName> allMoves = {MOVE_UP, NONE, MOVE_LEFT,
 		MOVE_RIGHT, MOVE_DOWN};
 	std::vector<ControlName> res;
 	while (!allMoves.empty()) {
 		auto i = rand() % allMoves.size();
-		if (_map->canMoveTo(_getFuturePos(allMoves[i])) &&
-			_isSafe(_getFuturePos(allMoves[i]))) {
+		if (_map->canMoveTo(_getFuturePos(allMoves[i], pos)) &&
+			_isSafe(_getFuturePos(allMoves[i], pos))
+				&& (!recur || !_onBomb(pos) ||
+			_bestEscape(_getFuturePos(allMoves[i], pos), false) !=
+				NONE)
+			) {
 			res.push_back(allMoves[i]);
 		}
 		allMoves.erase(allMoves.begin() + i);
@@ -127,26 +146,36 @@ std::vector<ControlName> BIAController::_genBestEscapeMoves()
 	return res;
 }
 
-ControlName BIAController::_bestEscape()
+ControlName BIAController::_bestEscape(irr::core::vector2di pos, bool recur)
 {
-	std::vector<ControlName> moves = _genBestEscapeMoves();
-//	std::cout << "[";
-//	for (auto &e : moves)
-//		std::cout << e << ",";
-//	std::cout << "]" << std::endl;
+	std::vector<ControlName> moves = _genBestEscapeMoves(pos, recur);
+	if (_onBomb(pos) || !recur) {
+		if (!recur)
+			std::cout << "rec" << std::endl;
+		else
+			std::cout << "SUR BOMBE" << std::endl;
+		std::cout << "[";
+		for (auto &e : moves)
+			std::cout << e << ",";
+		std::cout << "]" << std::endl;
+	}
 	if (moves.empty())
 		return NONE;
-//	std::cout << "[";
-//	for (auto &e : moves)
-//		std::cout << _getDangerLevel(_getFuturePos(e), {0, 0}, 0)
-//			<< ",";
-//	std::cout << "]" << std::endl;
+	if (_onBomb(pos) || !recur) {
+		std::cout << "[";
+		for (auto &e : moves)
+			std::cout
+				<< _getDangerLevel(_getFuturePos(e, pos), {0, 0}, 0)
+				<< ",";
+		std::cout << "]" << std::endl << std::endl;
+	}
 	int bestMov = 0;
-	int bestSafety = _getDangerLevel(_getFuturePos(moves[0]), {0, 0}, 0);
+	int bestSafety = _getDangerLevel(_getFuturePos(moves[0], pos), {0, 0},
+		0);
 
 	for (int i = 1; i < moves.size(); ++i) {
 		auto c = moves[i];
-		auto futurePos = _getFuturePos(c);
+		auto futurePos = _getFuturePos(c, pos);
 		auto newSafety = _getDangerLevel(futurePos, {0, 0}, 0);
 		if (newSafety < bestSafety && _isSafe(futurePos)) {
 			bestMov = i;
@@ -155,32 +184,24 @@ ControlName BIAController::_bestEscape()
 	}
 	auto x = _p->AEntity::getPosX();
 	auto y = _p->AEntity::getPosY();
-//	std::cout << "Pending: " << _targetQueue.size() << std::endl;
-//	std::cout << "Spawn pos: " << _spawnPos.X << "," << _spawnPos.Y << std::endl;
-//	std::cout << "On pos: " << x << "," << y << std::endl;
-//	std::cout << "Current danger level: "
-//		<< _getDangerLevel(_getFuturePos(NONE), {0, 0}, 0) << std::endl;
-//	std::cout << "Forecast danger level: " << bestSafety << std::endl;
-//	std::cout << "Forecast move: " << moves[bestMov] << std::endl;
 	return moves[bestMov];
 }
 
-void BIAController::_fillTargetQueue(ControlName c)
+void BIAController::_fillTargetQueue()
 {
-
+	auto c = _bestEscape({_p->AEntity::getPosX(), _p->AEntity::getPosY()});
 	while (!_targetQueue.empty())
 		_targetQueue.pop();
 	_targetQueue.push(c);
-//	std::cout << std::endl;
 }
 
-bool BIAController::_bomb(ControlName c)
+bool BIAController::_bomb()
 {
 	auto x = _p->AEntity::getPosX();
 	auto y = _p->AEntity::getPosY();
 	if (x == _spawnPos.X && y == _spawnPos.Y)
 		return false;
-	if (rand() % 250 || c == NONE)
+	if (rand() % 250 || _bestEscape({x, y}) == NONE)
 		return false;
 	_controllable->callBind(DROP_BOMB, KEY_PRESSED);
 	return true;
