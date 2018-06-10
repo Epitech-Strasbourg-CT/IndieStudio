@@ -154,7 +154,6 @@ void PodiumState::unloadDeadPlayer()
 {
 	for (auto i = 1; i <= 4; i++) {
 		try {
-			std::cout << "UNLOAD deadPlayer" + std::to_string(i) << std::endl;
 			auto &n = _share.getSharedNode("deadPlayer" + std::to_string(i));
 			n.remove();
 			_share.delSharedNode("deadPlayer" + std::to_string(i));
