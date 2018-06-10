@@ -21,8 +21,6 @@ AIChooseState::_descs {
 	 {610, 900,  1310, 950},
 	 "launch",
 	 [](AIChooseState *self) {
-	 	if(std::find(self->_state.begin(), self->_state.end(), 1) == self->_state.end())
-			return true;
 	 	self->getSharedResources().setIAState(self->_state);
 	 	auto &sm = StateMachine::getInstance();
 	 	sm.push(new TransitionToGameState(self->getSharedResources()), false);
