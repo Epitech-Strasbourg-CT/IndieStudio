@@ -32,7 +32,7 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 			SaveManager sm;
 			std::wstring wstr(self->_name->getText());
 			std::string str(wstr.begin(), wstr.end());
-			std::string final(".save/" + str + ".dat");
+			std::string final("save/" + str + ".dat");
 			sm.save(*self->_share.getMap(), final);
 			StateMachine::getInstance().pop();
 			return false;
