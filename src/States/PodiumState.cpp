@@ -11,6 +11,7 @@
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/States/MenuState.hpp"
 #include "../../include/States/TransitionToMenuState.hpp"
+#include "../../include/States/LoadState.hpp"
 
 const std::map<PodiumState::MenuActions, PodiumState::ButtonsDesc>
 PodiumState::_descs{
@@ -38,7 +39,7 @@ PodiumState::_descs{
 
 PodiumState::PodiumState(AStateShare &_share) : AState(_share),
 _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {675, 70, 640}, 1),
-_isLoad(false)
+_isLoad(false), _eventsActivate(false)
 {
 	_trav.setFolow(0.01);
 	_trav.setEndExactitude(0.1);
@@ -48,6 +49,7 @@ _isLoad(false)
 
 PodiumState::~PodiumState()
 {
+	eventsClean();
 	_share.popMusic(AssetsPool::WIN);
 }
 
@@ -98,7 +100,7 @@ void PodiumState::loadButtons()
 void PodiumState::eventsSetup()
 {
 	auto &er = EventReceiver::getInstance();
-	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,
+	er.registerEvent(40, irr::EEVENT_TYPE::EET_GUI_EVENT,
 			 [this](const irr::SEvent &ev) {
 				 if (!this->isLoaded() || !this->isEnable())
 					 return true;
@@ -107,6 +109,15 @@ void PodiumState::eventsSetup()
 					 return this->applyEventButton(ev, id);
 				 return true;
 			 });
+}
+
+void PodiumState::eventsClean()
+{
+	if (!_eventsActivate)
+		return;
+	auto &er = EventReceiver::getInstance();
+	er.unregisterEvent(20, irr::EEVENT_TYPE::EET_GUI_EVENT);
+	_eventsActivate = false;
 }
 
 irr::gui::IGUIButton *PodiumState::getButton(MenuActions id) const

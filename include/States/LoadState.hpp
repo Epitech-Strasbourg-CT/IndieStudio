@@ -49,7 +49,6 @@ public:
 	};
 
 	void eventsSetup();
-	void eventsClean();
 	void externalEventsClean();
 
 private:
@@ -60,6 +59,7 @@ private:
 	std::vector<std::string> _saves;
 	size_t _idx;
 	bool _eventsActivate;
+	void eventsClean();
 };
 
 #endif /* !BOMBERMAN_LOADSTATE_HPP */

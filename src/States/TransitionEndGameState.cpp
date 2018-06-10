@@ -7,7 +7,6 @@
 
 #include "../../include/States/TransitionEndGameState.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
-#include "../../include/States/EndGameState.hpp"
 
 TransitionEndGameState::TransitionEndGameState(AStateShare &_share) : AState(_share),
 _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {675, 80, 400}, 1)
