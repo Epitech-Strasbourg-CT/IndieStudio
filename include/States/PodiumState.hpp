@@ -24,7 +24,7 @@ public:
 	const std::string getName() const override;
 
 	enum MenuActions {
-		RESTART = 500,
+		RESTART = 600,
 		QUIT
 	};
 

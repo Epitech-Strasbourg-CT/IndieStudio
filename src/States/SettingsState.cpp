@@ -106,7 +106,7 @@ const std::map<SettingsActions, SettingsState::ButtonsDesc>
 	}},
 };
 
-SettingsState::SettingsState(AStateShare &_share) : AState(_share), AMenuSound()
+SettingsState::SettingsState(AStateShare &_share) : AState(_share), AMenuSound(), _eventsActivate(false)
 {
 	auto &manager = IrrManager::getInstance();
 

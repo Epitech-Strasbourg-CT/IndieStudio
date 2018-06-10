@@ -99,6 +99,7 @@ void PodiumState::loadButtons()
 
 void PodiumState::eventsSetup()
 {
+	_eventsActivate = true;
 	auto &er = EventReceiver::getInstance();
 	er.registerEvent(40, irr::EEVENT_TYPE::EET_GUI_EVENT,
 			 [this](const irr::SEvent &ev) {
@@ -116,7 +117,7 @@ void PodiumState::eventsClean()
 	if (!_eventsActivate)
 		return;
 	auto &er = EventReceiver::getInstance();
-	er.unregisterEvent(20, irr::EEVENT_TYPE::EET_GUI_EVENT);
+	er.unregisterEvent(40, irr::EEVENT_TYPE::EET_GUI_EVENT);
 	_eventsActivate = false;
 }
 

@@ -101,3 +101,8 @@ bool StateMachine::isInStack(std::string const &name)
 	}
 	return false;
 }
+
+StateMachine::~StateMachine()
+{
+	popAll();
+}
