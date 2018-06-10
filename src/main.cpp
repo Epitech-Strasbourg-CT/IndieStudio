@@ -9,7 +9,11 @@
 #include "../include/Singletons/IrrManager.hpp"
 #include "../include/Singletons/EventReceiver.hpp"
 
+#ifdef _WIN32
+int WinMain()
+#elif __linux__
 int main()
+#endif
 {
 	auto shared = AStateShare();
 	
