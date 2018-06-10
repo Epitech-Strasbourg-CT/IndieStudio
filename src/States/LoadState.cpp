@@ -15,6 +15,7 @@
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/TransitionToGameState.hpp"
+#include "../../include/PathManager.hpp"
 
 const std::map<LoadState::Actions, LoadState::ButtonsDesc>
 	LoadState::_descs {
@@ -119,6 +120,7 @@ void LoadState::loadButtons()
 	#ifdef __linux__
 	glob_t glob_result;
 
+	auto path = PathManager::getExecPath(".save/*.dat");
 	glob(".save/*.dat", GLOB_TILDE, NULL, &glob_result);
 	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i)
 		_saves.emplace_back(glob_result.gl_pathv[i]);
@@ -128,10 +130,14 @@ void LoadState::loadButtons()
 	HANDLE hFind;
 	WIN32_FIND_DATA data;
 
-	hFind = FindFirstFile(path.c_str(), &data);
+	auto path = PathManager::getExecPath(".save/");
+	auto pattern = PathManager::getExecPath(".save/*.dat");
+	hFind = FindFirstFile(pattern.c_str(), &data);
+	std::cout << path << std::endl;
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
-			_saves.emplace_back(".save/" + std::string(data.cFileName));
+			_saves.emplace_back(path + std::string(data.cFileName));
+			std::cout << path + std::string(data.cFileName) << std::endl;
 		} while (FindNextFile(hFind, &data));
 		FindClose(hFind);
 	}
@@ -214,7 +220,11 @@ void LoadState::setSaveButtons()
 	std::string empty = "- Empty Slot -";
 
 	for (; i < _saves.size() && (i == (_idx * 4) || i%4); ++i) {
+		#ifdef _WIN32
+		std::string temp(_saves[i].substr(_saves[i].rfind('\\') + 1));
+		#else
 		std::string temp(_saves[i].substr(_saves[i].rfind('/') + 1));
+		#endif
 		_buttons[i%4]->setText(std::wstring(temp.begin(),
 			temp.end()).c_str());
 		_buttons[i%4]->setEnabled(true);
