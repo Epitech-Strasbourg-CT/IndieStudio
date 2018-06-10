@@ -139,7 +139,7 @@ void EntitiesMap::updateErase()
 			return (e == p.get());
 		};
 		if (n.e->getType() == "player")
-			_orderDie.push_back(dynamic_cast<PlayerEntity *>(n.e)->getId());
+			_orderDie.push_back(dynamic_cast<PlayerEntity *>(n.e)->getPlayerSkinId());
 		auto elem = std::find_if(list.begin(), list.end(), finder);
 		if (elem != list.end())
 			list.erase(elem);
