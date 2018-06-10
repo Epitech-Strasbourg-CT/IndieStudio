@@ -51,7 +51,6 @@ private:
 	bool applyEventButton(const irr::SEvent &ev, MenuActions id);
 
 	void unloadButtons();
-	void unloadDeadPlayer();
 	bool _eventsActivate;
 };
 

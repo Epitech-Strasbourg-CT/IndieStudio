@@ -16,6 +16,7 @@ public:
 	TransitionToMenuState(AStateShare &_share);
 
 	void update() override;
+	void unloadDeadPlayer();
 
 	const std::string getName() const override;
 
