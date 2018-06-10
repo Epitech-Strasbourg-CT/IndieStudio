@@ -186,12 +186,14 @@ void PlayerEntity::load(std::istream &s)
 
 void PlayerEntity::kill()
 {
+	if (!_alive)
+		return;
+	AssetsPool::getInstance().loadSound(AssetsPool::DEATH, false)->setIsPaused(false);
 	_alive = false;
 }
 
 PlayerEntity::~PlayerEntity()
 {
-	AssetsPool::getInstance().loadSound(AssetsPool::DEATH, false)->setIsPaused(false);
 	cleanAnimationNodes();
 }
 
