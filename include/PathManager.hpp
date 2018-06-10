@@ -13,6 +13,7 @@
 class PathManager {
 public:
 	static std::string getExecPath(std::string);
+	static std::string getHomePath(std::string);
 };
 
 

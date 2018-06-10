@@ -19,13 +19,14 @@
 void SaveManager::save(EntitiesMap &map, const std::string &filename)
 {
 	#ifdef _WIN32
-		CreateDirectory(PathManager::getExecPath(".save").c_str(), nullptr);
+		CreateDirectory(PathManager::getHomePath("save").c_str(), nullptr);
 	#elif __linux__
-		mkdir(PathManager::getExecPath(".save").c_str(), 0733);
+		mkdir(PathManager::getHomePath("save").c_str(), 0733);
 	#endif
 
-	std::ofstream file(PathManager::getExecPath(filename),
+	std::ofstream file(PathManager::getHomePath(filename),
 			   std::ofstream::out);
+	std::cout << PathManager::getHomePath(filename) << std::endl;
 	if (!file.good())
 		throw std::runtime_error("Can't save the Entities");
 	for (auto y = 0 ; y < map.getMap().size() ; ++y)

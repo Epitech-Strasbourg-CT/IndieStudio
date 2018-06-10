@@ -120,7 +120,7 @@ void LoadState::loadButtons()
 	#ifdef __linux__
 	glob_t glob_result;
 
-	glob(PathManager::getExecPath(".save/*.dat").c_str(), GLOB_TILDE, NULL, &glob_result);
+	glob(PathManager::getHomePath("save/*.dat").c_str(), GLOB_TILDE, NULL, &glob_result);
 	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i)
 		_saves.emplace_back(glob_result.gl_pathv[i]);
 	_idx = 0;
@@ -129,8 +129,8 @@ void LoadState::loadButtons()
 	HANDLE hFind;
 	WIN32_FIND_DATA data;
 
-	auto path = PathManager::getExecPath(".save/");
-	auto pattern = PathManager::getExecPath(".save/*.dat");
+	auto path = PathManager::getHomePath("save/");
+	auto pattern = PathManager::getHomePath("save/*.dat");
 	hFind = FindFirstFile(pattern.c_str(), &data);
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
