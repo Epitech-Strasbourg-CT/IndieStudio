@@ -43,7 +43,14 @@ _isLoad(false)
 	_trav.setFolow(0.01);
 	_trav.setEndExactitude(0.1);
 	_trav.push(50, {675, 80, 655});
+	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::WIN, true));
 }
+
+PodiumState::~PodiumState()
+{
+	_share.popMusic(AssetsPool::WIN);
+}
+
 
 void PodiumState::update()
 {
@@ -160,3 +167,4 @@ void PodiumState::unloadDeadPlayer()
 		} catch (std::exception const &err) {}
 	}
 }
+

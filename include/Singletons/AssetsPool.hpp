@@ -23,6 +23,7 @@ public:
 	enum Assets {
 		MENU = 0,
 		GAME,
+		WIN,
 		SELECT,
 		CURSOR,
 		BBLOW,
