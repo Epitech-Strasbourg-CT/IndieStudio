@@ -30,7 +30,7 @@ public:
 	bool insert(AEntity *e, const irr::core::vector2di &v = {0, 0});
 	bool erase(AEntity *e);
 	bool moveTo(AEntity *e, const irr::core::vector2di &v);
-	bool canMoveTo(const irr::core::vector2di &v);
+	bool canMoveTo(const irr::core::vector2di &v, const AEntity *entity = nullptr);
 	bool canInsertTo(const irr::core::vector2di &v);
 
 	EMap &getMap();

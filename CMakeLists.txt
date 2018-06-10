@@ -126,6 +126,15 @@ add_executable(bomberman
         src/Game/Entities/Bonus/UpFireBonus.cpp
         include/Game/Bonus/UpFireBonus.hpp
 
+        src/PathManager.cpp
+        include/PathManager.hpp
+
+        src/Game/Entities/Bonus/UpSpeedBonus.cpp
+        include/Game/Bonus/UpSpeedBonus.hpp
+
+        src/Game/Entities/Bonus/IncorporelBonus.cpp
+        include/Game/Bonus/IncorporelBonus.hpp
+
         src/States/PodiumState.cpp
         include/States/PodiumState.hpp)
 
@@ -150,8 +159,14 @@ endif(WIN32)
 
 set(IRRKLANG_DIR ./libs/irrklang)
 if(UNIX)
-    install(FILES bin/bomberman bin/ikpMP3.so bin/ikpFlac.so DESTINATION /usr/local/bin)
-    install(DIRECTORY bin/assets DESTINATION /usr/local/)
+
+    add_custom_target("uninstall")
+    add_custom_command(TARGET "uninstall"
+    POST_BUILD COMMAND /bin/rm -rf /usr/local/bin/bomberman /usr/local/bin/ikpMP3.so /usr/local/bin/ikpFlac.so /usr/local/bin/assets)
+
+    install(PROGRAMS bin/bomberman bin/ikpMP3.so bin/ikpFlac.so  DESTINATION /usr/local/bin
+            PERMISSIONS WORLD_EXECUTE)
+    install(DIRECTORY bin/assets DESTINATION /usr/local/bin)
 
     add_custom_command(TARGET bomberman PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy

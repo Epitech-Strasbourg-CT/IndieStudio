@@ -89,30 +89,6 @@ void FireEntity::collide(AEntity &entity)
 				auto bomb = dynamic_cast<BombEntity *>(aEntity);
 				bomb->detonate();
 			}
-		}, {"reduce_bonus",
-			   [this](AEntity *aEntity) {
-				   auto bonus = dynamic_cast<ABonusEntity *>(aEntity);
-				   if (!_spreaded)
-				        bonus->destroy();
-			   }
-		}, {"bomb_bonus",
-			[this](AEntity *aEntity) {
-				auto bonus = dynamic_cast<ABonusEntity *>(aEntity);
-				if (!_spreaded)
-					bonus->destroy();
-			}
-		}, {"fire_bonus",
-			[this](AEntity *aEntity) {
-				auto bonus = dynamic_cast<ABonusEntity *>(aEntity);
-				if (!_spreaded)
-					bonus->destroy();
-			}
-		}, {"invert_bonus",
-			[this](AEntity *aEntity) {
-				auto bonus = dynamic_cast<ABonusEntity *>(aEntity);
-				if (!_spreaded)
-					bonus->destroy();
-			}
 		}, {"player",
 			[this](AEntity *aEntity) {
 				auto player = dynamic_cast<PlayerEntity *>(aEntity);
@@ -127,4 +103,9 @@ void FireEntity::collide(AEntity &entity)
 FireEntity::~FireEntity()
 {
 	_node->remove();
+}
+
+bool FireEntity::isSpread() const
+{
+	return _spreaded;
 }

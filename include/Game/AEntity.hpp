@@ -24,7 +24,7 @@ public:
 	virtual ~AEntity() = default;
 
 	virtual void collide(AEntity &);
-	bool isStackable() const;
+	virtual bool isStackable(const AEntity * = nullptr) const;
 	bool isInsertable() const;
 
 	virtual void update(EntitiesMap *);
@@ -37,6 +37,7 @@ public:
 	virtual void load(std::istream &s);
 
 	const irr::core::vector3df &getOrigin() const;
+	void setOrigin(const irr::core::vector3df &vec);
 
 	const irr::core::vector3df &getNodePosition() const;
 	void setNodePosition(const irr::core::vector3df &vec);

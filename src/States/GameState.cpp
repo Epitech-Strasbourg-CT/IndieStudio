@@ -56,7 +56,7 @@ void GameState::addDeadPlayer(int idPlayer, int rank)
 {
 	irr::scene::IAnimatedMeshSceneNode *mesh = IrrManager::getInstance().getSmgr()->addAnimatedMeshSceneNode(
 	dynamic_cast<irr::scene::IAnimatedMesh *>(AssetsPool::getInstance().loadMesh("player/link-happy.ms3d")));
-	mesh->setMaterialTexture(0, AssetsPool::getInstance().loadTexture("player/player" + std::to_string(idPlayer + 1) + "-happy.png"));
+	mesh->setMaterialTexture(0, AssetsPool::getInstance().loadTexture("player/player" + std::to_string(idPlayer) + "-happy.png"));
 	mesh->setScale({4, 4, 4});
 	mesh->setRotation({0, 90, 0});
 	mesh->setPosition({static_cast<irr::f32>(685 + rank * -6), 65, 640});
@@ -94,7 +94,7 @@ const std::string GameState::getName() const
 
 void GameState::addLastPlayerDead(std::vector<int> podium)
 {
-	std::vector<int> id = {0, 1, 2, 3};
+	std::vector<int> id = {1, 2, 3, 4};
 	auto iterator = id.begin();
 
 	for (auto elem : podium) {

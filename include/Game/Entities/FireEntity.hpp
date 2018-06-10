@@ -17,6 +17,7 @@ public:
 	void dump (std::ostream &s) const;
 	void load(std::istream &s);
 	void spread(EntitiesMap *map);
+	bool isSpread() const;
 	void collide(AEntity &entity) override;
 	virtual ~FireEntity();
 private:
