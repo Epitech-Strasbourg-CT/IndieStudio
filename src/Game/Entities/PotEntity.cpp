@@ -60,6 +60,9 @@ void PotEntity::updateRender()
 
 void PotEntity::breakMe()
 {
+	if (_broken)
+		return;
+	AssetsPool::getInstance().loadSound(AssetsPool::POT, false)->setIsPaused(false);
 	_broken = true;
 }
 
@@ -122,6 +125,5 @@ bool PotEntity::isStackable(const AEntity *entity) const
 
 PotEntity::~PotEntity()
 {
-	AssetsPool::getInstance().loadSound(AssetsPool::POT, false)->setIsPaused(false);
 	_node->remove();
 }
