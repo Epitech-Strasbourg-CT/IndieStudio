@@ -40,7 +40,6 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 		{610, 540, 1310, 590},
 		"save",
 		[](PauseState *self) {
-			std::cout << "SAVE MENU" << std::endl;
 			auto &sm = StateMachine::getInstance();
 			auto &res = self->getSharedResources();
 			sm.push(new SaveState(res), false);
@@ -107,6 +106,7 @@ void PauseState::update()
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 	AState::update();
+	AssetsPool::getInstance().cleanSound();
 }
 
 void PauseState::draw()

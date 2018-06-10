@@ -64,6 +64,11 @@ private:
 	irrklang::ik_f32 _master;
 	irrklang::ik_f32 _music;
 	irrklang::ik_f32 _sfx;
+
+	irr::gui::IGUIStaticText *_masterT;
+	irr::gui::IGUIStaticText *_musicT;
+	irr::gui::IGUIStaticText *_sfxT;
+
 	bool _eventsActivate;
 };
 

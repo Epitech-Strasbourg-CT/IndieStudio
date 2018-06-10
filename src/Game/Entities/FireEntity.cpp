@@ -13,9 +13,9 @@
 #include "../../../include/Game/Entities/ABonusEntity.hpp"
 
 FireEntity::FireEntity(const irr::core::vector2di &spread, size_t size)
-: AEntity("fire"), _spreadDir(spread), _spreadSize(size), _spreaded(false), _duration(200)
+	: AEntity("fire"), _spreadDir(spread), _spreadSize(size),
+	_spreaded(false), _updateCycle(20)
 {
-	_start = Time::timestamp();
 	_stackable = true;
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
@@ -44,8 +44,33 @@ void FireEntity::update(EntitiesMap *map)
 {
 	this->spread(map);
 	AEntity::update(map);
-	if (_start + _duration < Time::timestamp())
+	if (_updateCycle == 0)
 		map->erase(this);
+	_updateCycle--;
+}
+
+void FireEntity::dump(std::ostream &s) const
+{
+	AEntity::dump(s);
+	struct FireEntity::serialize ser = {_spreadDir.X, _spreadDir.Y,
+		_spreadSize, _spreaded, _updateCycle};
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
+	memcpy(se.get(), &ser, sizeof(ser));
+	s.write(se.get(), sizeof(ser));
+}
+
+void FireEntity::load(std::istream &s)
+{
+	AEntity::load(s);
+	struct FireEntity::serialize ser;
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
+	s.read(se.get(), sizeof(ser));
+	memcpy(&ser, se.get(), sizeof(ser));
+	_spreadDir.X = ser.spreadDirX;
+	_spreadDir.Y = ser.spreadDirY;
+	_spreadSize = ser.spreadSize;
+	_spreaded = ser.spreaded;
+	_updateCycle = ser.updateCycle;
 }
 
 void FireEntity::collide(AEntity &entity)
@@ -64,12 +89,30 @@ void FireEntity::collide(AEntity &entity)
 				auto bomb = dynamic_cast<BombEntity *>(aEntity);
 				bomb->detonate();
 			}
-		}, {"Bonus",
+		}, {"reduce_bonus",
 			   [this](AEntity *aEntity) {
 				   auto bonus = dynamic_cast<ABonusEntity *>(aEntity);
 				   if (!_spreaded)
 				        bonus->destroy();
 			   }
+		}, {"bomb_bonus",
+			[this](AEntity *aEntity) {
+				auto bonus = dynamic_cast<ABonusEntity *>(aEntity);
+				if (!_spreaded)
+					bonus->destroy();
+			}
+		}, {"fire_bonus",
+			[this](AEntity *aEntity) {
+				auto bonus = dynamic_cast<ABonusEntity *>(aEntity);
+				if (!_spreaded)
+					bonus->destroy();
+			}
+		}, {"invert_bonus",
+			[this](AEntity *aEntity) {
+				auto bonus = dynamic_cast<ABonusEntity *>(aEntity);
+				if (!_spreaded)
+					bonus->destroy();
+			}
 		}, {"player",
 			[this](AEntity *aEntity) {
 				auto player = dynamic_cast<PlayerEntity *>(aEntity);

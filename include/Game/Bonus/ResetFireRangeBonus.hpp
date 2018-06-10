@@ -12,7 +12,7 @@
 
 class ResetFireRangeBonus : public ABonusEntity {
 public:
-	ResetFireRangeBonus(RupeeColor color);
+	ResetFireRangeBonus();
 
 	void playerChanging(PlayerEntity *entity) override;
 };

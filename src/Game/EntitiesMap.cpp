@@ -11,13 +11,12 @@
 #include "../../include/Game/Entities/PlayerEntity.hpp"
 #include "../../include/Game/Entities/BlockEntity.hpp"
 #include "../../include/Game/BIAController.hpp"
-#include "../../include/Singletons/IrrManager.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
 
-const std::unordered_map<char, std::function<AEntity *(EntitiesMap &, const std::vector<int> &)>>
-	EntitiesMap::_generationMap = {{'X', [](EntitiesMap &, const std::vector<int> &) {
+const std::unordered_map<char, std::function<AEntity *(const std::vector<int> &)>>
+	EntitiesMap::_generationMap = {{'X', [](const std::vector<int> &) {
 	return new BlockEntity();
-}}, {'1', [](EntitiesMap &map, const std::vector<int> &IAState) {
+}}, {'1', [](const std::vector<int> &IAState) {
 	static unsigned id = 0;
 	id += 1;
 	if (IAState.size() >= id && IAState.at(id - 1)) {
@@ -27,13 +26,13 @@ const std::unordered_map<char, std::function<AEntity *(EntitiesMap &, const std:
 		AController::bindEntityToController(*controller, *player);
 		return player;
 	} else {
-		auto *controller = new BIAController(map, id);
+		auto *controller = new BIAController(id);
 
 		PlayerEntity *player = new PlayerEntity((id < 5 ? id : 1));
 		AController::bindEntityToController(*controller, *player);
 		return player;
 	}
-}}, {'0', [](EntitiesMap &, const std::vector<int> &) {
+}}, {'0', [](const std::vector<int> &) {
 	AEntity *e = nullptr;
 	if ((rand() % 6) < 4)
 		e = new PotEntity();
@@ -54,8 +53,7 @@ bool EntitiesMap::generate(const std::vector<int> &IAState)
 			auto type = _mapTemplate[y][x];
 			AEntity *e = nullptr;
 			if (EntitiesMap::_generationMap.count(type) > 0)
-				e = EntitiesMap::_generationMap.at(type)(*this,
-					IAState);
+				e = EntitiesMap::_generationMap.at(type)(IAState);
 			if (e) {
 				insert(e,
 					{static_cast<irr::s32>(WIDTH - (x + 1)),
@@ -115,7 +113,6 @@ void EntitiesMap::updateInsert()
 		auto x = n.v.X;
 		auto y = n.v.Y;
 		if (!canInsertTo(n.v)) {
-			std::cout << "GO TRASH : " << n.e->getType() << std::endl;
 			trash.push_back(std::unique_ptr<AEntity>(n.e));
 			continue;
 		}
@@ -233,6 +230,7 @@ size_t EntitiesMap::update()
 			}
 	updateErase();
 	updateMove();
+	AssetsPool::getInstance().cleanSound();
 	return ret;
 }
 

@@ -48,6 +48,7 @@ void GameState::update()
 		}
 	}
 //			StateMachine::getInstance().push(new TransitionEndGameState(_share), false);
+	AssetsPool::getInstance().cleanSound();
 	//TODO Call this when the game is finished
 }
 

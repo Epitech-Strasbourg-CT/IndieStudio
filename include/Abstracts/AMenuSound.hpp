@@ -12,14 +12,8 @@
 
 class AMenuSound {
 public:
-	AMenuSound();
-	~AMenuSound();
-
 	void playSelect();
 	void playCursor();
-protected:
-	irrklang::ISound *_cursor;
-	irrklang::ISound *_select;
 };
 
 #endif /* !BOMBERMAN_AMENUSOUND_HPP */

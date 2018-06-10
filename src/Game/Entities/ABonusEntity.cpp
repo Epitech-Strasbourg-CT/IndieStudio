@@ -9,9 +9,9 @@
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Game/Entities/FireEntity.hpp"
 
-ABonusEntity::ABonusEntity(RupeeColor color): AEntity("Bonus"), _destroyed(false)
+ABonusEntity::ABonusEntity(const std::string &name, RupeeColor color)
+: AEntity(name),  _destroyed(false)
 {
-	std::cout << "Construct" << std::endl;
 	auto &im = IrrManager::getInstance();
 	auto &am = AssetsPool::getInstance();
 	auto mesh = am.loadMesh("rupee/rupee.obj");
@@ -27,16 +27,30 @@ ABonusEntity::ABonusEntity(RupeeColor color): AEntity("Bonus"), _destroyed(false
 		static_cast<irr::f32 >(0.033)));
 }
 
-//void ABonusEntity::playerChanging(PlayerEntity *entity)
-//{
-//	entity->upMaxBomb();
-//}
-
 void ABonusEntity::update(EntitiesMap *map)
 {
 	AEntity::update(map);
 	if (_destroyed)
 		map->erase(this);
+}
+
+void ABonusEntity::dump(std::ostream &s) const
+{
+	AEntity::dump(s);
+	struct ABonusEntity::serialize ser = {_destroyed};
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
+	memcpy(se.get(), &ser, sizeof(ser));
+	s.write(se.get(), sizeof(ser));
+}
+
+void ABonusEntity::load(std::istream &s)
+{
+	AEntity::load(s);
+	struct ABonusEntity::serialize ser;
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
+	s.read(se.get(), sizeof(ser));
+	memcpy(&ser, se.get(), sizeof(ser));
+	_destroyed = ser.destroyed;
 }
 
 void ABonusEntity::collide(AEntity &entity)
@@ -45,7 +59,6 @@ void ABonusEntity::collide(AEntity &entity)
 		collisions = {
 		{"player",
 			[this](AEntity *aEntity) {
-				std::cout << "PLAYER COLLIDE" << std::endl;
 				auto p = dynamic_cast<PlayerEntity *>(aEntity);
 				this->playerChanging(p);
 				this->destroy();
@@ -60,7 +73,7 @@ void ABonusEntity::collide(AEntity &entity)
 
 ABonusEntity::~ABonusEntity()
 {
-	std::cout << "Destroy" << std::endl;
+	AssetsPool::getInstance().loadSound(AssetsPool::RUPEE, false)->setIsPaused(false);
 	_node->remove();
 }
 

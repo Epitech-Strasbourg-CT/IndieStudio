@@ -146,6 +146,7 @@ bool MenuState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 void MenuState::update()
 {
 	_share.getFunc("rotateMenu")();
+	AssetsPool::getInstance().cleanSound();
 }
 
 void MenuState::eventsSetup()

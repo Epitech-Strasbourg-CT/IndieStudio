@@ -7,49 +7,60 @@
 #ifdef __linux__
 #include <glob.h>
 #elif _WIN32
+	#include <windows.h>
 #endif
 #include "../../include/States/LoadState.hpp"
 #include "../../include/Singletons/StateMachine.hpp"
 #include "../../include/Singletons/IrrManager.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
+#include "../../include/States/TransitionToGameState.hpp"
 
-const std::map<LoadState::Actions , LoadState::ButtonsDesc>
+const std::map<LoadState::Actions, LoadState::ButtonsDesc>
 	LoadState::_descs {
 	{LoadState::SAVE1,    {
 		{610, 250, 1300, 300},
 		"default",
 		[](LoadState *self) {
-			self->externalEventsClean();
-			StateMachine::getInstance().pop();
-			return false;
+			StateMachine::getInstance().push(
+				new TransitionToGameState(self->_share,
+					self->_saves[self->_idx * 4 + 0]),
+				false);
+			return true;
 		}
 	}},
 	{LoadState::SAVE2,    {
 		{610, 350, 1300, 400},
 		"default",
 		[](LoadState *self) {
-			self->externalEventsClean();
-			StateMachine::getInstance().pop();
-			return false;
+			StateMachine::getInstance().push(
+				new TransitionToGameState(self->_share,
+					self->_saves[self->_idx * 4 + 1]),
+				false);
+			return true;
 		}
 	}},
 	{LoadState::SAVE3,    {
 		{610, 450, 1300, 500},
 		"default",
 		[](LoadState *self) {
-			self->externalEventsClean();
-			StateMachine::getInstance().pop();
-			return false;
+
+			StateMachine::getInstance().push(
+				new TransitionToGameState(self->_share,
+					self->_saves[self->_idx * 4 + 2]),
+				false);
+			return true;
 		}
 	}},
 	{LoadState::SAVE4,    {
 		{610, 550, 1300, 600},
 		"default",
 		[](LoadState *self) {
-			self->externalEventsClean();
-			StateMachine::getInstance().pop();
-			return false;
+			StateMachine::getInstance().push(
+				new TransitionToGameState(self->_share,
+					self->_saves[self->_idx * 4 + 3]),
+				false);
+			return true;
 		}
 	}},
 	{LoadState::CANCEL,  {
@@ -113,6 +124,21 @@ void LoadState::loadButtons()
 		_saves.emplace_back(glob_result.gl_pathv[i]);
 	_idx = 0;
 	#elif _WIN32
+	char buffer[MAX_PATH];
+	GetModuleFileName(NULL, buffer, MAX_PATH);
+	std::string::size_type pos = std::string( buffer ).find_last_of("\\/");
+	auto path =  std::string( buffer ).substr( 0, pos) + "\\.save\\*.dat";
+
+	HANDLE hFind;
+	WIN32_FIND_DATA data;
+
+	hFind = FindFirstFile(path.c_str(), &data);
+	if (hFind != INVALID_HANDLE_VALUE) {
+		do {
+			_saves.emplace_back(".save/" + std::string(data.cFileName));
+		} while (FindNextFile(hFind, &data));
+		FindClose(hFind);
+	}
 	#endif
 	setSaveButtons();
 }
@@ -143,7 +169,7 @@ void LoadState::update()
 {
 	_share.getFunc("rotateMenu")();
 	AState::update();
-
+	AssetsPool::getInstance().cleanSound();
 	if (getSharedResources().isKeyDown(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 }

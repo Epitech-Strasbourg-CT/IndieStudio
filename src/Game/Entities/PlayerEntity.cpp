@@ -9,10 +9,12 @@
 #include "../../../include/Game/EntitiesMap.hpp"
 #include "../../../include/Singletons/AssetsPool.hpp"
 #include "../../../include/Singletons/IrrManager.hpp"
+#include "../../../include/Game/ControllerFactory.hpp"
 
 PlayerEntity::PlayerEntity(unsigned playerSkinId)
 : ABombDropper(), AAnimatedEntity("player"), AMovable(), Controllable(),
-_old(), _look(), _alive(true), _id(playerSkinId - 1)
+_old(), _look(), _alive(true), _id(playerSkinId - 1), _reverse(1),
+	_reverseCycles(0)
 {
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
@@ -20,31 +22,37 @@ _old(), _look(), _alive(true), _id(playerSkinId - 1)
 		irr::core::vector2di(static_cast<irr::s32>(BORDERX / 2),
 			static_cast<irr::s32>(BORDERY / 2)));
 	_old = AMovable::getPosition();
-	_node = addAnimationNode
-	("idle", "player/link-idle.ms3d", "player/player" + std::to_string(playerSkinId) + ".png");
-	_node->setScale({4, 4, 4});
-	_node = addAnimationNode
-	("run", "player/link-run.ms3d", "player/player" + std::to_string(playerSkinId) + ".png");
-	_node->setScale({4, 4, 4});
 	_look.X = (playerSkinId % 2 == 0) ? 1 : -1;
 	_look.Y = (playerSkinId == 1 || playerSkinId == 2) ? 1 : -1;
+	reloadSkin();
 	selectAnimation("idle");
 	addAllEvent();
+}
+
+void PlayerEntity::reloadSkin()
+{
+	cleanAnimationNodes();
+	_node = addAnimationNode("idle", "player/link-idle.ms3d",
+		"player/player" + std::to_string(_playerSkinId) + ".png");
+	_node->setScale({4, 4, 4});
+	_node = addAnimationNode("run", "player/link-run.ms3d",
+		"player/player" + std::to_string(_playerSkinId) + ".png");
+	_node->setScale({4, 4, 4});
 }
 
 void PlayerEntity::addAllEvent()
 {
 	addEvent(MOVE_UP, KEY_DOWN, [this]() {
-		this->dirBottom(1);
+		this->dirBottom(1 * this->_reverse);
 	});
 	addEvent(MOVE_DOWN, KEY_DOWN, [this]() {
-		this->dirTop(1);
+		this->dirTop(1 * this->_reverse);
 	});
 	addEvent(MOVE_LEFT, KEY_DOWN, [this]() {
-		this->dirRight(1);
+		this->dirRight(1 * this->_reverse);
 	});
 	addEvent(MOVE_RIGHT, KEY_DOWN, [this]() {
-		this->dirLeft(1);
+		this->dirLeft(1 * this->_reverse);
 	});
 	addEvent(DROP_BOMB, KEY_PRESSED, [this]() {
 		this->dropBomb(AEntity::getPosX(), AEntity::getPosY());
@@ -54,11 +62,15 @@ void PlayerEntity::addAllEvent()
 void PlayerEntity::update(EntitiesMap *map)
 {
 	updatePosition(map);
-	Controllable::update();
+	Controllable::update(map);
 	ABombDropper::update(map);
 	AEntity::update(map);
 	if (!_alive)
 		map->erase(this);
+	if (_reverseCycles == 0 && _reverse == -1)
+		_reverse = 1;
+	else if (_reverseCycles > 0)
+		_reverseCycles--;
 }
 
 void PlayerEntity::updateRenderPosition()
@@ -140,8 +152,11 @@ void PlayerEntity::dump(std::ostream &s) const
 {
 	AEntity::dump(s);
 	Controllable::dump(s);
-	struct PlayerEntity::serialize ser = {};
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	struct PlayerEntity::serialize ser = {_playerSkinId, _look.X, _look.Y,
+		_alive, _controller->getType()};
+	if (_controller)
+		ser.ctType = _controller->getType();
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	memcpy(se.get(), &ser, sizeof(ser));
 	s.write(se.get(), sizeof(ser));
 }
@@ -151,9 +166,18 @@ void PlayerEntity::load(std::istream &s)
 	AEntity::load(s);
 	Controllable::load(s);
 	struct PlayerEntity::serialize ser;
-	auto se = std::unique_ptr<char>(new char[sizeof(ser)]);
+	auto se = std::unique_ptr<char[]>(new char[sizeof(ser)]);
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
+	_playerSkinId = ser.playerSkinId;
+	_look.X = ser.lookX;
+	_look.Y = ser.lookY;
+	_alive = ser.alive;
+	reloadSkin();
+	ControllerFactory cf;
+	auto c = cf.createController(ser.ctType, _playerSkinId);
+	AController::bindEntityToController(*c.get(), *this);
+	c.release();
 }
 
 void PlayerEntity::kill()
@@ -163,10 +187,17 @@ void PlayerEntity::kill()
 
 PlayerEntity::~PlayerEntity()
 {
+	AssetsPool::getInstance().loadSound(AssetsPool::DEATH, false)->setIsPaused(false);
 	cleanAnimationNodes();
 }
 
 size_t PlayerEntity::getId()
 {
 	return _id;
+}
+
+void PlayerEntity::reverseDir()
+{
+	_reverseCycles = 180;
+	_reverse = -1;
 }

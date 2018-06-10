@@ -7,11 +7,11 @@
 
 #include "../../../../include/Game/Bonus/InvertBonus.hpp"
 
-InvertBonus::InvertBonus(RupeeColor color) : ABonusEntity(color)
+InvertBonus::InvertBonus() : ABonusEntity("invert_bonus", YELLOW)
 {
 }
 
 void InvertBonus::playerChanging(PlayerEntity *entity)
 {
-	entity->setReverse();
+	entity->reverseDir();
 }

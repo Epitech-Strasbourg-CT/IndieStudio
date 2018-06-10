@@ -18,10 +18,14 @@ public:
 	void updateRender() override;
 	void breakMe();
 	void update(EntitiesMap *map) override;
+	void dump (std::ostream &s) const;
+	void load(std::istream &s);
 	virtual ~PotEntity();
 private:
 	struct serialize {
+		bool broken;
 	};
+
 	bool _broken;
 	static const std::map<int, std::function<AEntity *()>> _gemGen;
 	void genRandomGem(EntitiesMap *map);

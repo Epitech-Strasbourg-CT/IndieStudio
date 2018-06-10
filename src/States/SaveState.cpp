@@ -20,7 +20,6 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 		"cancel",
 		[](SaveState *self) {
 			self->externalEventsClean();
-			std::cout << "POP A" << std::endl;
 			StateMachine::getInstance().pop();
 			return false;
 		}
@@ -33,7 +32,8 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 			SaveManager sm;
 			std::wstring wstr(self->_name->getText());
 			std::string str(wstr.begin(), wstr.end());
-			sm.save(*self->_share.getMap(), ".save/" + str + ".dat");
+			std::string final(".save/" + str + ".dat");
+			sm.save(*self->_share.getMap(), final);
 			StateMachine::getInstance().pop();
 			return false;
 		}
@@ -57,18 +57,14 @@ void SaveState::loadButtons()
 	auto &ap = AssetsPool::getInstance();
 
 	std::time_t t = std::time(0);
-	#ifdef _WIN32
-		struct tm tm;
-		localtime_s(&tm, &t);
-	#elif __linux__
-		auto tm = *localtime(&t);
-	#endif
-	std::string sName = std::to_string(tm.tm_year + 1900)
-		+ std::to_string(tm.tm_mon)
-		+ std::to_string(tm.tm_mday)
-		+ "_" + std::to_string(tm.tm_hour)
-		+ ":" + std::to_string(tm.tm_min)
-		+ ":" + std::to_string(tm.tm_sec);
+	auto tm = localtime(&t);
+
+	std::string sName = std::to_string(tm->tm_year + 1900)
+		+ std::to_string(tm->tm_mon)
+		+ std::to_string(tm->tm_mday)
+		+ "_" + std::to_string(tm->tm_hour)
+		+ std::to_string(tm->tm_min)
+		+ std::to_string(tm->tm_sec);
 
 	for (auto &n : _descs) {
 		auto b = gui->addButton(n.second.pos, nullptr, n.first);
@@ -78,10 +74,11 @@ void SaveState::loadButtons()
 		_buttons.push_back(b);
 	}
 
-	_name = gui->addButton({835, 440, 1085, 540}, nullptr,
-		600 + SAVE_BUTTON_NUMBER,
-		std::wstring(sName.begin(), sName.end()).c_str());
+	std::wstring wname(sName.begin(), sName.end());
+	_name = gui->addButton({610, 465, 1310, 515}, nullptr,
+		600 + SAVE_BUTTON_NUMBER, wname.c_str());
 	_name->setOverrideFont(_share.getFont());
+	_name->setImage(ap.loadTexture("buttons/default.png"));
 	_name->setEnabled(false);
 }
 
@@ -111,6 +108,7 @@ void SaveState::update()
 	if (getSharedResources().isKeyPressed(irr::KEY_ESCAPE))
 		StateMachine::getInstance().pop();
 	AState::update();
+	AssetsPool::getInstance().cleanSound();
 }
 
 void SaveState::draw()
