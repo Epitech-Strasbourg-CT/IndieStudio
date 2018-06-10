@@ -17,9 +17,7 @@ bool EventReceiver::OnEvent(const irr::SEvent &event)
 	if (_binds.count(event.EventType) <= 0)
 		return false;
 	for (auto it = _binds[type].begin(); it != _binds[type].end();) {
-		std::cout << "TRIGGERING " << type << " " << it->first << std::endl;
 		if (!it->second(event)) {
-			std::cout << "UNREGISTER " << type << " " << it->first << std::endl;
 			it = _binds[type].erase(it);
 		} else
 			it++;
@@ -36,7 +34,6 @@ EventReceiver::EventReceiver()
 
 void EventReceiver::unregisterEvent(size_t id, irr::EEVENT_TYPE type)
 {
-	std::cout << "UNREGISTER " << type << " " << id << std::endl;
 	if (_binds.count(type) <= 0 || _binds[type].count(id) <= 0)
 		return;
 	_binds[type].erase(id);
@@ -48,7 +45,6 @@ void EventReceiver::unregisterEvent(size_t id, irr::EEVENT_TYPE type)
 void EventReceiver::registerEvent(size_t id, irr::EEVENT_TYPE type,
 std::function<bool(const irr::SEvent &)> fct)
 {
-	std::cout << "REGISTER " << type << " " << id << std::endl;
 	if (_binds.count(type) == 0) {
 		std::unordered_map
 		<size_t, std::function<bool(const irr::SEvent &)>> map;

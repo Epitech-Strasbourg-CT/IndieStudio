@@ -48,7 +48,6 @@ void GameState::update()
 			addLastPlayerDead(podium);
 			StateMachine::getInstance().push(new PodiumState(_share), false);
 		}
-		std::cout << "PODIUM SIZE" << podium.size() << std::endl;
 		if (nbPlayer < _nbPlayerTot) {
 			for (auto i = 4 - _nbPlayerTot; i < (_nbPlayerTot - nbPlayer) + (4 - _nbPlayerTot); i++)
 				addDeadPlayer(podium[i], i);
