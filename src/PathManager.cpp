@@ -7,6 +7,7 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#include <shlobj.h>
 #elif __linux__
 #include <stdio.h>
 #include <unistd.h>
@@ -61,11 +62,10 @@ std::string PathManager::getHomePath(std::string rpath)
 		#elif _WIN32
 		WCHAR profilePath[MAX_PATH];
 		HRESULT result = SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, profilePath);
-		std::wstring ws(buff);
-		pBuf = std::string(ws.begin(), ws.end());
 
 		if (SUCCEEDED(result)) {
-			path = std::string(profilePath) + "\\.bomberman\\";
+			std::wstring ws(profilePath);
+			path = std::string(ws.begin(), ws.end()) + "\\.bomberman\\";
 		   	CreateDirectory(path.c_str(), nullptr);
 		}
 		#endif
