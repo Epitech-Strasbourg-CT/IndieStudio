@@ -99,7 +99,7 @@ irr::video::ITexture *AssetsPool::loadTexture(const std::string &file)
 
 irr::scene::IMesh *AssetsPool::loadMesh(const std::string &file)
 {
-	irr::io::path path = std::string(_rootModelPath + file).c_str();
+	irr::io::path path = PathManager::getExecPath(std::string(_rootModelPath + file)).c_str();
 	if (_meshs.count(file) > 0)
 		return _meshs.at(file);
 	irr::scene::IMesh *mesh = IrrManager::getInstance().getSmgr()->getMesh(

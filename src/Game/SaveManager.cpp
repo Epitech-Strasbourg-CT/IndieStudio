@@ -4,12 +4,27 @@
 ** File description:
 ** SaveManager.cpp
 */
+
+#ifdef __linux__
+#include <dirent.h>
+#elif _WIN32
+#include <windows.h>
+#endif
+#include <fstream>
+#include <sys/stat.h>
 #include "../../include/Game/SaveManager.hpp"
 #include "../../include/Game/EntityFactory.hpp"
-#include <fstream>
+#include "../../include/PathManager.hpp"
 
 void SaveManager::save(EntitiesMap &map, const std::string &filename)
 {
+	if (!opendir(PathManager::getExecPath(".save").c_str()) && errno == ENOENT) {
+	#ifdef _WIN32
+		_mkdir(PathManager::getExecPath(".save").c_str());
+	#elif __linux__
+		mkdir(PathManager::getExecPath(".save").c_str(), 0733);
+	#endif
+	}
 	std::ofstream file(filename, std::ofstream::out);
 	if (!file.good())
 		throw std::runtime_error("Can't save the Entities");
