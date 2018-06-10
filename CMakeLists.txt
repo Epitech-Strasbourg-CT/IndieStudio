@@ -144,8 +144,7 @@ add_executable(bomberman
 
 # endregion
 
-file(
-        COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 
 
@@ -166,7 +165,9 @@ if(UNIX)
 
         add_custom_target("uninstall")
         add_custom_command(TARGET "uninstall"
-        POST_BUILD COMMAND /bin/rm -rf /usr/share/applications/bomberman.desktop /usr/local/bin/bomberman /usr/local/bin/ikpMP3.so /usr/local/bin/ikpFlac.so /usr/local/bin/assets)
+        POST_BUILD COMMAND /bin/rm -rf /usr/share/applications/bomberman.desktop
+        /usr/share/icons/bomberman.png  /usr/local/bin/bomberman
+        /usr/local/bin/ikpMP3.so /usr/local/bin/ikpFlac.so /usr/local/bin/assets)
 
         install(PROGRAMS bin/bomberman bin/ikpMP3.so bin/ikpFlac.so  DESTINATION /usr/local/bin PERMISSIONS WORLD_EXECUTE WORLD_READ)
         install(DIRECTORY bin/assets DESTINATION /usr/local/bin)

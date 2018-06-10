@@ -124,7 +124,8 @@ irrklang::ISound *AssetsPool::loadSound(const AssetsPool::Assets asset,
 	auto &instance = IrrManager::getInstance();
 	auto module = engine->play2D(PathManager::getExecPath(_sounds.at(asset).name).c_str(), loop, true,
 	                             false);
-
+	if (!module)
+		throw std::runtime_error("Unable to load " + PathManager::getExecPath(_sounds.at(asset).name));
 	module->setVolume((instance.*(_sounds.at(asset).vol))());
 	module->setIsPaused(true);
 	_sModule[asset].push_back(module);
