@@ -16,9 +16,10 @@
 #include <unordered_map>
 #include "AEntity.hpp"
 
-	#define HEIGHT 15
+#define HEIGHT 15
 	#define WIDTH 19
 
+class PlayerEntity;
 
 class EntitiesMap {
 public:
@@ -43,6 +44,8 @@ public:
 
 	size_t update();
 	void updateRender();
+
+	static PlayerEntity *generatePlayer(unsigned playerSkinId, bool ia);
 
 	std::vector<int> getPodium();
 

@@ -37,6 +37,7 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 		            [](MenuState *self) {
 				    auto &sm = StateMachine::getInstance();
 				    auto &res = self->getSharedResources();
+				    self->getSharedResources().addCoor("menu", self->_share.getSphereCoor("camRotateMenu")->calc());
 				    sm.push(new LoadState(res), false);
 			            return true;
 		            }

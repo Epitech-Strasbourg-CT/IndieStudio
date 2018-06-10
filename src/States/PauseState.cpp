@@ -14,11 +14,12 @@
 #include "../../include/Game/SaveManager.hpp"
 #include "../../include/Time.hpp"
 #include "../../include/States/SaveState.hpp"
+#include "../../include/States/TransitionToMenuState.hpp"
 
 const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 	PauseState::_descs{
 	{PauseState::RESUME,    {
-		{610, 340,  1310, 390},
+		{610, 290,  1310, 340},
 		"resume",
 		[](PauseState *self) {
 			self->externalEventsClean();
@@ -27,7 +28,7 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 		}
 	}},
 	{PauseState::SETTINGS,  {
-		{610, 440, 1310, 490},
+		{610, 390, 1310, 440},
 		"settings",
 		[](PauseState *self) {
 			auto &sm = StateMachine::getInstance();
@@ -37,7 +38,7 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 		}
 	}},
 	{PauseState::SAVE, {
-		{610, 540, 1310, 590},
+		{610, 490, 1310, 540},
 		"save",
 		[](PauseState *self) {
 			auto &sm = StateMachine::getInstance();
@@ -46,8 +47,17 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 			return true;
 			}
 	}},
+	{PauseState::BACK_MENU, {
+		{610, 590, 1310, 640},
+		"back",
+		[](PauseState *self) {
+			auto &share = self->getSharedResources();
+			StateMachine::getInstance().push(new TransitionToMenuState(share), false);
+			return true;
+		}
+	}},
 	{PauseState::EXIT_GAME, {
-		{610, 640, 1310, 690},
+		{610, 690, 1310, 740},
 		"exit",
 		[](PauseState *self) {
 			self->externalEventsClean();
