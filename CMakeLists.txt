@@ -175,6 +175,8 @@ if(UNIX)
 
         install(PROGRAMS assets/bomberman.desktop DESTINATION /usr/share/applications PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
         install(PROGRAMS assets/bomberman.png DESTINATION /usr/share/icons PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
+        install(DIRECTORY bin/assets DESTINATION /usr/local/bin)
+        install(DIRECTORY DESTINATION /usr/local/bin/.save)
 
         add_custom_command(TARGET bomberman PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
