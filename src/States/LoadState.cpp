@@ -94,7 +94,7 @@ const std::map<LoadState::Actions, LoadState::ButtonsDesc>
 };
 
 LoadState::LoadState(AStateShare &_share) : AState(_share),
-AMenuSound(), _idx(0)
+AMenuSound(), _idx(0), _eventsActivate(false)
 {
 }
 

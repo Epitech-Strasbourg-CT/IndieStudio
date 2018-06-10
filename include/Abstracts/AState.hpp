@@ -15,7 +15,7 @@
 
 class AState {
 public:
-	AState(AStateShare &_share);
+	explicit AState(AStateShare &_share);
 	virtual ~AState();
 
 	virtual void update();

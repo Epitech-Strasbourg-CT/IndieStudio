@@ -9,7 +9,7 @@
 #include "../../include/Abstracts/AState.hpp"
 #include "../../include/Singletons/IrrManager.hpp"
 
-AState::AState(AStateShare &_share) : _share(_share)
+AState::AState(AStateShare &_share) : _share(_share), _loaded(false), _enable(false)
 {
 }
 

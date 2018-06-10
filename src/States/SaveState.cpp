@@ -40,7 +40,7 @@ const std::map<SaveState::Actions , SaveState::ButtonsDesc>
 	}}
 };
 
-SaveState::SaveState(AStateShare &_share) : AState(_share), AMenuSound()
+SaveState::SaveState(AStateShare &_share) : AState(_share), AMenuSound(), _eventsActivate(false)
 {
 }
 

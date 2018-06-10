@@ -15,6 +15,8 @@
 
 class StateMachine {
 public:
+	~StateMachine();
+
 	static StateMachine &getInstance();
 
 	bool isInStack(std::string const &name);
@@ -27,7 +29,6 @@ public:
 	int start();
 private:
 	StateMachine() = default;
-	~StateMachine() = default;
 
 	std::list<std::unique_ptr<AState>> _states;
 

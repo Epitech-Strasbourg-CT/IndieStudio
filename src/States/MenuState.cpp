@@ -61,7 +61,7 @@ const std::map<MenuActions, MenuState::ButtonsDesc>
 	            }},
 };
 
-MenuState::MenuState(AStateShare &_share) : AState(_share), AMenuSound(), _eventsActivate(true)
+MenuState::MenuState(AStateShare &_share) : AState(_share), AMenuSound(), _eventsActivate(false)
 {
 }
 
@@ -152,6 +152,8 @@ void MenuState::update()
 
 void MenuState::eventsSetup()
 {
+	if (_eventsActivate)
+		return;
 	_eventsActivate = true;
 	auto &er = EventReceiver::getInstance();
 	er.registerEvent(1, irr::EEVENT_TYPE::EET_GUI_EVENT,

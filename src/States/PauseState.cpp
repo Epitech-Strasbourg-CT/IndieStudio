@@ -67,7 +67,7 @@ const std::map<PauseState::Actions , PauseState::ButtonsDesc>
 	}}
 };
 
-PauseState::PauseState(AStateShare &_share) : AState(_share), AMenuSound()
+PauseState::PauseState(AStateShare &_share) : AState(_share), AMenuSound(), _eventsActivate(false)
 {
 }
 
