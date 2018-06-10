@@ -14,7 +14,9 @@
 
 class PodiumState : public AState, public AMenuSound {
 public:
-	PodiumState(AStateShare &_share);
+	explicit PodiumState(AStateShare &_share);
+	~PodiumState() override;
+
 	void update() override;
 	void unload() override;
 

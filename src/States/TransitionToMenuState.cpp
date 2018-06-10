@@ -24,7 +24,6 @@ _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")),
 void TransitionToMenuState::update()
 {
 	if (_trav.isFinished() == 2) {
-		_share.popMusic(AssetsPool::GAME);
 		StateMachine::getInstance().popUntil("menu");
 		return;
 	}
