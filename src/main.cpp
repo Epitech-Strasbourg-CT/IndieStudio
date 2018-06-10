@@ -11,8 +11,9 @@
 
 int main()
 {
-	srand(static_cast<unsigned int>(time(NULL)));
 	auto shared = AStateShare();
+	
+	srand(static_cast<unsigned int>(time(NULL)));
 	shared.addSharedNode("cam", IrrManager::getInstance().getSmgr()
 	->addCameraSceneNode(0, irr::core::vector3df(-80, 900, -500), irr::core::vector3df(0, 0, 0)));
 	auto splash = new SplashState(shared);

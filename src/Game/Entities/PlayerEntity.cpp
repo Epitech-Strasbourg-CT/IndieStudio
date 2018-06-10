@@ -12,7 +12,7 @@
 
 PlayerEntity::PlayerEntity(unsigned playerSkinId)
 : ABombDropper(), AAnimatedEntity("player"), AMovable(), Controllable(),
-_old(), _look(), _alive(true)
+_old(), _look(), _alive(true), _id(playerSkinId - 1)
 {
 	_correction.X = static_cast<irr::f32>(ENTITY_SIZE_X / 2);
 	_correction.Y = static_cast<irr::f32>(ENTITY_SIZE_Y / 2);
@@ -164,4 +164,9 @@ void PlayerEntity::kill()
 PlayerEntity::~PlayerEntity()
 {
 	cleanAnimationNodes();
+}
+
+size_t PlayerEntity::getId()
+{
+	return _id;
 }

@@ -122,7 +122,10 @@ add_executable(bomberman
         include/Game/Bonus/UpBombBonus.hpp
 
         src/Game/Entities/Bonus/UpFireBonus.cpp
-        include/Game/Bonus/UpFireBonus.hpp)
+        include/Game/Bonus/UpFireBonus.hpp
+
+        src/States/PodiumState.cpp
+        include/States/PodiumState.hpp)
 
 # endregion
 

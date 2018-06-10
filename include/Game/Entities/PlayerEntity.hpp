@@ -23,6 +23,9 @@ class PlayerEntity : public ABombDropper,
                      public AMovable<int> {
 public:
 	PlayerEntity(unsigned playerSkinId = 1);
+	virtual ~PlayerEntity();
+
+	size_t getId();
 	void update(EntitiesMap *map) override;
 	bool updatePosition(EntitiesMap *map);
 	void updateRender() override;
@@ -31,7 +34,6 @@ public:
 	void dump (std::ostream &s) const;
 	void load(std::istream &s);
 	void kill();
-	virtual ~PlayerEntity();
 private:
 	struct serialize {
 	};
@@ -41,4 +43,5 @@ private:
 	irr::core::vector2di _look;
 	irr::core::vector2di getNewPosition();
 	bool _alive;
+	size_t _id;
 };

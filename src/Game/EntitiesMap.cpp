@@ -11,6 +11,8 @@
 #include "../../include/Game/Entities/PlayerEntity.hpp"
 #include "../../include/Game/Entities/BlockEntity.hpp"
 #include "../../include/Game/BIAController.hpp"
+#include "../../include/Singletons/IrrManager.hpp"
+#include "../../include/Singletons/AssetsPool.hpp"
 
 const std::unordered_map<char, std::function<AEntity *(EntitiesMap &, const std::vector<int> &)>>
 	EntitiesMap::_generationMap = {{'X', [](EntitiesMap &, const std::vector<int> &) {
@@ -139,6 +141,8 @@ void EntitiesMap::updateErase()
 		auto finder = [e](const std::unique_ptr<AEntity> &p) {
 			return (e == p.get());
 		};
+		if (n.e->getType() == "player")
+			_orderDie.push_back(dynamic_cast<PlayerEntity *>(n.e)->getId());
 		auto elem = std::find_if(list.begin(), list.end(), finder);
 		if (elem != list.end())
 			list.erase(elem);
@@ -200,8 +204,9 @@ bool EntitiesMap::canMoveTo(const irr::core::vector2di &v)
 //endregion
 
 EntitiesMap::EntitiesMap()
-: _map()
+: _map(), _orderDie()
 {
+	_orderDie.reserve(4);
 	_map.resize(HEIGHT);
 	for (auto &n : _map)
 		n.resize(WIDTH);
@@ -215,18 +220,28 @@ void EntitiesMap::updateRender()
 				e->updateRender();
 }
 
-void EntitiesMap::update()
+size_t EntitiesMap::update()
 {
+	size_t ret = 0;
+
 	updateInsert();
 	for (auto &n : _map)
 		for (auto &eList : n)
-			for (auto &e : eList)
+			for (auto &e : eList) {
 				e->update(this);
+				ret += (e->getType() == "player");
+			}
 	updateErase();
 	updateMove();
+	return ret;
 }
 
 EntitiesMap::EMap &EntitiesMap::getMap()
 {
 	return _map;
+}
+
+std::vector<int> EntitiesMap::getPodium()
+{
+	return _orderDie;
 }
