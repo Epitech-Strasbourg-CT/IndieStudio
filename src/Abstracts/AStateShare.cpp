@@ -8,6 +8,7 @@
 #include <iostream>
 #include "../../include/Abstracts/AStateShare.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
+#include "../../include/PathManager.hpp"
 
 AStateShare::AStateShare(): _sharedNodes(), _isKeyDown(), _stateIA(4), _map(),
 _sphereCoor(), _func()
@@ -22,7 +23,7 @@ _sphereCoor(), _func()
 		this->_isKeyReleased[key] = !ev.KeyInput.PressedDown;
 		return true;
 	});
-	_font = im.getGuienv()->getFont("assets/font/zelda.xml");
+	_font = im.getGuienv()->getFont(PathManager::getExecPath("assets/font/zelda.xml").c_str());
 	_font = (_font) ? _font : im.getGuienv()->getBuiltInFont();
 }
 

@@ -168,12 +168,18 @@ if(UNIX)
             PERMISSIONS WORLD_EXECUTE)
     install(DIRECTORY bin/assets DESTINATION /usr/local/bin)
 
-    target_link_libraries(bomberman ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/libIrrKlang.so)
-    target_link_libraries(bomberman ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/libikpMP3.so)
-    target_link_libraries(bomberman ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/libikpFlac.so)
+        add_custom_command(TARGET bomberman PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+                ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/libikpFlac.so
+                ${PROJECT_SOURCE_DIR}/bin/ikpFlac.so)
+        add_custom_command(TARGET bomberman PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+                ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/libikpMP3.so
+                ${PROJECT_SOURCE_DIR}/bin/ikpMP3.so)
+        target_link_libraries(bomberman ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/linux-gcc-64/libIrrKlang.so)
 endif(UNIX)
 if(WIN32)
-        add_custom_command(TARGET bomberman PRE_BUILDx
+        add_custom_command(TARGET bomberman PRE_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
                 ${PROJECT_SOURCE_DIR}/libs/irrklang/bin/winx64-visualStudio/ikpFlac.dll
                 ${PROJECT_SOURCE_DIR}/bin/ikpFlac.dll)
