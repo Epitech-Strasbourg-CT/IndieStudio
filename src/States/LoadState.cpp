@@ -132,11 +132,9 @@ void LoadState::loadButtons()
 	auto path = PathManager::getExecPath(".save/");
 	auto pattern = PathManager::getExecPath(".save/*.dat");
 	hFind = FindFirstFile(pattern.c_str(), &data);
-	std::cout << path << std::endl;
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
 			_saves.emplace_back(path + std::string(data.cFileName));
-			std::cout << path + std::string(data.cFileName) << std::endl;
 		} while (FindNextFile(hFind, &data));
 		FindClose(hFind);
 	}

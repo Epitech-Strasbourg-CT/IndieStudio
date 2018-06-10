@@ -8,6 +8,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-W -Wall -Wextra -g ")
 
 # region src
 add_executable(bomberman
+        assets/icon.rc
         src/main.cpp
         src/Singletons/StateMachine.cpp
         include/Singletons/StateMachine.hpp
@@ -168,7 +169,7 @@ if(UNIX)
     POST_BUILD COMMAND /bin/rm -rf /usr/local/bin/bomberman /usr/local/bin/ikpMP3.so /usr/local/bin/ikpFlac.so /usr/local/bin/assets)
 
     install(PROGRAMS bin/bomberman bin/ikpMP3.so bin/ikpFlac.so  DESTINATION /usr/local/bin
-            PERMISSIONS WORLD_EXECUTE)
+            PERMISSIONS WORLD_EXECUTE WORLD_READ)
     install(DIRECTORY bin/assets DESTINATION /usr/local/bin)
 
         add_custom_command(TARGET bomberman PRE_BUILD
