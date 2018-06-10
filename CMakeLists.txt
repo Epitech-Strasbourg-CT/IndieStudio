@@ -136,7 +136,10 @@ add_executable(bomberman
         include/Game/Bonus/IncorporelBonus.hpp
 
         src/States/PodiumState.cpp
-        include/States/PodiumState.hpp)
+        include/States/PodiumState.hpp
+
+        src/States/TransitionToMenuState.cpp
+        include/States/TransitionToMenuState.hpp)
 
 # endregion
 

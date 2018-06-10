@@ -38,7 +38,7 @@ SplashState::SplashState(AStateShare &_share)
 : AState(_share),
 _nodes(),
 _start(),
-_duration(0)
+_duration(3000)
 {
 }
 

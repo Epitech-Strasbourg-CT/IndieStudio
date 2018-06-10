@@ -10,15 +10,17 @@
 #include "../../include/States/TransitionEndGameState.hpp"
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/States/MenuState.hpp"
+#include "../../include/States/TransitionToMenuState.hpp"
 
 const std::map<PodiumState::MenuActions, PodiumState::ButtonsDesc>
 PodiumState::_descs{
 {PodiumState::RESTART, {
 {610, 200, 1310, 250},
-"launch",
+"back",
 [](PodiumState *self) {
 	self->unloadDeadPlayer();
-	StateMachine::getInstance().popUntil("menu");
+	auto &share = self->getSharedResources();
+	StateMachine::getInstance().push(new TransitionToMenuState(share), false);
 	return true;
 }
 }},
@@ -150,8 +152,9 @@ void PodiumState::unloadButtons()
 
 void PodiumState::unloadDeadPlayer()
 {
-	for (auto i = 0; i < 4; i++) {
+	for (auto i = 1; i <= 4; i++) {
 		try {
+			std::cout << "UNLOAD deadPlayer" + std::to_string(i) << std::endl;
 			auto &n = _share.getSharedNode("deadPlayer" + std::to_string(i));
 			n.remove();
 			_share.delSharedNode("deadPlayer" + std::to_string(i));
