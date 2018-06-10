@@ -81,8 +81,9 @@ const irr::core::vector3df &AEntity::getOrigin() const
 	return _origin;
 }
 
-bool AEntity::isStackable() const
+bool AEntity::isStackable(const AEntity *entity) const
 {
+	static_cast<void>(entity);
 	return _stackable;
 }
 
@@ -123,4 +124,9 @@ bool AEntity::isInsertable() const
 const std::string &AEntity::getType() const
 {
 	return _type;
+}
+
+void AEntity::setOrigin(const irr::core::vector3df &vec)
+{
+	_origin = vec;
 }

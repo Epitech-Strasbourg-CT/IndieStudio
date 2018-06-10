@@ -21,6 +21,7 @@ public:
 	void dump (std::ostream &s) const;
 	void load(std::istream &s);
 	virtual ~PotEntity();
+	bool isStackable(const AEntity *entity) const override;
 private:
 	struct serialize {
 		bool broken;

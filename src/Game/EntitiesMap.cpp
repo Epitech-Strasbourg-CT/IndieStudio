@@ -141,7 +141,7 @@ void EntitiesMap::updateErase()
 			return (e == p.get());
 		};
 		if (n.e->getType() == "player")
-			_orderDie.push_back(dynamic_cast<PlayerEntity *>(n.e)->getId());
+			_orderDie.push_back(dynamic_cast<PlayerEntity *>(n.e)->getPlayerSkinId());
 		auto elem = std::find_if(list.begin(), list.end(), finder);
 		if (elem != list.end())
 			list.erase(elem);
@@ -190,12 +190,12 @@ bool EntitiesMap::canInsertTo(const irr::core::vector2di &v)
 	return true;
 }
 
-bool EntitiesMap::canMoveTo(const irr::core::vector2di &v)
+bool EntitiesMap::canMoveTo(const irr::core::vector2di &v, const AEntity *entity)
 {
 	if (v.X < 0 || v.X >= WIDTH || v.Y < 0 || v.Y >= HEIGHT)
 		return false;
 	for (auto &n : _map[v.Y][v.X])
-		if (!n->isStackable())
+		if (!n->isStackable(entity))
 			return false;
 	return true;
 }

@@ -124,10 +124,6 @@ void LoadState::loadButtons()
 		_saves.emplace_back(glob_result.gl_pathv[i]);
 	_idx = 0;
 	#elif _WIN32
-	char buffer[MAX_PATH];
-	GetModuleFileName(NULL, buffer, MAX_PATH);
-	std::string::size_type pos = std::string( buffer ).find_last_of("\\/");
-	auto path =  std::string( buffer ).substr( 0, pos) + "\\.save\\*.dat";
 
 	HANDLE hFind;
 	WIN32_FIND_DATA data;

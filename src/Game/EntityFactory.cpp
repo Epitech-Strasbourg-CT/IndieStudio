@@ -15,6 +15,8 @@
 #include "../../include/Game/Bonus/ResetFireRangeBonus.hpp"
 #include "../../include/Game/Bonus/UpBombBonus.hpp"
 #include "../../include/Game/Bonus/UpFireBonus.hpp"
+#include "../../include/Game/Bonus/UpSpeedBonus.hpp"
+#include "../../include/Game/Bonus/IncorporelBonus.hpp"
 
 EntityFactory::EntityFactory() : _fac({{"entity", [](unsigned) {
 	return std::unique_ptr<AEntity>(new AEntity("entity"));
@@ -36,7 +38,11 @@ EntityFactory::EntityFactory() : _fac({{"entity", [](unsigned) {
 	return std::unique_ptr<UpBombBonus>(new UpBombBonus());
 }}, {"fire_bonus", [](unsigned) {
 	return std::unique_ptr<UpFireBonus>(new UpFireBonus());
-}},})
+}}, {"upspeed_bonus", [](unsigned) {
+		return std::unique_ptr<UpSpeedBonus>(new UpSpeedBonus());
+}}, {"incorporel_bonus", [](unsigned) {
+	return std::unique_ptr<IncorporelBonus>(new IncorporelBonus());
+}}})
 {
 }
 

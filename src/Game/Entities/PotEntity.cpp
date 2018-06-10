@@ -14,10 +14,18 @@
 #include "../../../include/Game/Bonus/UpFireBonus.hpp"
 #include "../../../include/Game/Bonus/InvertBonus.hpp"
 #include "../../../include/Game/Bonus/ResetFireRangeBonus.hpp"
+#include "../../../include/Game/Bonus/UpSpeedBonus.hpp"
+#include "../../../include/Game/Bonus/IncorporelBonus.hpp"
 
 const std::map<int, std::function<AEntity *()>> PotEntity::_gemGen = {
 	{55, []() {
 		return nullptr;
+	}},
+	{20, []() {
+		return new IncorporelBonus();
+	}},
+	{20, []() {
+		return new UpSpeedBonus();
 	}},
 	{20, []() {
 		return new UpBombBonus();
@@ -100,6 +108,16 @@ void PotEntity::load(std::istream &s)
 	s.read(se.get(), sizeof(ser));
 	memcpy(&ser, se.get(), sizeof(ser));
 	_broken = ser.broken;
+}
+
+bool PotEntity::isStackable(const AEntity *entity) const
+{
+	if (entity && entity->getType() == "player") {
+		auto player = dynamic_cast<const PlayerEntity *>(entity);
+		if (player)
+			return player->isIncorporel();
+	}
+	return _stackable;
 }
 
 PotEntity::~PotEntity()
