@@ -30,7 +30,7 @@ private:
 	void addLastPlayerDead(std::vector<int> podium);
 	bool _canPause;
 	irr::f32 _inc;
-	size_t _nbPlayerTot;
+	int _nbPlayerTot;
 };
 
 
