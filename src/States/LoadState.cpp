@@ -15,6 +15,7 @@
 #include "../../include/Singletons/EventReceiver.hpp"
 #include "../../include/Singletons/AssetsPool.hpp"
 #include "../../include/States/TransitionToGameState.hpp"
+#include "../../include/PathManager.hpp"
 
 const std::map<LoadState::Actions, LoadState::ButtonsDesc>
 	LoadState::_descs {
@@ -119,7 +120,7 @@ void LoadState::loadButtons()
 	#ifdef __linux__
 	glob_t glob_result;
 
-	glob(".save/*.dat", GLOB_TILDE, NULL, &glob_result);
+	glob(PathManager::getExecPath(".save/*.dat").c_str(), GLOB_TILDE, NULL, &glob_result);
 	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i)
 		_saves.emplace_back(glob_result.gl_pathv[i]);
 	_idx = 0;
