@@ -129,10 +129,12 @@ void LoadState::loadButtons()
 	HANDLE hFind;
 	WIN32_FIND_DATA data;
 
-	hFind = FindFirstFile(path.c_str(), &data);
+	auto path = PathManager::getExecPath(".save/");
+	auto pattern = PathManager::getExecPath(".save/*.dat");
+	hFind = FindFirstFile(pattern.c_str(), &data);
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
-			_saves.emplace_back(".save/" + std::string(data.cFileName));
+			_saves.emplace_back(path + std::string(data.cFileName));
 		} while (FindNextFile(hFind, &data));
 		FindClose(hFind);
 	}
@@ -215,7 +217,11 @@ void LoadState::setSaveButtons()
 	std::string empty = "- Empty Slot -";
 
 	for (; i < _saves.size() && (i == (_idx * 4) || i%4); ++i) {
+		#ifdef _WIN32
+		std::string temp(_saves[i].substr(_saves[i].rfind('\\') + 1));
+		#else
 		std::string temp(_saves[i].substr(_saves[i].rfind('/') + 1));
+		#endif
 		_buttons[i%4]->setText(std::wstring(temp.begin(),
 			temp.end()).c_str());
 		_buttons[i%4]->setEnabled(true);

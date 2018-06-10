@@ -8,6 +8,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-W -Wall -Wextra -g ")
 
 # region src
 add_executable(bomberman
+        assets/icon.rc
         src/main.cpp
         src/Singletons/StateMachine.cpp
         include/Singletons/StateMachine.hpp
@@ -162,12 +163,15 @@ endif(WIN32)
 set(IRRKLANG_DIR ./libs/irrklang)
 if(UNIX)
 
-    add_custom_target("uninstall")
-    add_custom_command(TARGET "uninstall"
-    POST_BUILD COMMAND /bin/rm -rf /usr/share/applications/bomberman.desktop /usr/share/icons/bomberman.png /usr/local/bin/bomberman /usr/local/bin/ikpMP3.so /usr/local/bin/ikpFlac.so /usr/local/bin/assets)
+        add_custom_target("uninstall")
+        add_custom_command(TARGET "uninstall"
+        POST_BUILD COMMAND /bin/rm -rf /usr/share/applications/bomberman.desktop
+        /usr/share/icons/bomberman.png  /usr/local/bin/bomberman
+        /usr/local/bin/ikpMP3.so /usr/local/bin/ikpFlac.so /usr/local/bin/assets)
 
-        install(PROGRAMS bin/bomberman bin/ikpMP3.so bin/ikpFlac.so DESTINATION /usr/local/bin
-            PERMISSIONS WORLD_EXECUTE)
+        install(PROGRAMS bin/bomberman bin/ikpMP3.so bin/ikpFlac.so  DESTINATION /usr/local/bin PERMISSIONS WORLD_EXECUTE WORLD_READ)
+        install(DIRECTORY bin/assets DESTINATION /usr/local/bin)
+
         install(PROGRAMS assets/bomberman.desktop DESTINATION /usr/share/applications PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
         install(PROGRAMS assets/bomberman.png DESTINATION /usr/share/icons PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
         install(DIRECTORY bin/assets DESTINATION /usr/local/bin)

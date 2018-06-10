@@ -21,7 +21,7 @@ _camRotate(static_cast<irr::f32>(2.3), static_cast<irr::f32>(3.14159265 / 3.0), 
 
 void BackgroundState::load()
 {
-	AssetsPool::getInstance().loadSound(AssetsPool::MENU, true); //TODO see this line with the group
+	AssetsPool::getInstance().loadSound(AssetsPool::MENU, true);
 	_share.pushMusic(AssetsPool::getInstance().loadSound(AssetsPool::MENU, true));
 	loadMapMenu();
 	loadCharacter();
@@ -69,14 +69,14 @@ void BackgroundState::loadCharacter()
 
 void BackgroundState::loadSkyBox()
 {
-	auto driver = IrrManager::getInstance().getDriver();
+	auto &ap = AssetsPool::getInstance();
 	auto sb = IrrManager::getInstance().getSmgr()->addSkyBoxSceneNode(
-	driver->getTexture("assets/textures/skybox/sky_up.png"),
-	driver->getTexture("assets/textures/skybox/sky_down.jpg"),
-	driver->getTexture("assets/textures/skybox/sky_left.png"),
-	driver->getTexture("assets/textures/skybox/sky_right.png"),
-	driver->getTexture("assets/textures/skybox/sky_front.png"),
-	driver->getTexture("assets/textures/skybox/sky_back.png"));
+	ap.loadTexture("skybox/sky_up.png"),
+	ap.loadTexture("skybox/sky_down.jpg"),
+	ap.loadTexture("skybox/sky_left.png"),
+	ap.loadTexture("skybox/sky_right.png"),
+	ap.loadTexture("skybox/sky_front.png"),
+	ap.loadTexture("skybox/sky_back.png"));
 
 	_share.addSharedNode("skybox", sb);
 }
@@ -102,9 +102,6 @@ void BackgroundState::transitionPush(bool keep)
 {
 	AState::transitionPush(keep);
 	StateMachine::getInstance().push(new MenuState(_share), true);
-//	IrrManager::getInstance().getSmgr()->addCameraSceneNode(0, {690, 100, 715}, {690, 60, 690});
-//	_share.setIAState({0, 1, 1, 1});
-//	StateMachine::getInstance().push(new TransitionToGameState(_share), true);
 }
 
 void BackgroundState::loadMap()
