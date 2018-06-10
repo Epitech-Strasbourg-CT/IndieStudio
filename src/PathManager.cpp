@@ -6,20 +6,29 @@
 */
 
 #ifdef _WIN32
-#include <direct.h>
-#define GetCurrentDir _getcwd
+#include <windows.h>
 #elif __linux__
 #include <stdio.h>
 #include <unistd.h>
-#define GetCurrentDir getcwd
+#include <sys/param.h>
 #endif
-#include<iostream>
+#include <iostream>
 #include "../include/PathManager.hpp"
 
-std::string PathManager::getExecPath()
+std::string PathManager::getExecPath(std::string rpath)
 {
-	char buff[FILENAME_MAX];
-	GetCurrentDir( buff, FILENAME_MAX );
-	std::string current_working_dir(buff);
-	return current_working_dir;
+	char szTmp[32];
+	std::string pBuf(2048, 0);
+	static std::string path;
+
+	if (path.empty()) {
+	#ifdef __linux__
+		sprintf(szTmp, "/proc/%d/exe", getpid());
+		MIN(readlink(szTmp, &pBuf[0], 2048), 2048 - 1);
+	#elif _WIN32
+		GetModuleFileName(NULL, &pBuf[0], 2048);
+	#endif
+		path = pBuf.substr(0, pBuf.rfind('/') + 1);
+	}
+	return path + rpath;
 }
