@@ -41,12 +41,13 @@ public:
 
 	bool generate(const std::vector<int> &IAState);
 
-	void update();
+	size_t update();
 	void updateRender();
+
+	std::vector<int> getPodium();
 
 
 private:
-
 	EMap _map;
 
 	struct MoveTrans {
@@ -66,9 +67,8 @@ private:
 	std::list<struct EraseTrans> _toErase;
 	std::list<struct InsertTrans> _toInsert;
 	std::list<struct MoveTrans> _toMove;
-
-	static const std::vector<std::string>
-	_mapTemplate;
+	std::vector<int> _orderDie;
+	static const std::vector<std::string> _mapTemplate;
 	static const std::unordered_map<char, std::function<AEntity *(
 		const std::vector<int> &
 	)>> _generationMap;

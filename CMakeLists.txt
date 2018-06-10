@@ -124,7 +124,19 @@ add_executable(bomberman
         include/Game/Bonus/UpBombBonus.hpp
 
         src/Game/Entities/Bonus/UpFireBonus.cpp
-        include/Game/Bonus/UpFireBonus.hpp src/PathManager.cpp include/PathManager.hpp src/Game/Entities/Bonus/UpSpeedBonus.cpp include/Game/Bonus/UpSpeedBonus.hpp src/Game/Entities/Bonus/IncorporelBonus.cpp include/Game/Bonus/IncorporelBonus.hpp)
+        include/Game/Bonus/UpFireBonus.hpp
+
+        src/PathManager.cpp
+        include/PathManager.hpp
+
+        src/Game/Entities/Bonus/UpSpeedBonus.cpp
+        include/Game/Bonus/UpSpeedBonus.hpp
+
+        src/Game/Entities/Bonus/IncorporelBonus.cpp
+        include/Game/Bonus/IncorporelBonus.hpp
+
+        src/States/PodiumState.cpp
+        include/States/PodiumState.hpp)
 
 # endregion
 

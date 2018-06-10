@@ -23,6 +23,9 @@ class PlayerEntity : public ABombDropper,
                      public AMovable<int> {
 public:
 	PlayerEntity(unsigned playerSkinId = 1);
+	virtual ~PlayerEntity();
+
+	size_t getId();
 	void reloadSkin();
 	void reverseDir();
 	void speedUp();
@@ -34,7 +37,6 @@ public:
 	void dump (std::ostream &s) const;
 	void load(std::istream &s);
 	void kill();
-	virtual ~PlayerEntity();
 	bool isIncorporel() const;
 	void setIncorporel();
 private:
@@ -58,4 +60,5 @@ private:
 	bool _alive;
 	int _moveCoef;
 	int _reverseCycles;
+	size_t _id;
 };

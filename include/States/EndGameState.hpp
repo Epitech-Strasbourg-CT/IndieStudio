@@ -32,6 +32,8 @@ public:
 
 	void draw() override;
 
+	const std::string getName() const override;
+
 	void applyEventButton(const irr::SEvent &ev, EndGameState::Actions id);
 	irr::gui::IGUIButton *getButton(EndGameState::Actions) const;
 
