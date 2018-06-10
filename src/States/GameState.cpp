@@ -98,7 +98,7 @@ void GameState::addLastPlayerDead(std::vector<int> podium)
 	auto iterator = id.begin();
 
 	for (auto elem : podium) {
-		std::remove_if(id.begin(), id.end(), [elem](int val) {return elem == val; });
+		std::remove_if(id.begin(), id.end(), [elem](int val) { return elem == val; });
 		iterator += 1;
 	}
 	addDeadPlayer(id[0], 3);

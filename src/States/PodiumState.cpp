@@ -39,7 +39,6 @@ PodiumState::PodiumState(AStateShare &_share) : AState(_share),
 _trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {675, 70, 640}, 1),
 _isLoad(false)
 {
-//	setText();
 	_trav.setFolow(0.01);
 	_trav.setEndExactitude(0.1);
 	_trav.push(50, {675, 80, 655});
@@ -67,7 +66,7 @@ void PodiumState::setText()
 	for (auto i = 0; i < 4; i++) {
 		std::wstring str = std::to_wstring(4 - i) + L" eme";
 		auto text = IrrManager::getInstance().getSmgr()->addTextSceneNode(_share.getFont(), str.c_str());
-		text->setPosition({685 + i * -6, 65, 645});
+		text->setPosition({static_cast<irr::f32>(685 + i * -6), 65, 645});
 	}
 }
 
@@ -118,7 +117,7 @@ bool PodiumState::applyEventButton(const irr::SEvent &ev, MenuActions id)
 
 	switch (ev.GUIEvent.EventType) {
 		case irr::gui::EGET_BUTTON_CLICKED:
-//			playSelect();
+//			playSelect();//TODO Sound
 			return PodiumState::_descs.at(id).fct(this);
 		case irr::gui::EGET_ELEMENT_HOVERED:
 //			playCursor();
