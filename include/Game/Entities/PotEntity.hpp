@@ -28,6 +28,6 @@ private:
 	};
 
 	bool _broken;
-	static const std::map<int, std::function<AEntity *()>> _gemGen;
+	static const std::multimap<int, std::function<AEntity *()>> _gemGen;
 	void genRandomGem(EntitiesMap *map);
 };

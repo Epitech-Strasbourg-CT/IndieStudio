@@ -17,7 +17,7 @@
 #include "../../../include/Game/Bonus/UpSpeedBonus.hpp"
 #include "../../../include/Game/Bonus/IncorporelBonus.hpp"
 
-const std::map<int, std::function<AEntity *()>> PotEntity::_gemGen = {
+const std::multimap<int, std::function<AEntity *()>> PotEntity::_gemGen = {
 	{50, []() {
 		return nullptr;
 	}},
