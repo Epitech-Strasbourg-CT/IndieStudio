@@ -30,8 +30,8 @@ const std::unordered_map<char, std::function<AEntity *(const std::vector<int> &)
 	return EntitiesMap::generatePlayer(4, ia);
 }}, {'0', [](const std::vector<int> &) {
 	AEntity *e = nullptr;
-	if ((rand() % 6) < 4)
-		e = new PotEntity();
+//	if ((rand() % 6) < 4)
+//		e = new PotEntity();
 	return e;
 }}};
 
