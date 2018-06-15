@@ -27,7 +27,7 @@ IrrManager::IrrManager()
 	_device = irr::createDevice(
 		irr::video::EDT_OPENGL,
 		irr::core::dimension2d<irr::u32>(_width, _height),
-		32, false, false, true, nullptr);
+		32, true, false, true, nullptr);
 	_driver = _device->getVideoDriver();
 	_smgr = _device->getSceneManager();
 	_guienv = _device->getGUIEnvironment();
