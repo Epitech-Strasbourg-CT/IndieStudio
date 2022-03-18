@@ -84,7 +84,7 @@ AssetsPool &AssetsPool::getInstance()
 
 AssetsPool::AssetsPool(const std::string &rootModelPath,
 	const std::string &rootTexturesPath
-) : _rootModelPath(rootModelPath), _rootTexturePath(rootTexturesPath), _meshs(),
+) : _rootModelPath(rootModelPath), _rootTexturePath(rootTexturesPath), _meshs(), _animatedMeshs(),
     _textures()
 {
 }
@@ -92,7 +92,7 @@ AssetsPool::AssetsPool(const std::string &rootModelPath,
 irr::video::ITexture *AssetsPool::loadTexture(const std::string &file)
 {
 	irr::io::path path = PathManager::getExecPath(_rootTexturePath + file).c_str();
-	if (_meshs.count(file) > 0)
+	if (_textures.count(file) > 0)
 		return _textures.at(file);
 	irr::video::ITexture *texture = IrrManager::getInstance().getDriver()->getTexture(
 		path);
@@ -114,6 +114,20 @@ irr::scene::IMesh *AssetsPool::loadMesh(const std::string &file)
 		                         std::string(_rootModelPath + file));
 	_meshs[file] = mesh;
 	return mesh;
+}
+
+irr::scene::IAnimatedMesh *AssetsPool::loadAnimatedMesh(const std::string &file)
+{
+    irr::io::path path = PathManager::getExecPath(std::string(_rootModelPath + file)).c_str();
+    if (_animatedMeshs.count(file) > 0)
+        return _animatedMeshs.at(file);
+    irr::scene::IAnimatedMesh *mesh = IrrManager::getInstance().getSmgr()->getMesh(
+            path);
+    if (!mesh)
+        throw std::runtime_error("Can't load mesh " +
+                                 std::string(_rootModelPath + file));
+    _animatedMeshs[file] = mesh;
+    return mesh;
 }
 
 irrklang::ISound *AssetsPool::loadSound(const AssetsPool::Assets asset,

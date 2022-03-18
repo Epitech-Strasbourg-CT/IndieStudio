@@ -58,8 +58,8 @@ AIChooseState::_descs {
 };
 
 AIChooseState::AIChooseState(AStateShare &_share) : AState(_share), AMenuSound(),
-_trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), irr::core::vector3df(170, 52, -300), static_cast<irr::f32>(0.1)),
-_quitAnim(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {450, 0, 100}, 0.5),
+_trav(static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), irr::core::vector3df(170, 52, -300), static_cast<irr::f32>(0.1)),
+_quitAnim(static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {450, 0, 100}, 0.5),
 _state({1, 0, 0, 0}), _isInQuitAnim(false), _guiDisp(false), _eventsActivate(false)
 {
 	_trav.setFinalTime(60);
@@ -78,7 +78,7 @@ void AIChooseState::load()
 
 void AIChooseState::update()
 {
-	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
+	auto &cam = static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
 
 	if (_isInQuitAnim) {
 		_quitAnim.update(cam);

@@ -60,7 +60,7 @@ void GameState::update()
 void GameState::addDeadPlayer(int idPlayer, int rank)
 {
 	irr::scene::IAnimatedMeshSceneNode *mesh = IrrManager::getInstance().getSmgr()->addAnimatedMeshSceneNode(
-	dynamic_cast<irr::scene::IAnimatedMesh *>(AssetsPool::getInstance().loadMesh("player/link-happy.ms3d")));
+	AssetsPool::getInstance().loadAnimatedMesh("player/link-happy.ms3d"));
 	mesh->setMaterialTexture(0, AssetsPool::getInstance().loadTexture("player/player" + std::to_string(idPlayer) + "-happy.png"));
 	mesh->setScale({4, 4, 4});
 	mesh->setRotation({0, 90, 0});
@@ -85,7 +85,7 @@ void GameState::animCam()
 	auto step = static_cast<irr::f32>((2.0 * 3.1415) / 1000.0);
 	auto min = static_cast<irr::f32>(115);
 	auto max = static_cast<irr::f32>(120);
-	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
+	auto &cam = static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
 	auto camPos = cam.getPosition();
 
 	_inc += step;

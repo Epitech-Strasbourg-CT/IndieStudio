@@ -46,6 +46,7 @@ public:
 	};
 
 	irr::scene::IMesh *loadMesh(const std::string &file);
+	irr::scene::IAnimatedMesh *loadAnimatedMesh(const std::string &file);
 	irr::video::ITexture *loadTexture(const std::string &file);
 
 	irrklang::ISound *loadSound(AssetsPool::Assets, bool);
@@ -59,6 +60,7 @@ private:
 	std::string _rootModelPath;
 	std::string _rootTexturePath;
 	std::map<std::string, irr::scene::IMesh *> _meshs;
+	std::map<std::string, irr::scene::IAnimatedMesh *> _animatedMeshs;
 	std::map<std::string, irr::video::ITexture *> _textures;
 	std::vector<std::vector<irrklang::ISound *>> _sModule;
 

@@ -37,7 +37,7 @@ PodiumState::_descs{
 };
 
 PodiumState::PodiumState(AStateShare &_share) : AState(_share),
-_trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {675, 70, 640}, 1),
+_trav(static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {675, 70, 640}, 1),
 _isLoad(false), _eventsActivate(false)
 {
 	_trav.setFolow(0.01);
@@ -61,7 +61,7 @@ void PodiumState::update()
 		eventsSetup();
 		loadButtons();
 	}
-	_trav.update(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")));
+	_trav.update(static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")));
 	AState::update();
 }
 

@@ -9,7 +9,7 @@
 #include "../../include/Singletons/StateMachine.hpp"
 
 TransitionToMenuState::TransitionToMenuState(AStateShare &_share) : AState(_share),
-_trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {450, 0, 100}, 2)
+_trav(static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")), {450, 0, 100}, 2)
 {
 	_trav.setFolow(0.03);
 	_trav.setEndExactitude(0.1);
@@ -28,7 +28,7 @@ void TransitionToMenuState::update()
 		StateMachine::getInstance().popUntil("menu");
 		return;
 	}
-	_trav.update(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")));
+	_trav.update(static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")));
 	AState::update();
 }
 

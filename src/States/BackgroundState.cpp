@@ -50,7 +50,7 @@ void BackgroundState::loadCharacter()
 {
 	auto smgr = IrrManager::getInstance().getSmgr();
 	auto &assetsPool = AssetsPool::getInstance();
-	irr::scene::IAnimatedMesh *mesh = dynamic_cast<irr::scene::IAnimatedMesh *>(assetsPool.loadMesh("player/link-idle.ms3d"));
+	irr::scene::IAnimatedMesh *mesh = assetsPool.loadAnimatedMesh("player/link-idle.ms3d");
 
 	if (!mesh)
 		throw std::runtime_error("Cannot instantiate menu player");
@@ -129,7 +129,7 @@ void BackgroundState::loadCamRotate()
 		auto step = static_cast<irr::f32>((2.0 * 3.1415) / 1000.0);
 		irr::f32 min = static_cast<irr::f32>(2.7);
 		irr::f32 max = static_cast<irr::f32>(4.4);
-		auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
+		auto &cam = static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
 
 		cam.setTarget({450, 0, 100});
 		_inc += step;

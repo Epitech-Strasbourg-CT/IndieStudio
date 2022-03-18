@@ -12,7 +12,7 @@
 #include "../../include/Game/SaveManager.hpp"
 
 TransitionToGameState::TransitionToGameState(AStateShare &_share, const std::string &saveName) : AState(_share),
-_trav(dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")),
+_trav(static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam")),
 {690, 60, 690}, static_cast<irr::f32>(1.1)), _emap()
 {
 	if (saveName.empty())
@@ -45,7 +45,7 @@ void TransitionToGameState::transitionPush(bool keep)
 
 void TransitionToGameState::update()
 {
-	auto &cam = dynamic_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
+	auto &cam = static_cast<irr::scene::ICameraSceneNode &>(_share.getSharedNode("cam"));
 
 	if (_trav.isFinished() == 2) {
 		auto &sm = StateMachine::getInstance();
